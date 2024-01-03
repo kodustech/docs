@@ -1,73 +1,58 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Kodus",
   "logo": {
     "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "light": "/logo/light.svg",
+    "href": "https://kodus.io"
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#F59220",
+    "light": "#F59220",
+    "dark": "#F59220",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#141217",
+      "to": "#141217"
     }
   },
   "topbarLinks": [
     {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "name": "Suporte",
+      "url": "mailto:help@kodus.io"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
+    "name": "Solicitar demo",
     "url": "https://dashboard.mintlify.com"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
   "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
     {
       "name": "Blog",
       "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "url": "https://kodus.io/insights/"
     }
   ],
   "navigation": [
     {
-      "group": "Get Started",
-      "pages": ["introduction", "quickstart", "development"]
+      "group": "Início",
+      "pages": ["setup/setup", "setup/tools", "setup/personalization"]
     },
     {
-      "group": "Essentials",
-      "pages": ["essentials/markdown", "essentials/code", "essentials/images", "essentials/settings", "essentials/navigation"]
-    },
-    {
-      "group": "API Documentation",
-      "pages": ["api-reference/introduction"]
-    },
-    {
-      "group": "Endpoint Examples",
+      "group": "Métricas",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "metrics/leadtime",
+        "metrics/leadtime_per_column",
+        "metrics/throughput"
       ]
+    },
+    {
+      "group": "Insights",
+      "pages": ["insights/introduction"]
+    },
+    {
+      "group": "Automações",
+      "pages": ["automations/introduction", "automations/weekly_sumarization", "automations/improve_tasks", "automations/ping_developers"]
     }
   ],
   "footerSocials": {
