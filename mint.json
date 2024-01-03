@@ -48,7 +48,7 @@
     },
     {
       "group": "Insights",
-      "pages": ["insights/introduction"]
+      "pages": ["insights/introduction", "insights/good_practices", "insights/failures"]
     },
     {
       "group": "Automações",
