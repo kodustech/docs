@@ -26,33 +26,19 @@
     "name": "Solicitar demo",
     "url": "https://dashboard.mintlify.com"
   },
-  "anchors": [
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://kodus.io/insights/"
-    }
-  ],
   "navigation": [
     {
-      "group": "Início",
-      "pages": ["setup/setup", "setup/tools", "setup/personalization"]
+      "group": "Getting Started",
+      "pages": ["introduction", "concepts", "tools", "setup"]
     },
     {
-      "group": "Métricas",
+      "group": "Kody Engine",
       "pages": [
-        "metrics/leadtime",
-        "metrics/leadtime_per_column",
-        "metrics/throughput"
+        "engine/metrics",
+        "engine/artifacts",
+        "engine/date_estimation",
+        "engine/parameters"
       ]
-    },
-    {
-      "group": "Insights",
-      "pages": ["insights/introduction", "insights/good_practices", "insights/failures"]
-    },
-    {
-      "group": "Automações",
-      "pages": ["automations/introduction", "automations/weekly_sumarization", "automations/improve_tasks", "automations/ping_developers"]
     }
   ],
   "footerSocials": {

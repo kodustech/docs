@@ -1,0 +1,97 @@
+---
+title: 'Metrics'
+description: 'Comprehensive metrics used by the Kody team to analyze and improve project outcomes'
+icon: 'chart-simple'
+---
+<Info>The Kodus Metrics Engine is an Open Source tool that provides insightful analytics for project management. Access the repository here.</Info>
+
+## Lead Time and Its Variants
+<Note>All Lead Time calculations take into account the item type configuration for accurate metric computation.</Note>
+
+### Lead Time
+**Retrieve data from:** Project Management Tool
+
+<img src="https://kodus.io/wp-content/uploads/2024/03/Group-122.png" />
+The Overall Lead Time quantifies the time required for an item to move from the start, in the **TODO** column, to completion in any **DONE** column on the work board. 
+This metric includes all items on the mapped board, covering both items in progress and those completed.
+
+**Return structure:**
+```
+{
+    "total": "number",
+    "percentiles": {
+        "p50": "number",
+        "p75": "number", 
+        "p95": "number",
+    } 
+}
+```
+
+#### Lead Time By Item Type
+<img src="https://kodus.io/wp-content/uploads/2024/03/leadtimebyitem.png" />
+This variation of Lead Time breaks down the average processing time based on the different item types on your work board, allowing for more granular analysis.
+
+**Return structure:**
+```
+      "ItemType":{
+         "average" "number",
+         "percentiles":{
+            "p50": "number",
+            "p75": "number",
+            "p95": "number"
+         }
+      }...
+```
+
+
+### Lead Time In WIP
+**Retrieve data from:** Project Management Tool
+<img src="https://kodus.io/wp-content/uploads/2024/03/Group-123.png" />
+The Lead Time in WIP focuses exclusively on the period items are actively being worked on, starting the count when an item is moved to the first WIP (Work In Progress) column set up in the configuration. 
+This metric considers both items currently in WIP and those already completed.
+**Return structure:**
+```
+{
+    "total": "number",
+    "percentiles": {
+        "p50": "number",
+        "p75": "number", 
+        "p95": "number",
+    } 
+}
+```
+#### Lead Time In WIP by Item Type
+This variation of Lead Time In WIP breaks down the average processing time based on the different item types on your work board, allowing for more granular analysis.
+
+**Return structure:**
+```{
+      "ItemType":{
+         "average" "number",
+         "percentiles":{
+            "p50": "number",
+            "p75": "number",
+            "p95": "number"
+         }
+      }...
+```
+
+### Lead Time By Column 
+**Retrieve data from:** Project Management Tool
+
+This variation of Lead Time provides a breakdown of the average time items spend in each column of the board, offering insights into potential bottlenecks in the workflow.
+
+**Return structure:**
+```
+{"Column": "number", "Column": "number"...}
+```
+
+## Bug Ratio
+<img src="https://kodus.io/wp-content/uploads/2024/03/bugratio.png" />
+The Bug Ratio measures the number of bugs relative to the total items on the board, providing insight into the quality of the work in progress.
+
+**Retrieve data from:** Project Management Tool
+
+
+
+
+
