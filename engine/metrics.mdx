@@ -1,21 +1,19 @@
 ---
 title: 'Metrics'
-description: 'Comprehensive metrics used by the Kody team to analyze and improve project outcomes'
+description: 'Advanced metrics for engineering optimization'
 icon: 'chart-simple'
 ---
 <Info>The Kodus Metrics Engine is an Open Source tool that provides insightful analytics for project management. Access the repository here.</Info>
 
 ## Lead Time and Its Variants
-<Note>All Lead Time calculations take into account the item type configuration for accurate metric computation.</Note>
+<Note>All Lead Time calculations take into account the item [type configuration](parameters) for accurate metric computation.</Note>
 
 ### Lead Time
 **Retrieve data from:** Project Management Tool
-
 <img src="https://kodus.io/wp-content/uploads/2024/03/Group-122.png" />
-The Overall Lead Time quantifies the time required for an item to move from the start, in the **TODO** column, to completion in any **DONE** column on the work board. 
-This metric includes all items on the mapped board, covering both items in progress and those completed.
+Overall Lead Time tracks the duration from the **TODO** stage to any **DONE** stage across all board items, capturing the full cycle of task completion.
 
-**Return structure:**
+**Data structure:**
 ```
 {
     "total": "number",
@@ -29,9 +27,8 @@ This metric includes all items on the mapped board, covering both items in progr
 
 #### Lead Time By Item Type
 <img src="https://kodus.io/wp-content/uploads/2024/03/leadtimebyitem.png" />
-This variation of Lead Time breaks down the average processing time based on the different item types on your work board, allowing for more granular analysis.
-
-**Return structure:**
+Dive deeper with Lead Time analysis per item type, offering detailed insights into process efficiency.
+**Data structure:**
 ```
       "ItemType":{
          "average" "number",
@@ -47,9 +44,8 @@ This variation of Lead Time breaks down the average processing time based on the
 ### Lead Time In WIP
 **Retrieve data from:** Project Management Tool
 <img src="https://kodus.io/wp-content/uploads/2024/03/Group-123.png" />
-The Lead Time in WIP focuses exclusively on the period items are actively being worked on, starting the count when an item is moved to the first WIP (Work In Progress) column set up in the configuration. 
-This metric considers both items currently in WIP and those already completed.
-**Return structure:**
+Focuses on the active phase of task progression, measuring from the initial WIP stage to completion, for a clear view of ongoing work efficiency.
+**Data structure:**
 ```
 {
     "total": "number",
@@ -61,9 +57,9 @@ This metric considers both items currently in WIP and those already completed.
 }
 ```
 #### Lead Time In WIP by Item Type
-This variation of Lead Time In WIP breaks down the average processing time based on the different item types on your work board, allowing for more granular analysis.
+Analyze the active development phase by item type for targeted process improvements.
 
-**Return structure:**
+**Data structure:**
 ```{
       "ItemType":{
          "average" "number",
@@ -76,20 +72,17 @@ This variation of Lead Time In WIP breaks down the average processing time based
 ```
 
 ### Lead Time By Column 
-**Retrieve data from:** Project Management Tool
-
-This variation of Lead Time provides a breakdown of the average time items spend in each column of the board, offering insights into potential bottlenecks in the workflow.
-
-**Return structure:**
+**Retrieve data from:** Project Management Tool\
+Identify workflow bottlenecks with a breakdown of average time spent in each board column.\
+**Data structure:**
 ```
 {"Column": "number", "Column": "number"...}
 ```
 
 ## Bug Ratio
-<img src="https://kodus.io/wp-content/uploads/2024/03/bugratio.png" />
-The Bug Ratio measures the number of bugs relative to the total items on the board, providing insight into the quality of the work in progress.
-
 **Retrieve data from:** Project Management Tool
+<img src="https://kodus.io/wp-content/uploads/2024/03/bugratio.png" />
+Quantify project quality by comparing bug counts against total task volume.
 
 
 
