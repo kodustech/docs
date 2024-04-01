@@ -18,18 +18,18 @@
   },
   "topbarLinks": [
     {
-      "name": "Suporte",
+      "name": "Support",
       "url": "mailto:help@kodus.io"
     }
   ],
   "topbarCtaButton": {
-    "name": "Solicitar demo",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Hire Kody",
+    "url": "https://kodus.io/"
   },
   "navigation": [
     {
       "group": "Getting Started",
-      "pages": ["introduction", "concepts", "tools", "setup"]
+      "pages": ["concepts", "tools", "setup"]
     },
     {
       "group": "Kody Engine",
