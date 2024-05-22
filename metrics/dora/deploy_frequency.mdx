@@ -1,4 +1,37 @@
 ---
 title: 'Deploy Frequency'
-description: 'Advanced metrics for engineering optimization'
+description: 'Quantidade de vezes que subimos código em produção em um determinado período'
 ---
+
+## Como calculamos
+Através da sua ferramenta de gestão de código fonte, pegamos todos os deploys realizadas em um determinado período e dividimos pelo período de tempo selecionado. (Por padrão, dividimos por dia).
+
+<Warning>Para o Deploy Frequency funcionar, você precisa configurar como identificamos o deploy do seu time na tela de configurações.</Warning>
+
+
+## Estrutura de retorno
+```javascript
+{
+    deployFrequency: {
+        average: number,
+        percentiles: {
+            p50, number
+            p75: number,
+            p95 number,
+        }
+    }
+}
+```
+## Porque é importante
+Em última análise, as implantações são o que torna qualquer trabalho visível para o usuário e permite que seu trabalho gere impacto nos negócios. 
+Implantações frequentes e ágeis são essenciais porque garantem que as novas funcionalidades e correções de bugs cheguem rapidamente aos usuários, aumentando a satisfação do cliente e a competitividade da empresa. 
+Além disso, uma alta frequência de lançamentos reduz os riscos associados a grandes mudanças e facilita a identificação e resolução de problemas.
+
+
+## Benchmark
+| Elite          | Bom                     | Média               | Precisa de atenção  |
+| -------------- | ----------------------- | ------------------- | ------------------- |
+| Mais de  1 dia | Mínimo de um por semana | Mínimo de 1 por mês | Menos de por 1 mês  |   
+
+## Como utilizar o Deploy Frequency
+Monitorar a frequência de suas implantações e acompanhar aumentos ou diminuições pode ajudar a identificar certos problemas no seu sistema ou processo. Por exemplo, uma baixa frequência de implantação pode indicar o trabalho com grandes lotes ou sinalizar outros problemas, como infraestrutura de implantação deficiente ou falta de testes automatizados confiáveis.
