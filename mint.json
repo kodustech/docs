@@ -29,7 +29,17 @@
   "navigation": [
     {
       "group": "Começando",
-      "pages": ["concepts", "tools", "setup", "talk_with_kody"]
+      "pages": ["concepts", "tools", "setup"]
+    },
+    {
+      "group": "Sobre a Kody",
+      "pages": [
+        "tips/cockpit",
+        "tips/talk_with_kody",
+        "tips/shortcuts",
+        "tips/daily_tips",
+        "tips/kody_limitations"
+      ]
     },
     {
       "group": "Artefatos",
@@ -60,7 +70,9 @@
             "artifacts/team/work_item_skipping_WIP_columns",
             "artifacts/team/work_item_with_assigned_owner",
             "artifacts/team/work_item_with_clear_description",
-            "artifacts/team/work_items_stopped_in_waiting_columns"
+            "artifacts/team/work_items_stopped_in_waiting_columns",
+            "artifacts/team/pull_request_high_size",
+            "artifacts/team/long_code_review_time"
           ]
         }
       ]
@@ -68,7 +80,7 @@
     {
       "group": "Métricas",
       "pages": [
-        "metrics/metrics_concepts",
+        "metrics/concetps",
         {
           "group": "Fluxo",
           "pages": [
@@ -103,7 +115,11 @@
     },
     {
       "group": "Configurações",
-      "pages": ["settings/deployment_types", "settings/project_management_columns" , "settings/project_management_work_item"]
+      "pages": [
+        "settings/deployment_types",
+        "settings/project_management_columns",
+        "settings/project_management_work_item"
+      ]
     }
   ],
   "footerSocials": {
