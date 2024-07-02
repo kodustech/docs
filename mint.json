@@ -80,7 +80,7 @@
     {
       "group": "Métricas",
       "pages": [
-        "metrics/concetps",
+        "metrics/concepts",
         {
           "group": "Fluxo",
           "pages": [
@@ -118,7 +118,7 @@
       "pages": [
         "settings/deployment_types",
         "settings/project_management_columns",
-        "settings/project_management_work_item"
+        "settings/project_management_work_item_types"
       ]
     }
   ],
