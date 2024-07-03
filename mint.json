@@ -37,8 +37,7 @@
         "tips/cockpit",
         "tips/talk_with_kody",
         "tips/shortcuts",
-        "tips/daily_tips",
-        "tips/kody_limitations"
+        "tips/daily_tips"
       ]
     },
     {
@@ -80,7 +79,6 @@
     {
       "group": "Métricas",
       "pages": [
-        "metrics/concepts",
         {
           "group": "Fluxo",
           "pages": [
