@@ -44,9 +44,12 @@
       "group": "Sobre a Kody",
       "pages": [
         "tips/cockpit",
-        "tips/talk_with_kody",
-        "tips/shortcuts",
-        "tips/daily_tips"
+        "tips/best_practices",
+        {
+          "group": "Guias de bolso",
+          "pages": ["tips/daily_tips", "tips/guides/refinement"]
+        },
+        "tips/shortcuts"
       ]
     },
     {
