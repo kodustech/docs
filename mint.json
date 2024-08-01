@@ -47,7 +47,7 @@
         "tips/best_practices",
         {
           "group": "Guias de bolso",
-          "pages": ["tips/daily_tips", "tips/guides/refinement"]
+          "pages": ["tips/daily_tips", "tips/guides/refinement", "tips/guides/daily"]
         },
         "tips/shortcuts"
       ]
