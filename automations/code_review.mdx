@@ -1,0 +1,46 @@
+# Code Review Automatizado
+
+<Note>Atualmente, essa automação é suportada apenas pelo GitHub.</Note>
+
+## Como Funciona
+Toda vez que um membro do time abrir um pull request, a Kody fará o Code Review diretamente na ferramenta de comunicação.
+
+## Introdução ao FGPAT
+Para que a Kody possa realizar o Code Review automaticamente, é necessário gerar um Fine-Grained Personal Access Token (FGPAT) no GitHub. Este token permite que a Kody acesse os repositórios e realize análises de código de forma segura e controlada.
+
+## Liberando o FGPAT (Fine-Grained Personal Access Token)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LcmTybPdYHE?si=7dEhKeXQg2EZNoFu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Siga os passos abaixo para configurar o token corretamente:
+
+1. **Acesse o GitHub e vá para a tela de configuração do seu perfil**:
+    - [Clique aqui para acessar a tela de configurações do perfil](https://github.com/settings/profile).
+
+2. **Navegue até `Developer Settings`**:
+    - No menu lateral esquerdo, role para baixo até encontrar `Developer Settings`. Clique nesta opção.
+
+3. **Acesse `Personal Access Tokens`**:
+    - Ainda no menu lateral esquerdo, dentro de `Developer Settings`, selecione `Personal Access Tokens`.
+    - Em seguida, clique em [Fine-grained Tokens](https://github.com/settings/tokens?type=beta).
+
+4. **Gere um novo token**:
+    - Clique no botão `Generate new token`.
+
+5. **Configure o novo token com as seguintes especificações**:
+    - **Nome do Token**: Escolha um nome fácil de identificar, como `kody_code_review`.
+    - **Data de Expiração**: Se possível, selecione uma data de expiração longa, de no mínimo 180 dias.
+    - **Acesso ao Repositório**: Selecione **All repositories** para permitir que o token tenha acesso a todos os repositórios.
+    - **Permissões**: Configure as permissões conforme abaixo, todas com acesso de leitura (Read-only):
+        - **Contents**: Permissão de leitura.
+        - **Metadata**: Permissão de leitura.
+        - **Pull requests**: Permissão de leitura.
+        - **Webhooks**: Permissão de leitura.
+
+6. **Finalize e salve o token**:
+    - Após configurar todas as permissões, clique em `Generate token`.
+    - Certifique-se de copiar o token gerado e armazená-lo em um local seguro, pois você precisará dele para configurar a Kody.
+
+## Inserindo o Token na Kody
+
+Após gerar o token, cole na tela de configuração da automação. A modal vai abrir automaticamente assim que você tentar ligar a automação.

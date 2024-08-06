@@ -117,12 +117,18 @@
       ]
     },
     {
-      "group": "Checkins",
+      "group": "Automações",
       "pages": [
-        "checkins/checkin_concepts",
-        "checkins/daily",
-        "checkins/weekly",
-        "checkins/sprint_retro"
+        {
+          "group": "Checkins",
+          "pages": [
+            "automations/checkins/checkin_concepts",
+            "automations/checkins/daily",
+            "automations/checkins/weekly",
+            "automations/checkins/sprint_retro"
+          ]
+        },
+        "automations/code_review"
       ]
     },
     {
