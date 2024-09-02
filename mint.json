@@ -123,23 +123,8 @@
     {
       "group": "Automações",
       "pages": [
-        {
-          "group": "Checkins",
-          "pages": [
-            "automations/checkins/checkin_concepts",
-            "automations/checkins/daily",
-            "automations/checkins/weekly",
-            "automations/checkins/sprint_retro"
-          ]
-        },
+        "automations/checkin_concepts",
         "automations/code_review"
-      ]
-    },
-    {
-      "group": "Ferramentas",
-      "pages": [
-        "tools/forecast",
-        "tools/write_work_item_description"
       ]
     },
     {
