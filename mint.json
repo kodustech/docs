@@ -7,7 +7,7 @@
     "href": "https://kodus.io"
   },
   "theme": "prism",
-  "favicon": "/favicon.ico",
+  "favicon": "/favicon.svg",
   "colors": {
     "primary": "#F59220",
     "light": "#F59220",
