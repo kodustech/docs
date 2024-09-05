@@ -6,6 +6,149 @@ title: "Code Review Automatizado"
 
 Toda vez que um membro do time abrir um pull request, a Kody realizará o Code Review diretamente na ferramenta de gestão de código, como GitHub ou Gitlab. A Kody analisará o código, fornecerá feedback detalhado e destacará possíveis problemas, da mesma forma que um revisor humano faria. Isso ajuda a garantir a qualidade do código e a acelerar o processo de revisão.
 
+## Configurações de Code Review
+
+Você pode configurar o Code Review para que a Kody analise o código de acordo com as necessidades do seu time.
+
+![code-review-config](https://kodus.io/wp-content/uploads/2024/09/config_code_review.gif)
+
+### Tipos de análise
+
+Selecione o tipo de análise que a Kody deverá realizar. Dentre elas:
+
+**Desempenho e otimização**: Melhorias na eficiência, desempenho e uso de recursos do código.
+
+```javascript
+// Código original
+let result = [];
+for (let i = 0; i < items.length; i++) {
+    result.push(items[i] * 2);
+}
+
+// Código otimizado usando map (mais eficiente e legível)
+const result = items.map(item => item * 2);
+
+```
+
+**Segurança**: Correção de vulnerabilidades ou melhorias na segurança do código.
+
+```javascript
+// Código original
+function getUserData(username) {
+    return db.query(`SELECT * FROM users WHERE username = '${username}'`);
+}
+
+// Código com melhoria de segurança (usando prepared statements)
+function getUserData(username) {
+    return db.query('SELECT * FROM users WHERE username = ?', [username]);
+}
+```
+
+**Tratamento de erros**: Aprimoramento na forma como erros e exceções são tratados.
+```javascript
+// Código original
+const data = JSON.parse(input);
+
+// Código melhorado com tratamento de erros
+try {
+    const data = JSON.parse(input);
+} catch (error) {
+    console.error('Erro ao fazer o parsing do JSON:', error);
+}
+```
+
+**Refatoração**: Reestruturação do código para melhor legibilidade, manutenibilidade ou modularidade.
+```javascript
+// Código original
+function calculateDiscount(price, discount) {
+    if (discount) {
+        return price - (price * discount / 100);
+    } else {
+        return price;
+    }
+}
+
+// Código refatorado para reduzir a duplicação de lógica
+function calculateDiscount(price, discount = 0) {
+    return price - (price * discount / 100);
+}
+```
+
+**Manutenibilidade**: Facilitação da manutenção e extensão futura do código.
+```javascript
+// Código original
+function processOrder(order) {
+    // processamento de pedidos
+}
+
+// Código refatorado com modularidade para fácil manutenção
+function validateOrder(order) {
+    // validação de pedidos
+}
+
+function calculateTotal(order) {
+    // cálculo de total
+}
+
+function processOrder(order) {
+    validateOrder(order);
+    calculateTotal(order);
+    // mais lógica de processamento
+}
+```
+**Possível problema**: Correção de possíveis bugs ou erros lógicos.
+
+```javascript
+// Código original
+const total = items.length > 0 ? items.reduce((a, b) => a + b) : 0;
+
+// Código melhorado para evitar erro quando `items` for vazio
+const total = items.length > 0 ? items.reduce((a, b) => a + b, 0) : 0;
+```
+
+**Estilo de código**: Melhoria na consistência e aderência aos padrões de codificação.
+
+```javascript
+// Código original
+function sayHello(){
+    console.log("Hello, world!")
+}
+
+// Código melhorado para aderir aos padrões de estilo (ESLint)
+function sayHello() {
+    console.log('Hello, world!');
+}
+```
+
+**Docimentação e comentários**: Aproramento da documentação e clareza dos comentários.
+```javascript
+// Código original sem comentários
+function addUser(user) {
+    db.insert(user);
+}
+
+// Código melhorado com documentação
+/**
+ * Adiciona um novo usuário ao banco de dados.
+ * @param {Object} user - O objeto do usuário a ser adicionado.
+ */
+function addUser(user) {
+    db.insert(user);
+}
+```
+
+### Arquivos ignorados
+Liste todos os arquivos que a Kody deve ignorar durante o Code Review.
+
+### Limite de sugestões
+Limite a quantiade de sugestões que a Kody deve realizar por arquivo alterado em um Pull Request.
+
+### Ignorar palavras-chave do título do PR
+Liste palavras-chave que são usadas no título de um Pull Request que a Kody deve ignorar.
+
+### Branches base
+Por padrão a Kody faz Code Review em todos os PRs para branches base (main, master, etc). Liste as branches que a Kody deve fazer além do base.
+
 <Tabs>
   <Tab title="Configurando no Github">
     ## Introdução ao FGPAT
@@ -90,22 +233,22 @@ Siga os passos abaixo para configurar o token corretamente:
 
    - No menu lateral esquerdo, role até encontrar `Access Tokens`. Clique nesta opção.
 
-4. **Adicione um novo token**:
+3. **Adicione um novo token**:
 
    - Clique no botão `Add new token`.
 
-5. **Configure o novo token com as seguintes especificações**:
+4. **Configure o novo token com as seguintes especificações**:
 
    - **Nome do Token**: Escolha um nome fácil de identificar, como `kody_code_review`.
    - **Data de Expiração**: Se possível, selecione uma data de expiração longa, de no mínimo 180 dias.
    - **Permissões**: Configure as permissões conforme abaixo:
-      - **api**: Permissão de leitura.
-      - **read_api**: Permissão de leitura.
-      - **read_user**: Permissão de leitura.
-      - **read_repository**: Permissão de leitura.
-      - **write_repository**: Permissão de leitura.
+     - **api**: Permissão de leitura.
+     - **read_api**: Permissão de leitura.
+     - **read_user**: Permissão de leitura.
+     - **read_repository**: Permissão de leitura.
+     - **write_repository**: Permissão de leitura.
 
-6. **Finalize e salve o token**:
+5. **Finalize e salve o token**:
    - Após configurar todas as permissões, clique em `Generate token`.
    - Certifique-se de copiar o token gerado e armazená-lo em um local seguro, pois você precisará dele para configurar a Kody.
 

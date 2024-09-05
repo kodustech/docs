@@ -17,6 +17,15 @@
       "to": "#141217"
     }
   },
+  "tabs": [
+    {
+      "name": "Guias",
+      "url": "guides"
+    }
+  ],
+  "primaryTab": {
+    "name": "Documentação"
+  },
   "analytics": {
     "ga4": {
       "measurementId": "G-ZQTM352G3Y"
@@ -39,27 +48,26 @@
     {
       "group": "Começando",
       "pages": [
+        "overview",
         "concepts",
         "tools",
         "setup"
       ]
     },
     {
-      "group": "Sobre a Kody",
+      "group": "Começando",
       "pages": [
-        "tips/cockpit",
-        "tips/best_practices",
-        {
-          "group": "Guias de bolso",
-          "pages": [
-            "tips/daily_tips",
-            "tips/guides/refinement",
-            "tips/guides/daily",
-            "tips/guides/retro",
-            "tips/guides/feedback"
-          ]
-        },
-        "tips/shortcuts"
+        "guides/first_insights",
+        "guides/first_automations"
+      ]
+    },
+    {
+      "group": "Conversando com a Kody",
+      "pages": [
+        "guides/refinement",
+        "guides/daily",
+        "guides/retro",
+        "guides/feedback"
       ]
     },
     {
