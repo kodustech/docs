@@ -17,15 +17,6 @@
       "to": "#141217"
     }
   },
-  "tabs": [
-    {
-      "name": "Guias",
-      "url": "guides"
-    }
-  ],
-  "primaryTab": {
-    "name": "Documentação"
-  },
   "analytics": {
     "ga4": {
       "measurementId": "G-ZQTM352G3Y"
@@ -34,119 +25,83 @@
       "apiKey": "phc_eXdASBHYhvHzYCLktmceTdRKmF3jMLnrH4iCXXUGjJI"
     }
   },
-  "topbarLinks": [
-    {
-      "name": "Suporte",
-      "url": "mailto:help@kodus.io"
-    }
-  ],
+  "topbarLinks": [],
   "topbarCtaButton": {
-    "name": "Contrate a Kody",
+    "name": "Get Started",
     "url": "https://kodus.io/"
   },
+  "anchors": [
+    {
+      "name": "Community",
+      "url": "https://discord.gg/4NnmZXxZ",
+      "icon": "discord"
+    },
+    {
+      "name": "Blog",
+      "url": "https://kodus.io/insights",
+      "icon": "newspaper"
+    }
+  ],
   "navigation": [
     {
-      "group": "Começando",
+      "group": "Getting Started",
       "pages": [
         "overview",
         "concepts",
-        "tools",
-        "setup"
+        "quickstart",
+        "tools"
       ]
     },
     {
-      "group": "Começando",
+      "group": "Interacting with Kody",
       "pages": [
-        "guides/first_insights",
-        "guides/first_automations"
+        "kody/how_to_use",
+        "kody/best_practices",
+        "kody/suggested_questions",
+        "kody/capabilities"
       ]
     },
     {
-      "group": "Conversando com a Kody",
+      "group": "AI Workflows",
       "pages": [
-        "guides/refinement",
-        "guides/daily",
-        "guides/retro",
-        "guides/feedback"
+        "automations/code_review",
+        "automations/checkin_concepts"
       ]
     },
     {
-      "group": "Artefatos",
+      "group": "Cockpit",
       "pages": [
-        "artifacts/artifacts_concepts",
+        "cockpit/artifacts/artifacts_concepts",
         {
-          "group": "Nível de organização",
+          "group": "Flow Metrics",
           "pages": [
-            "artifacts/system/duplicate_effort_warning",
-            "artifacts/system/flow_quality_decline",
-            "artifacts/system/quality_drop_signal",
-            "artifacts/system/speed_drop_alert",
-            "artifacts/system/team_delivery_at_risk",
-            "artifacts/system/throughput_variability_alert"
+            "cockpit/metrics/flow/lead_time",
+            "cockpit/metrics/flow/throughput",
+            "cockpit/metrics/flow/bug_ratio"
           ]
         },
         {
-          "group": "Nível de time",
+          "group": "Dora Metrics",
           "pages": [
-            "artifacts/team/without_waiting_columns",
-            "artifacts/team/blocked_time",
-            "artifacts/team/bug_ratio",
-            "artifacts/team/lead_time_in_waiting_columns",
-            "artifacts/team/new_bugs",
-            "artifacts/team/post_start_sprint_inclusions",
-            "artifacts/team/sprint_spillover",
-            "artifacts/team/wip_limit",
-            "artifacts/team/work_item_skipping_WIP_columns",
-            "artifacts/team/work_item_with_assigned_owner",
-            "artifacts/team/work_item_with_clear_description",
-            "artifacts/team/work_items_stopped_in_waiting_columns",
-            "artifacts/team/pull_request_high_size",
-            "artifacts/team/long_code_review_time"
+            "cockpit/metrics/dora/lead_time_for_changes",
+            "cockpit/metrics/dora/deploy_frequency",
+            "cockpit/metrics/dora/change_failure_rate",
+            "cockpit/metrics/dora/mean_time_to_recovery"
           ]
         }
       ]
     },
     {
-      "group": "Métricas",
-      "pages": [
-        {
-          "group": "Fluxo",
-          "pages": [
-            "metrics/flow/lead_time",
-            "metrics/flow/throughput",
-            "metrics/flow/bug_ratio"
-          ]
-        },
-        {
-          "group": "Dora",
-          "pages": [
-            "metrics/dora/lead_time_for_changes",
-            "metrics/dora/deploy_frequency",
-            "metrics/dora/change_failure_rate",
-            "metrics/dora/mean_time_to_recovery"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Automações",
-      "pages": [
-        "automations/checkin_concepts",
-        "automations/code_review"
-      ]
-    },
-    {
-      "group": "Configurações",
-      "pages": [
-        "settings/deployment_types",
-        "settings/project_management_columns",
-        "settings/project_management_work_item_types"
-      ]
-    },
-    {
-      "group": "Segurança",
+      "group": "Security",
       "pages": [
         "security/data_usage"
+      ]
+    },
+    {
+      "group": "Configs",
+      "pages": [
+        "config/github_pat",
+        "config/gitlab_pat"
       ]
     }
   ],

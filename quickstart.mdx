@@ -1,0 +1,58 @@
+---
+title: "Getting Started"
+---
+
+Welcome! Follow the steps below to get started with our AI Assistant – Kody.
+
+<Steps>
+  <Step title="Create an Account">
+    Sign up by entering your name, email, and password.
+  </Step>
+
+  <Step title="Configure a Code Management Tool">
+    <AccordionGroup>
+        <Accordion title="Set Up GitHub" icon="github">
+            You can connect GitHub either via OAuth or token:
+              - To use OAuth, click the "via OAuth" button. You’ll be redirected to GitHub's authentication page.
+                - Make sure you have `owner` permissions for your organization;
+                - Grant access to all the repositories you want Kody to access (you can select them again if needed).
+              - To connect via token, <a href="/config/github_pat">visit the GitHub Token Setup page for more integration details.</a>
+        </Accordion>
+
+        <Accordion title="Set Up GitLab" icon="gitlab">
+            You can connect GitLab either via OAuth or token:
+              - To use OAuth, click the "via OAuth" button, and you’ll be redirected to GitLab's authentication page;
+                - Grant access to all the repositories you want Kody to access (you can select them again if needed).
+              - To connect via token, <a href="/config/gitlab_pat"> visit the GitLab Token Setup page for more integration details.</a>
+        </Accordion>
+
+        <Accordion title="Set Up Azure Git" icon="microsoft">
+            Currently, only OAuth integration is available for Azure Git. To connect, click the "via OAuth" button, and you’ll be redirected to the Microsoft login page.
+        </Accordion>
+    </AccordionGroup>
+
+  </Step>
+
+<Step title="Select Repositories">
+  Choose all the repositories that you want your team to have access to.
+</Step>
+
+<Step title="Choose Kody's First Task">
+    Select the first task to see Kody in action. You can choose from the following:
+    <AccordionGroup>
+        <Accordion title="Code Review for the Latest PR" icon="magnifying-glass">
+            Kody will review the most recent Pull Request, analyzing the code for potential improvements, adherence to best practices, and any issues that may impact performance or security. You'll receive actionable feedback to enhance the quality and maintainability of your code.
+        </Accordion>
+
+        <Accordion title="Generate Unit Tests for the Latest PR" icon="vials">
+            Kody will automatically create unit tests for the latest Pull Request, focusing on covering core functionalities and edge cases. This helps ensure code reliability and reduces the likelihood of future bugs, saving time and enhancing test coverage.
+        </Accordion>
+
+        <Accordion title="Create Documentation for the Latest PR" icon="book">
+            Kody will generate or update documentation based on the latest Pull Request, providing explanations for new features, code structure, and intended use cases. This keeps your documentation aligned with recent changes and supports knowledge sharing within the team.
+        </Accordion>
+    </AccordionGroup>
+
+</Step>
+
+</Steps>

@@ -1,0 +1,29 @@
+---
+title: "Lead Time For Changes"
+description: "Time from the first commit to production deployment"
+---
+
+<img src="https://kodus.io/wp-content/uploads/2024/05/Design-Group-149.png" />
+
+## How We Calculate It
+
+Using your source code management tool, we retrieve all deployments within a specified period and identify the first commit for each deployment. From this, we calculate the time from the first commit to deployment.
+
+<Info>
+  For Lead Time For Changes to work, you need to configure how we identify your
+  team’s deployments in the settings.
+</Info>
+
+## Why It Matters
+
+Lead Time for Changes indicates how quickly you can deliver new features to production. A high lead time can signal large batch sizes, lengthy code reviews/QA, or extended CI/CD wait times.
+
+## Benchmark
+
+| Elite           | Good                 | Average                    | Needs Attention   |
+| --------------- | -------------------- | -------------------------- | ----------------- |
+| Less than 1 day | Between 1 and 7 days | Between 7 days and 1 month | More than 1 month |
+
+## How to Use Lead Time For Changes
+
+Measure Lead Time for Changes alongside other deployment and DORA metrics to ensure a healthy balance between speed and stability in your delivery process.
