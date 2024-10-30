@@ -64,6 +64,7 @@
     {
       "group": "AI Workflows",
       "pages": [
+        "automations/ai_workflows",
         "automations/code_review",
         "automations/checkin_concepts"
       ]
