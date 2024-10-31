@@ -78,7 +78,9 @@
           "pages": [
             "cockpit/metrics/flow/lead_time",
             "cockpit/metrics/flow/throughput",
-            "cockpit/metrics/flow/bug_ratio"
+            "cockpit/metrics/flow/bug_ratio",
+            "cockpit/metrics/flow/delivery_capacity",
+            "cockpit/metrics/flow/flow_efficiency"
           ]
         },
         {
