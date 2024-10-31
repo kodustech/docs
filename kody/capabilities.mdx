@@ -15,6 +15,14 @@ For example:
 - **CodeReviewer** provides detailed feedback on code quality.
 - **TeamCoach** checks in on team health and productivity.
 
+<Note>
+  **Agents are currently in an experimental phase** and not yet available to all
+  users. For now, Kody operates through the **GenericAgent**, which has access
+  to all tools described below. This allows Kody to perform tasks similar to
+  each specialized agent, such as conducting a code review or generating
+  documentation, by leveraging the power of the available tools.
+</Note>
+
 ### What are Tools?
 
 **Tools** are the gears that make Kody work. These are the functions that power each agent—connecting to your codebase, fetching data, analyzing it, and responding to your requests. Think of tools as the invisible hands that pull in the data, check statuses, and get answers, so you can focus on building, not digging for details.
@@ -25,37 +33,37 @@ If agents are the specialists, tools are the operations behind the scenes.
 
 ## Agents
 
-### TeamCoach
+### TeamCoach (Coming Soon)
 
 Keeps your team sharp with real-time insights on productivity, workflows, and blockers. TeamCoach also guides on agile practices and sprint planning to keep things moving smoothly.
 
-### CodeBuddy
+### CodeBuddy (Coming Soon)
 
 Your go-to pair programmer. CodeBuddy helps debug, suggests optimizations, and guides you through complex code, making coding feel collaborative and efficient.
 
-### CodeReviewer
+### CodeReviewer (Coming Soon)
 
-Gives in-depth feedback on code quality, style, and potential issues to keep your codebase clean, secure, and scalable. CodeReviewer highlights improvements, just like a senior dev reviewing your PRs.
+Gives in-depth feedback on code quality, style, potential security risks, and other issues to keep your codebase clean, secure, and scalable. CodeReviewer highlights improvements just like a senior dev reviewing your PRs.
 
-### DocHelper
+### DocHelper (Coming Soon)
 
 Handles all things documentation. DocHelper helps you create, update, and organize documentation to keep your project info accessible and consistent.
 
-### TestHelper
+### TestHelper (Coming Soon)
 
 Generates unit and integration tests automatically, making sure your code is reliable and covered, saving time on manual test writing.
 
-### ReleaseHelper
+### ReleaseHelper (Coming Soon)
 
 Smooths out the release process with well-organized notes, dependency checks, and code readiness verification, making sure your releases go out seamlessly.
 
-### DataAnalyst
+### DataAnalyst (Coming Soon)
 
 Digs into metrics and data to bring you actionable insights on trends, team performance, and project status. DataAnalyst turns numbers into meaningful advice.
 
 ### GenericAgent
 
-The fallback agent for general questions, ready to respond when you’re not sure which agent to ask.
+Currently, Kody operates primarily through the **GenericAgent**, which has access to all tools described below. While the specialized agents are in development, the GenericAgent can still handle a wide variety of tasks by using the available tools, achieving results similar to the planned agents. For example, you can request a code review, and the GenericAgent will analyze code quality, identify potential issues, and provide feedback based on best practices.
 
 ## Tools
 
@@ -65,7 +73,7 @@ Connects you to your codebase via language models, letting you ask questions, ge
 
 ### CodeReview
 
-Performs a structured review on code quality, efficiency, and best practices, making it easy to keep standards high.
+Performs a structured review on code quality, security, efficiency, and best practices, making it easy to keep standards high.
 
 ### GetPullRequestTool
 
@@ -97,7 +105,7 @@ Estimates delivery dates for tasks using data-backed probabilities (p50, p75, p9
 
 ### GetTeamMetrics
 
-Tracks team performance metrics like Throughput and Lead Time with real-time and historical comparisons for insights on productivity trends.
+Tracks team performance metrics like Throughput, Lead Time, and **DORA Metrics** (e.g., Deployment Frequency, Change Failure Rate), providing real-time and historical comparisons for insights on productivity trends.
 
 ### GetWorkItemsDeliveryStatus
 
