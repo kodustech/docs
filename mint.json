@@ -40,6 +40,11 @@
       "name": "Blog",
       "url": "https://kodus.io/insights",
       "icon": "newspaper"
+    },
+    {
+      "name": "Reach Out",
+      "url": "https://shor.by/kodus",
+      "icon": "headset"
     }
   ],
   "navigation": [
@@ -47,26 +52,30 @@
       "group": "Getting Started",
       "pages": [
         "overview",
-        "concepts",
         "quickstart",
-        "tools"
+        "pricing"
       ]
     },
     {
-      "group": "Interacting with Kody",
+      "group": "AI Code Review",
       "pages": [
-        "kody/how_to_use",
-        "kody/best_practices",
-        "kody/suggested_questions",
-        "kody/capabilities"
-      ]
-    },
-    {
-      "group": "AI Workflows",
-      "pages": [
-        "automations/ai_workflows",
-        "automations/code_review",
-        "automations/checkin_concepts"
+        "automations/code_review/concepts",
+        {
+          "group": "Advanced Configs",
+          "pages": [
+            "automations/code_review/configs/kody_rules",
+            "automations/code_review/configs/path_instructions",
+            "automations/code_review/configs/pr_summary"
+          ]
+        },
+        {
+          "group": "Tokens",
+          "pages": [
+            "general_config/github_pat",
+            "general_config/gitlab_pat"
+          ]
+        },
+        "automations/code_review/troubleshooting"
       ]
     },
     {
@@ -95,16 +104,16 @@
       ]
     },
     {
-      "group": "Security",
+      "group": "Interacting with Kody",
       "pages": [
-        "security/data_usage"
+        "kody/how_to_use",
+        "kody/best_practices"
       ]
     },
     {
-      "group": "Configs",
+      "group": "Security",
       "pages": [
-        "config/github_pat",
-        "config/gitlab_pat"
+        "security/data_usage"
       ]
     }
   ],

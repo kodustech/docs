@@ -1,0 +1,88 @@
+---
+title: "Concepts"
+---
+
+## How It Works
+
+Whenever a team member opens a pull request, Kody performs a Code Review directly in your code management tool, such as GitHub or GitLab. Kody analyzes the code, provides detailed feedback, and highlights potential issues, just as a human reviewer would. This ensures code quality and speeds up the review process.
+
+Additionally, you can use the command `@kody start-review` directly in Git to have Kody initiate a code review on any pull request. This command bypasses branch and naming configurations, so Kody will review any PR where the command is used.
+
+## Code Review Settings
+
+Customize Kody’s Code Review to align with your team’s specific needs.
+
+### Automatic Review
+
+Choose whether you want reviews to trigger automatically or only when you issue the command `@kody start-review` in a pull request.
+
+### Types of Analysis
+
+Select the types of analysis you’d like Kody to perform. Options include:
+
+- **Performance Optimization**: Identifies improvements for code efficiency, performance, and resource usage.
+
+  ```javascript
+  // Original code
+  let result = [];
+  for (let i = 0; i < items.length; i++) {
+    result.push(items[i] * 2);
+  }
+
+  // Optimized code using map (more efficient and readable)
+  const result = items.map((item) => item * 2);
+  ```
+
+- **Security**: Detects vulnerabilities and improves code security.
+
+  ```javascript
+  // Original code
+  function getUserData(username) {
+    return db.query(`SELECT * FROM users WHERE username = '${username}'`);
+  }
+
+  // Improved code with enhanced security (using prepared statements)
+  function getUserData(username) {
+    return db.query("SELECT * FROM users WHERE username = ?", [username]);
+  }
+  ```
+
+- **Error Handling**: Enhances how errors and exceptions are managed.
+
+  ```javascript
+  // Original code
+  const data = JSON.parse(input);
+
+  // Improved code with error handling
+  try {
+    const data = JSON.parse(input);
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+  ```
+
+- **Refactoring**: Restructures code to improve readability, maintainability, or modularity.
+
+  ```javascript
+  // Original code
+  function calculateDiscount(price, discount) {
+    if (discount) {
+      return price - (price * discount) / 100;
+    } else {
+      return price;
+    }
+  }
+
+  // Refactored code to reduce duplicated logic
+  function calculateDiscount(price, discount = 0) {
+    return price - (price * discount) / 100;
+  }
+  ```
+
+- **Maintainability**: Enhances code to simplify future maintenance and extension.
+
+  ```javascript
+  // Original code
+  function processOrder(order) {
+    // order proce
+  ```

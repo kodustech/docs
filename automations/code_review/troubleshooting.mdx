@@ -1,0 +1,25 @@
+---
+title: "Troubleshooting"
+---
+
+Having trouble with Kody's code review feature? This guide will help you quickly identify and resolve common issues.
+
+## Kody Code Review Not Working? Here's What to Do
+
+### Token Issues
+
+If you're connected via a token, you might encounter some common issues:
+
+- **GitHub Users**: Ensure your token is enabled for your organization, not just your user settings. [Check permissions](https://localhost:3000/general_config/github_pat#check-fine-grained-access-permissions).
+- **Personal Access Token (PAT)**: Verify it's set for your organization and has the necessary permissions. [Manage tokens](https://github.com/settings/tokens?type=beta).
+- **Token Expiry**: Confirm your token is active. [Check token status](https://github.com/settings/tokens?type=beta).
+
+![title](/images/token.png)
+Your token should look like this, with your organization's photo. If your personal photo appears, it means your token is set to personal access.
+
+### Configuration Issues
+
+- **Automated Reviews**: Ensure they're enabled in [your settings](https://app.kodus.io/automations/AutomationCodeReview/global/general). Otherwise, start reviews manually with `@kody start-review`.
+- **Review Types**: Select at least one type for Kody to suggest. [Configure here](https://app.kodus.io/automations/AutomationCodeReview/global/general).
+- **Branch Reviews**: By default, Kody reviews PRs merged into the default branch. To include other branches, [configure here](https://app.kodus.io/automations/AutomationCodeReview/global/general).
+- **Large PRs**: Note that PRs with many changes may take longer to process.

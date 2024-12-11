@@ -1,0 +1,20 @@
+---
+title: "Path Instructions"
+---
+
+Path-specific instructions allow you to set additional, file-specific code review conditions based on file paths. These guide Kody’s code review automation to apply specific guidelines only where they’re most relevant.
+
+**Examples**:
+
+- **Special Rules for Certain Files or Directories**:
+
+  - Projects often contain files or folders that require particular attention due to sensitivity or complexity, such as configuration files, deployment scripts, or security-related code.
+  - **Example**: For files in `config/`, ensure they follow strict security checks to prevent hardcoded sensitive information.
+
+- **Code Review Customization**:
+
+  - Tailor review practices for different code areas, ensuring specific guidelines are followed in relevant sections.
+  - **Example**: In the `api/` directory, emphasize input validation and error handling.
+
+- **Enhancing Code Quality**:
+  - **Example**: In UI-related files, focus on accessibility and responsiveness best practices.
