@@ -9,8 +9,25 @@ Whenever a team member opens a pull request, Kody performs a Code Review directl
 Additionally, you can use the command `@kody start-review` directly in Git to have Kody initiate a code review on any pull request. This command bypasses branch and naming configurations, so Kody will review any PR where the command is used.
 
 ## Code Review Settings
-
 Customize Kody’s Code Review to align with your team’s specific needs.
+
+### Configuration Hierarchy
+Kody allows you to configure settings at two levels: Global and Repository-specific. Here's how the hierarchy works:
+
+#### Global Settings
+Global settings apply to all repositories by default. If no repository-specific configuration is set, the global configuration will be used for that repository. This is a great way to establish a baseline for all your projects.
+
+#### Repository-specific Settings
+If you configure settings for a specific repository, those settings will override the global configuration for that repository. This allows for tailored configurations based on the needs of individual repositories.
+
+#### How It Works
+* No repository-specific configuration: The global settings will apply.
+* Repository-specific configuration exists: The settings for that repository will take precedence over the global settings.
+
+#### Example Use Case
+* You enable Automated Code Review globally and configure global analysis types like Security and Refactoring.
+* For a specific repository (e.g., kodus-service-slack), you decide to disable Automated Code Review or enable additional analysis types like Error Handling.
+* In this case, the configuration for kodus-service-slack will apply only to that repository, while all other repositories will follow the global settings.
 
 ### Automatic Review
 
