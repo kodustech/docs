@@ -86,27 +86,11 @@
         {
           "group": "Productivity",
           "pages": [
-            "cockpit/metrics/dora/lead_time_for_changes",
-            "cockpit/metrics/dora/deploy_frequency",
-            "cockpit/metrics/dora/change_failure_rate",
-            "cockpit/metrics/dora/mean_time_to_recovery"
-          ]
-        },
-        {
-          "group": "Quality",
-          "pages": [
-            "cockpit/metrics/dora/lead_time_for_changes",
-            "cockpit/metrics/dora/deploy_frequency",
-            "cockpit/metrics/dora/change_failure_rate"
+            "cockpit/productivity/lead_time_for_changes",
+            "cockpit/productivity/deploy_frequency",
+            "cockpit/productivity/change_failure_rate"
           ]
         }
-      ]
-    },
-    {
-      "group": "Interacting with Kody",
-      "pages": [
-        "kody/how_to_use",
-        "kody/best_practices"
       ]
     },
     {
