@@ -1,0 +1,38 @@
+---
+title: "Kody Rules"
+---
+
+Kody Rules are customizable guidelines your team sets up to automatically enforce code quality, consistency, security, and maintainability.
+
+## How to use Kody Rules
+
+You can use Kody Rules in two ways:
+
+### Create Custom Rules
+
+Define rules based on your team's exact needs:
+
+- Rule name: Clearly define the rule purpose.
+- File Paths: Limit rules to specific files or directories using glob patterns.
+- Severity: Set to Critical, High, Medium, or Low.
+- Detailed Instructions: Clearly state what's expected and why.
+
+**Example:**
+
+- Rule: "Avoid equality operators (==, !=) in loop termination conditions."
+- Path: src/\*_/_.ts
+- Severity: Critical
+- Instructions: "Using equality operators (== or !=) can cause infinite loops if exact values aren't matched.
+
+### Import from Rules Library
+
+Leverage proven best practices instantly:
+
+- Navigate to Discovery Rules in your Kodus dashboard.
+- Filter rules by severity, language, or tags.
+- Import and activate rules with a single click.
+
+**Examples:**
+
+- Security: "Disallow use of insecure MD5 hashing."
+- Maintainability: "Limit React components to less than 150 lines."

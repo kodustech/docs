@@ -59,14 +59,14 @@
     {
       "group": "AI Code Review",
       "pages": [
-        "automations/code_review/concepts",
+        "code_review/concepts",
         {
           "group": "Advanced Configs",
           "pages": [
-            "automations/code_review/configs/general",
-            "automations/code_review/configs/suggestion_control",
-            "automations/code_review/configs/pr_summary",
-            "automations/code_review/configs/kody_rules"
+            "code_review/configs/general",
+            "code_review/configs/suggestion_control",
+            "code_review/configs/pr_summary",
+            "code_review/configs/kody_rules"
           ]
         },
         {
@@ -77,7 +77,7 @@
             "general_config/bitbucket_pat"
           ]
         },
-        "automations/code_review/troubleshooting"
+        "code_review/troubleshooting"
       ]
     },
     {

@@ -1,0 +1,27 @@
+---
+title: "Concepts"
+---
+
+## How It Works
+
+Whenever a team member opens a pull request, Kody performs a Code Review directly in your code management tool, such as GitHub or GitLab. Kody analyzes the code, provides detailed feedback, and highlights potential issues, just as a human reviewer would. This ensures code quality and speeds up the review process.
+
+Additionally, you can use the command `@kody start-review` directly in Git to have Kody initiate a code review on any pull request. This command bypasses branch and naming configurations, so Kody will review any PR where the command is used.
+
+### Severity Levels
+
+#### Low Level
+
+Minor enhancements that would improve code quality. These represent small optimizations, style improvements, or subtle refinements that would incrementally better the codebase.
+
+#### Medium Level
+
+Moderate improvements recommended but not immediately critical. These suggestions focus on enhancing code quality, following best practices, and preventing future technical debt.
+
+#### High Level
+
+Significant issues that should be addressed in the near term. These represent important improvements needed in code quality, potential risks, or substantial technical improvements that would notably enhance the codebase.
+
+#### Critical Level
+
+Issues that require immediate attention and could severely impact system stability, security, or functionality. These problems typically represent high-risk scenarios that could lead to system failures, vulnerabilities, or significant technical debt.

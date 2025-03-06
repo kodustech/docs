@@ -1,0 +1,144 @@
+---
+title: "General"
+---
+
+## Core Settings
+
+### Global vs Per-Repo Config
+- Global: Default rules for all repos
+- Per-Repo: Override rules for specific repos
+
+### Config Priority
+`kodus-config.yml` in your repo overrides web settings when enabled.
+
+<Accordion title="Sample kodus-config.yml">
+```yaml
+version: '1.2'
+summary:
+  generatePRSummary: true
+  customInstructions: ''
+  behaviourForExistingDescription: concatenate
+ignorePaths:
+  - yarn.lock
+  - package-lock.json
+  - package.json
+  - .env
+baseBranches: []
+reviewOptions:
+  security: true
+  code_style: true
+  kody_rules: true
+  refactoring: true
+  error_handling: true
+  maintainability: true
+  potential_issues: true
+  documentation_and_comments: true
+  performance_and_optimization: true
+suggestionControl:
+  groupingMode: full
+  limitationType: pr
+  maxSuggestions: 9
+  severityLevelFilter: medium
+ignoredTitleKeywords: []
+automatedReviewActive: true
+pullRequestApprovalActive: false
+isRequestChangesActive: false
+```
+</Accordion>
+
+Note: Kody Rules only configurable via web interface.
+
+### Base Branches
+Additional branches to review besides default (dev, release, master)
+
+## Review Behavior
+
+### Automated Review
+- On: Reviews PRs automatically when opened
+- Off: Reviews only with `@kody start-review`
+
+### PR Workflow
+#### Auto-approve PRs
+When enabled, Kody automatically approves PRs with no issues found.
+
+When to use:
+- Small, low-risk changes (like docs or tests)
+- Teams with high trust and good test coverage
+- Projects with strong CI/CD pipelines
+
+Platform support:
+- ✅ GitHub: Shows as approved review
+- ✅ GitLab: Sets as approved
+- ✅ Bitbucket: Adds approval
+
+#### Request Changes
+When enabled, Kody requests changes when finding **critical issues.**
+
+When to use:
+- Enforcing security standards
+- Preventing performance issues
+- Maintaining code quality gates
+
+Platform support:
+- ✅ GitHub: Shows as "Changes Requested" review
+- ❌ GitLab: Not available yet
+- ✅ Bitbucket: Adds needs work status
+
+### Skip Conditions
+- Ignored Files: Use glob patterns (e.g., `**/*.js`), one per line
+- Ignored Titles: Skip PRs with specific keywords (case-insensitive, max 100 chars)
+
+## Analysis Types
+
+### Code Quality
+- Security: SQL injection, XSS, security threats
+- Performance: Caching, query optimization, speed improvements
+- Error Handling: Exception management, error messages
+- Potential Issues: Null pointers, resource leaks, infinite loops
+
+### Code Structure
+- Refactoring: Code organization, function size, duplication
+- Maintainability: Future-proof code patterns
+- Code Style: Consistent formatting and standards
+- Documentation: Clear comments and API docs
+- Kody Rules: Custom rule enforcement
+
+## Automated Code Review
+
+If active, Kody will auto-review PRs when opened. If not, Kody only will trigger with `@kody start-review`.
+
+## PR Workflow
+
+### Auto-approve PRs when no issues found
+
+When active, Kody will auto-approve PRs when no issues are found.
+
+### Request Changes when critical issues detected
+
+When active, Kody will request changes when critical issues are detected.
+
+## Analysis Types
+
+- **Security**: Detects and prevents vulnerabilities in the code. For example, it can identify and suggest fixes for SQL injection, XSS, and other security threats.
+- **Performance**: Optimizes the code for speed and efficiency. For example, it can suggest using caching, reducing database queries, and optimizing loops.
+- **Error Handling**: Improves the way the code handles exceptions. For example, it can suggest using try-catch blocks, logging errors, and providing meaningful error messages.
+- **Refactoring**: Enhances the structure of the code. For example, it can suggest breaking down large functions into smaller ones, removing duplicate code, and improving naming conventions.
+- **Maintainability**: Ensures the code is easy to maintain and understand. For example, it can suggest adding comments, following coding standards, and using design patterns.
+- **Code Style**: Enforces consistent coding standards. For example, it can suggest using a consistent indentation style, following naming conventions, and using a consistent variable declaration style.
+- **Documentation**: Encourages clear and meaningful comments. For example, it can suggest adding comments to explain complex code, documenting public APIs, and providing examples of usage.
+- **Kody Rules**: Allows for the enforcement of custom rules. For example, it can be configured to enforce specific coding standards, naming conventions, or architectural rules.
+- **Potential Issues**: Helps prevent bugs and issues. For example, it can detect and suggest fixes for potential null pointer exceptions, resource leaks, and infinite loops.
+
+## Ignored Files
+
+Skip specific files from review:
+
+- Use glob patterns (e.g., `**/*.js`)
+- One pattern per line
+- Default ignores: `yarn.lock`, `package-lock.json`, `package.json`, `.env`
+
+## Ignore Title Keywords
+
+Skip review for PRs with specific titles (case-insensitive, max 100 chars per keyword)
+
+## Base Branches
