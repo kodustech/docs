@@ -1,0 +1,61 @@
+---
+title: "Bitbucket PAT Token"
+---
+
+## Introduction to the PAT
+
+To enable Kody to perform automatic Code Reviews, you need to generate a Personal Access Token (PAT) in Bitbucket. This token allows Kody to securely access your repositories and conduct code analysis in a controlled way.
+
+## Generating the PAT (Personal Access Token)
+
+You can access the App Passwords settings directly using this link: [Bitbucket App Passwords](https://bitbucket.org/account/settings/app-passwords/).
+
+Follow these steps to set up the token correctly:
+
+1. **Access Bitbucket and go to your profile settings:**
+
+   - Click on the gear icon in the top-right corner.
+
+   - Select Personal Bitbucket settings.
+
+2. **Navigate to App Passwords:**
+
+   - In the left sidebar, scroll to find App Passwords and click on it.
+
+3. **Add a new token:**
+
+   - Click on the Create app password button.
+
+- Set up the new token with the following specifications:
+
+   - **Account:** Read permissions
+
+   - **Workspace membership:** Read permissions
+
+   - **Projects:** Read permissions
+
+   - **Repositories:** Read, Write and Admin permissions
+
+   - **Pull requests:** Read and Write permissions
+
+   - **Issues:** Read permissions
+
+   - **Webhooks:** Read and Write permissions
+
+   - **Pipelines:** Read permissions
+
+4. **Assign a label to the password:**
+
+   - Choose an easily identifiable name, such as kody_code_review.
+
+4. **Click Create.**
+
+Copy the generated token and store it securely, as you’ll need it to configure Kody.
+
+<Note>
+  Admin permission for Repositories is needed to add webhooks and listen to pull requests.
+</Note>
+
+## Adding the Token to Kody
+
+After generating the token, paste it into the Kody automation setup screen. The configuration modal will open automatically when you attempt to enable the automation.

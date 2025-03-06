@@ -23,6 +23,10 @@ title: "Getting Started"
                 - Grant access to all repositories you want Kody to analyze (you can adjust this later).
               - **Token**: <a href="/config/gitlab_pat">Visit the GitLab Token Setup page for detailed instructions.</a>
         </Accordion>
+              <Accordion title="Set Up Bitbucket" icon="bitbucket">
+            Connect Bitbucket via OAuth or token:
+              - **Token**: <a href="/config/bitbucket_pat">Visit the Bitbucket Token Setup page for detailed instructions.</a>
+        </Accordion>
     </AccordionGroup>
 
     <Warning>If you connect via token, Kody will perform the review using your username.</Warning>
@@ -50,5 +54,9 @@ title: "Getting Started"
 ## Next Steps
 
 <CardGroup cols={1}>
-  <Card title="Configure Kody with your team Rules" icon="Hand-love" href="automations/code_review/concepts"></Card>
+  <Card
+    title="Configure Kody with your team Rules"
+    icon="Hand-love"
+    href="automations/code_review/concepts"
+  ></Card>
 </CardGroup>

@@ -63,16 +63,18 @@
         {
           "group": "Advanced Configs",
           "pages": [
-            "automations/code_review/configs/kody_rules",
-            "automations/code_review/configs/path_instructions",
-            "automations/code_review/configs/pr_summary"
+            "automations/code_review/configs/general",
+            "automations/code_review/configs/suggestion_control",
+            "automations/code_review/configs/pr_summary",
+            "automations/code_review/configs/kody_rules"
           ]
         },
         {
           "group": "Tokens",
           "pages": [
             "general_config/github_pat",
-            "general_config/gitlab_pat"
+            "general_config/gitlab_pat",
+            "general_config/bitbucket_pat"
           ]
         },
         "automations/code_review/troubleshooting"
@@ -81,24 +83,21 @@
     {
       "group": "Cockpit",
       "pages": [
-        "cockpit/artifacts/artifacts_concepts",
         {
-          "group": "Flow Metrics",
-          "pages": [
-            "cockpit/metrics/flow/lead_time",
-            "cockpit/metrics/flow/throughput",
-            "cockpit/metrics/flow/bug_ratio",
-            "cockpit/metrics/flow/delivery_capacity",
-            "cockpit/metrics/flow/flow_efficiency"
-          ]
-        },
-        {
-          "group": "Dora Metrics",
+          "group": "Productivity",
           "pages": [
             "cockpit/metrics/dora/lead_time_for_changes",
             "cockpit/metrics/dora/deploy_frequency",
             "cockpit/metrics/dora/change_failure_rate",
             "cockpit/metrics/dora/mean_time_to_recovery"
+          ]
+        },
+        {
+          "group": "Quality",
+          "pages": [
+            "cockpit/metrics/dora/lead_time_for_changes",
+            "cockpit/metrics/dora/deploy_frequency",
+            "cockpit/metrics/dora/change_failure_rate"
           ]
         }
       ]

@@ -1,0 +1,149 @@
+---
+title: "General"
+---
+
+## Configuration Hierarchy
+
+Kody allows you to configure settings at two levels: Global and Repository-specific. Here's how the hierarchy works:
+
+### Global Settings
+
+Global settings apply to all repositories by default. If no repository-specific configuration is set, the global configuration will be used for that repository. This is a great way to establish a baseline for all your projects.
+
+### Repository-specific Settings
+
+If you configure settings for a specific repository, those settings will override the global configuration for that repository. This allows for tailored configurations based on the needs of individual repositories.
+
+### How It Works
+
+- No repository-specific configuration: The global settings will apply.
+- Repository-specific configuration exists: The settings for that repository will take precedence over the global settings.
+
+#### Example Use Case
+
+- You enable Automated Code Review globally and configure global analysis types like Security and Refactoring.
+- For a specific repository (e.g., kodus-service-slack), you decide to disable Automated Code Review or enable additional analysis types like Error Handling.
+- In this case, the configuration for kodus-service-slack will apply only to that repository, while all other repositories will follow the global settings.
+
+## Automatic Review
+
+Choose whether you want reviews to trigger automatically or only when you issue the command `@kody start-review` in a pull request.
+
+## Using `kodus-config.yml` configuration
+
+If its true, When Kody completes an automated code review and finds critical issues, it will automatically change the status of it's Pull Request Review to 'Request Changes'.
+
+A sample of the `kodus-config.yml` here:
+
+```
+version: '1.2'
+summary:
+  generatePRSummary: true
+  customInstructions: ''
+  behaviourForExistingDescription: concatenate
+ignorePaths:
+  - yarn.lock
+  - package-lock.json
+  - package.json
+  - .env
+baseBranches: []
+reviewOptions:
+  security: true
+  code_style: true
+  kody_rules: true
+  refactoring: true
+  error_handling: true
+  maintainability: true
+  potential_issues: true
+  documentation_and_comments: true
+  performance_and_optimization: true
+suggestionControl:
+  groupingMode: full
+  limitationType: pr
+  maxSuggestions: 9
+  severityLevelFilter: medium
+ignoredTitleKeywords: []
+automatedReviewActive: true
+pullRequestApprovalActive: false
+isRequestChangesActive: false
+```
+
+## Git workflow
+
+### Enable Pull Request Approval
+
+When you enable this option, Kody will automatically approve pull requests when she not find any issues.
+
+### Enable changing status of Review to 'Request Changes'
+
+When you enable this option, Kody will send critical suggestions as "Request Changes".
+
+## Analysis Types
+Select the types of analysis you’d like Kody to perform. Options include:
+
+- **Performance Optimization**: Identifies improvements for code efficiency, performance, and resource usage.
+
+  ```javascript
+  // Original code
+  let result = [];
+  for (let i = 0; i < items.length; i++) {
+    result.push(items[i] * 2);
+  }
+
+  // Optimized code using map (more efficient and readable)
+  const result = items.map((item) => item * 2);
+  ```
+
+- **Security**: Detects vulnerabilities and improves code security.
+
+  ```javascript
+  // Original code
+  function getUserData(username) {
+    return db.query(`SELECT * FROM users WHERE username = '${username}'`);
+  }
+
+  // Improved code with enhanced security (using prepared statements)
+  function getUserData(username) {
+    return db.query("SELECT * FROM users WHERE username = ?", [username]);
+  }
+  ```
+
+- **Error Handling**: Enhances how errors and exceptions are managed.
+
+  ```javascript
+  // Original code
+  const data = JSON.parse(input);
+
+  // Improved code with error handling
+  try {
+    const data = JSON.parse(input);
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+  ```
+
+- **Refactoring**: Restructures code to improve readability, maintainability, or modularity.
+
+  ```javascript
+  // Original code
+  function calculateDiscount(price, discount) {
+    if (discount) {
+      return price - (price * discount) / 100;
+    } else {
+      return price;
+    }
+  }
+
+  // Refactored code to reduce duplicated logic
+  function calculateDiscount(price, discount = 0) {
+    return price - (price * discount) / 100;
+  }
+  ```
+
+- **Maintainability**: Enhances code to simplify future maintenance and extension.
+
+  ```javascript
+  // Original code
+  function processOrder(order) {
+    // order proce
+  ```
