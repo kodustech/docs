@@ -1,0 +1,205 @@
+---
+title: "Running Orchestrator API"
+description: "Quickstart guide to get Kodus Orchestrator API running on your local machine."
+---
+
+<Note>
+  This guide is for local development purposes. For production deployment,
+  please refer to the [Deploy Kodus](/how_to_deploy/en/deploy_kodus/generic_vm) guide.
+</Note>
+
+## Prerequisites
+
+- Docker
+- Node.js and Yarn or NPM
+
+## Running the project
+
+### 1. Clone the repository
+
+```bash
+git clone xxxx
+```
+
+### 2. Install dependencies
+
+```bash
+yarn install
+```
+
+### 3. Configure environment variables
+
+```bash
+cp .env.example .env
+```
+
+Configure your `.env` file with the following required variables:
+
+```env
+# PostgreSQL Configuration
+PG_DB_HOST=
+PG_DB_PORT=
+PG_DB_USERNAME=
+PG_DB_PASSWORD=
+PG_DB_DATABASE=
+
+# MongoDB Configuration
+MG_DB_HOST=db_mongodb
+MG_DB_PORT=27017
+MG_DB_USERNAME=kodusdev
+MG_DB_PASSWORD=123456
+MG_DB_DATABASE=kodus_db
+
+# OpenAI Configuration
+OPEN_AI_APIKEY=your_api_key
+
+# JWT Configuration
+JWT_EXPIRES_IN=365d
+JWT_SECRET=your_secret
+JWT_REFRESH_SECRET=your_refresh_secret
+JWT_REFRESH_EXPIRES_IN=your_refresh_expiration
+
+# Code Management Service Configuration
+# Choose and configure ONE of the following services:
+
+# GitHub Configuration
+GITHUB_CLIENT_ID=your_client_id
+GITHUB_CLIENT_SECRET=your_client_secret
+GITHUB_PRIVATE_KEY=your_private_key
+GITHUB_REDIRECT_URI=your_redirect_uri
+GITHUB_URL_HEALTH=https://www.githubstatus.com/api/v2/status.json
+GITHUB_CODE_MANAGEMENT_WEBHOOK=your_webhook_url
+
+# GitLab Configuration
+GITLAB_CLIENT_ID=your_client_id
+GITLAB_CLIENT_SECRET=your_client_secret
+GITLAB_REDIRECT_URL=your_redirect_url
+GITLAB_TOKEN_URL=your_token_url
+GITLAB_CODE_MANAGEMENT_WEBHOOK=your_webhook_url
+CODE_MANAGEMENT_SECRET=your_secret
+
+# Bitbucket Configuration
+BITBUCKET_CODE_MANAGEMENT_WEBHOOK=your_webhook_url
+
+```
+
+<Note>
+  Checkout integration docs for more information about how to get the required
+  credentials for each service.
+</Note>
+
+### 4. Set up Docker networks
+
+Create the required Docker networks:
+
+```bash
+docker network create kodus-backend-services
+docker network create shared-network
+```
+
+### 5. Start the development environment
+
+Launch the services using Docker:
+
+```bash
+yarn docker:start
+```
+
+This command starts:
+
+- Kodus Orchestrator API
+- PostgreSQL database
+- MongoDB database
+- Required network configurations
+
+Monitor service logs:
+
+```bash
+yarn docker:logs
+```
+
+### 6. First-time setup
+
+If this is your first time running the project, execute the following commands:
+
+1. Run database migrations:
+
+```bash
+yarn migrate:dev
+```
+
+2. Seed initial data:
+
+```bash
+yarn seed
+```
+
+### 7. Project structure
+
+The project follows a clean, modular architecture:
+
+```text
+├── src/
+│   ├── config/
+│   │   ├── database/
+│   │   └── environment/
+│   ├── core/
+│   │   ├── domain/
+│   │   ├── application/
+│   │   └── infrastructure/
+│   ├── shared/
+│   │   ├── utils/
+│   │   └── interfaces/
+│   └── modules/
+│
+├── test/
+│   ├── unit/
+│   │   └── __mocks__/
+│   ├── integration/
+│   ├── e2e/
+│   └── fixtures/
+│
+├── scripts/
+│   ├── database/
+│   ├── deployment/
+│   └── ci/
+│
+├── docker/
+│   ├── development/
+│   ├── production/
+│   └── testing/
+│
+├── docs/
+│   ├── api/
+│   ├── architecture/
+│   └── guides/
+│
+└── assets/
+    ├── images/
+    └── templates/
+```
+
+### 8. Database configurations
+
+The project utilizes two databases:
+
+#### PostgreSQL
+
+- Host: `localhost`
+- Port: `5432`
+- Default user: `kodusdev`
+- Default database: `kodus_db`
+
+#### MongoDB
+
+- Host: `localhost`
+- Port: `27017`
+- Default user: `kodusdev`
+- Default database: `kodus_db`
+
+### 9. Service endpoints
+
+Access the service at:
+
+- API: `http://localhost:3331`
+- Debug Port: `9229`

@@ -1,0 +1,61 @@
+---
+title: "Kodus Architecture"
+description: "A deep dive into Kodus's technical infrastructure."
+---
+
+## Overview
+
+<img src="/images/kodus-architecture.png" alt="Kodus Architecture" />
+
+This document outlines the architecture powering Kodus's infrastructure. Our system is built on a distributed architecture that leverages containerization and network segmentation to ensure maximum scalability, security, and maintainability.
+
+## Networks and Key Components
+
+The infrastructure is strategically divided into two primary networks:
+
+- kodus-backend-services: Orchestrates our core and auxiliary services
+- kodus-shared-services: Houses our shared infrastructure components
+
+## Components
+
+### 1. Kodus Web Application
+
+Our frontend platform is built with Next.js, delivering a seamless user experience through direct communication with our API layer.
+
+### 2. Kodus Orchestrator Docker Container
+
+This container serves as the backbone of our infrastructure, managing our core backend services:
+
+- Next API: Our central service layer handling business logic and request processing
+- Postgres: Enterprise-grade relational database for structured data
+- MongoDB: High-performance NoSQL database for flexible data storage
+
+### 3. Auxiliary Services (Aux Services)
+
+Our auxiliary services run in isolated containers, each providing specialized functionality:
+
+- 🔒 Kodus Service Billing (closed source): Handles payment processing and subscription management
+- 🔒 Kodus Service Analytics (closed source): Powers our data analytics and platform insights
+- Kodus Service Slack: Enables seamless Slack integration
+- Kodus Service Discord: Provides Discord community integration
+- Kodus Function GitLab Refresh Token: Manages GitLab authentication lifecycle
+
+### 4. Shared Infrastructure (kodus-infrastructure)
+
+Our shared services network (kodus-shared-services) provides critical infrastructure support:
+
+RabbitMQ: Enterprise message broker enabling reliable asynchronous communication
+
+Prometheus: Advanced monitoring and metrics collection system
+
+Grafana: Sophisticated visualization platform for real-time metrics analysis
+
+## Next Steps
+<CardGroup cols={2}>
+  <Card title="Run Kodus Locally" icon="laptop" href="/how_to_deploy/en/local_quickstart/orchestrator">
+    Ideal for development and gaining a deeper understanding of Kodus.
+  </Card>
+  <Card title="Deploy Kodus to Production" icon="rocket" href="/how_to_deploy/en/deploy_kodus/generic_vm">
+    Perfect for production deployment and experiencing the full capabilities of Kodus.
+  </Card>
+</CardGroup>

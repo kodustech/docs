@@ -1,0 +1,128 @@
+---
+title: "Deploy Kodus on a Generic Virtual Machine"
+description: "Deployment doesn't have to be complicated. We've streamlined the process to get Kodus up and running on virtually any VM with minimal effort."
+---
+
+
+
+## Prerequisites
+
+- Docker
+- Node.js
+- Yarn or NPM
+- A Virtual Machine
+
+> **Note**: Internet access is only required if you plan to connect with cloud-based Git services like GitHub, GitLab, or Bitbucket. For self-hosted Git tools within your network, external internet access is optional.
+
+## Deployment Process
+
+### 1. Domain Name Setup (Optional)
+
+If you're planning to integrate Kodus with cloud-based Git providers (GitHub, GitLab, or Bitbucket), you'll need a domain name or fixed IP address. This allows your server to receive webhooks for proper Code Review functionality.
+
+We recommend using a subdomain like `kodus.yourdomain.com`. After acquiring your domain, configure the DNS records to point to your server's IP address.
+
+> **Note**: If you're only connecting to self-hosted Git tools on your network, you can skip this step.
+
+### 2. Get the Kodus Installer
+
+Clone our installer repository:
+
+```bash
+git clone https://github.com/kodustech/kodus-installer.git
+cd kodus-installer
+```
+
+### 3. Run the Installation Script
+
+<Tip>
+  Looking for more control? Check out our [docker-compose file](https://github.com/kodustech/kodus-installer/blob/main/docker-compose.yml) for manual deployment options.
+</Tip>
+
+Set the proper permissions for the installation script:
+
+```bash
+chmod +x scripts/install.sh
+```
+
+Run the script:
+
+```bash
+./scripts/install.sh
+```
+
+### .env variables that you need to change
+
+- `KODUS_ORCHESTRATOR_API_URL`: The URL of the Kodus Orchestrator API.
+- `KODUS_WEB_APP_URL`: The URL of the Kodus Web Application.
+- `KODUS_GIT_PROVIDER`: The Git provider you want to use.
+- `KODUS_GIT_PROVIDER_API_KEY`: The API key for the Git provider.
+
+
+### What the Installer Does
+
+Our installer automates several important steps:
+
+- Verifies Docker installation
+- Creates networks for Kodus services
+- Clones repositories and configures environment files
+- Runs docker-compose to start all services
+- Executes database migrations
+- Seeds initial data
+
+🎉 **Success!** When complete, Kodus Orchestrator API and Web Application should be running on your machine.
+
+You can verify your installation by visiting `http://localhost:3000` - you should see the Kodus Web Application interface.
+
+<Warning>
+  Code Review features will not work yet unless you complete the reverse proxy setup. Without this configuration, external Git providers cannot send webhooks to your instance.
+</Warning>
+
+## Setting Up a Reverse Proxy
+
+To make your Kodus instance accessible from external systems (required for Code Review webhooks), you'll need to configure a reverse proxy with Nginx.
+
+Here's a sample Nginx configuration:
+
+```nginx
+server {
+    listen 80;
+    server_name kodus.yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location /api {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+Save this configuration to `/etc/nginx/sites-available/kodus` and create a symbolic link to enable it:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/kodus /etc/nginx/sites-enabled/
+sudo nginx -t  # Test the configuration
+sudo systemctl reload nginx  # Apply the changes
+```
+
+## Next Steps
+
+After successfully deploying Kodus on your VM, consider these additional configurations:
+
+1. Set up SSL with Let's Encrypt for secure connections
+2. Configure your Git provider to use your new Kodus instance
+3. Invite your team and start improving your code review process
+
+If you need assistance, our [community forum](https://community.kodus.io) is available to help with any questions you might have.

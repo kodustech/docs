@@ -1,0 +1,165 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "name": "Kodus",
+  "colors": {
+    "primary": "#F59220",
+    "light": "#F8B76D",
+    "dark": "#F59220"
+  },
+  "background": {
+    "color": {
+      "dark": "#101019"
+    }
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "dropdowns": [
+      {
+        "dropdown": "How to use",
+        "icon": "book-open",
+        "languages": [
+          {
+            "language": "en",
+            "groups": [
+              {
+                "group": "Getting Started",
+                "pages": [
+                  "how_to_use/en/overview",
+                  "how_to_use/en/quickstart",
+                  "how_to_use/en/pricing"
+                ]
+              },
+              {
+                "group": "AI Code Review",
+                "pages": [
+                  "how_to_use/en/code_review/concepts",
+                  {
+                    "group": "Advanced Configs",
+                    "pages": [
+                      "how_to_use/en/code_review/configs/general",
+                      "how_to_use/en/code_review/configs/suggestion_control",
+                      "how_to_use/en/code_review/configs/pr_summary",
+                      "how_to_use/en/code_review/configs/kody_rules"
+                    ]
+                  },
+                  {
+                    "group": "Tokens",
+                    "pages": [
+                      "how_to_use/en/code_review/general_config/github_pat",
+                      "how_to_use/en/code_review/general_config/gitlab_pat",
+                      "how_to_use/en/code_review/general_config/bitbucket_pat"
+                    ]
+                  },
+                  "how_to_use/en/code_review/troubleshooting"
+                ]
+              },
+              {
+                "group": "Cockpit",
+                "pages": [
+                  {
+                    "group": "Productivity",
+                    "pages": [
+                      "how_to_use/en/cockpit/productivity/lead_time_for_changes",
+                      "how_to_use/en/cockpit/productivity/deploy_frequency",
+                      "how_to_use/en/cockpit/productivity/change_failure_rate"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Security",
+                "pages": [
+                  "how_to_use/en/security/data_usage"
+                ]
+              }
+            ]
+          },
+          {
+            "language": "pt-BR",
+            "groups": [
+              {
+                "group": "Getting Started",
+                "pages": []
+              }
+            ]
+          },
+          {
+            "language": "zh",
+            "groups": [
+              {
+                "group": "Getting Started",
+                "pages": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "dropdown": "How to deploy",
+        "icon": "rocket-launch",
+        "languages": [
+          {
+            "language": "en",
+            "pages": [
+              {
+                "group": "Concepts",
+                "pages": [
+                  "how_to_deploy/en/kodus_architecture"
+                ]
+              },
+              {
+                "group": "Quickstarts",
+                "pages": [
+                  {
+                    "group": "Local Quickstart",
+                    "pages": [
+                      "how_to_deploy/en/local_quickstart/orchestrator",
+                      "how_to_deploy/en/local_quickstart/web"
+                    ]
+                  },
+                  {
+                    "group": "Deploy Kodus",
+                    "pages": [
+                      "how_to_deploy/en/deploy_kodus/generic_vm",
+                      "how_to_deploy/en/deploy_kodus/google_gcp",
+                      "how_to_deploy/en/deploy_kodus/amazon_ec2"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+"logo": {
+  "light": "/logo/light.svg",
+  "dark": "/logo/dark.svg",
+  "href": "https://kodus.io"
+},
+"navbar": {
+  "links": [],
+  "primary": {
+    "type": "button",
+    "label": "Get Started",
+    "href": "https://kodus.io/"
+  }
+},
+"footer": {
+  "socials": {
+    "twitter": "https://twitter.com/kodustech",
+    "github": "https://github.com/kodustech",
+    "linkedin": "https://www.linkedin.com/company/kodustech"
+  }
+},
+"integrations": {
+  "ga4": {
+    "measurementId": "G-ZQTM352G3Y"
+  },
+  "posthog": {
+    "apiKey": "phc_eXdASBHYhvHzYCLktmceTdRKmF3jMLnrH4iCXXUGjJI"
+  }
+}
+}

@@ -1,0 +1,134 @@
+---
+title: "Running Web Application"
+description: "Quickstart guide to get Kodus Web Application running on your local machine."
+---
+
+<Note>
+  This guide is for local development purposes. For production deployment,
+  please refer to the [Deploy Kodus](/how_to_deploy/en/deploy_kodus/generic_vm)
+  guide.
+</Note>
+
+## Prerequisites
+
+- Node.js (LTS version)
+- Yarn or NPM
+- Orchestrator API running
+
+## Running the project****
+
+### 1. Clone the repository
+
+```bash
+git clone xxxx
+```
+
+### 2. Install dependencies
+
+```bash
+yarn install
+```
+
+### 3. Configure environment variables
+
+```bash
+cp .env.example .env
+```
+
+Configure your `.env` file with the following required variables:
+
+```env
+NEXTAUTH_URL=
+NEXTAUTH_SECRET
+JWT_SECRET_KEY
+HOSTNAME=
+PORT_API=
+NODE_ENV=
+```
+
+<Note>
+  Checkout integration docs for more information about how to get the required
+  credentials for each service.
+</Note>
+
+### 4. Start the development environment
+
+Launch the development server:
+
+```bash
+yarn dev
+```
+
+The application will be available at `http://localhost:3000`
+
+For Docker-based development:
+
+```bash
+docker-compose -f docker-compose.dev.yml up
+```
+
+### 5. Available Scripts
+
+```bash
+# Development
+yarn dev          # Start development server
+yarn lint         # Run ESLint
+yarn prettier     # Format code with Prettier
+yarn format       # Format all files
+
+# Production
+yarn build        # Build the production application
+yarn start        # Start production server
+```
+
+### 6. Project structure
+
+The project follows a clean, modular architecture:
+
+```text
+├── src/                          # Main source code
+│   ├── app/                     # App router pages and layouts
+│   │   ├── ui/                 # UI components
+│   │   └── features/           # Feature components
+│   ├── hooks/                   # Custom React hooks
+│   ├── lib/                     # Utility functions
+│   ├── services/                # API services
+│   └── types/                   # TypeScript types
+│
+├── public/                      # Static assets
+│   ├── images/                 # Image assets
+│   └── fonts/                  # Font files
+│
+├── styles/                      # Global styles
+│   └── tailwind/              # Tailwind configuration
+│
+├── tests/                       # Test files
+│   ├── unit/                   # Unit tests
+│   ├── integration/            # Integration tests
+│   └── e2e/                    # End-to-end tests
+│
+├── docker/                      # Docker configurations
+│   ├── development/           # Development environment
+│   └── production/            # Production environment
+│
+└── scripts/                     # Utility scripts
+    └── setup/                 # Setup scripts
+```
+
+### 7. Tech Stack
+
+The application is built with modern technologies:
+
+- **Framework:** Next.js 15
+- **UI Libraries:**
+  - React 19
+  - Radix UI Components
+  - TailwindCSS
+- **State Management:** TanStack Query
+- **Form Handling:** React Hook Form + Zod
+- **Authentication:** NextAuth.js
+
+### 8. Service endpoints
+
+Access the application at:
+- Development: `http://localhost:3000`
