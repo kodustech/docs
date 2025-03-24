@@ -1,0 +1,126 @@
+---
+title: "Environment Configuration Guide"
+---
+
+This guide will help you set up your environment variables for a manual installation. We've designed this configuration to be straightforward while maintaining security best practices.
+
+## Quick Start
+
+1. Copy the example `.env` file
+2. Generate secure keys where needed
+3. Configure your database credentials
+4. Add your LLM API keys
+
+## Environment Variables Overview
+
+### Core Settings
+
+#### Frontend Configuration
+
+```
+WEB_NODE_ENV="development"        # Keep as "development" for local setup
+WEB_HOSTNAME_API="localhost"      # Change only if using a custom domain
+WEB_PORT_API=3001                 # Default API port
+WEB_PORT=3000                     # Default frontend port
+GLOBAL_API_CONTAINER_NAME="kodus-orchestrator-prod"  # Container name (change if using existing container)
+WEB_NEXTAUTH_URL="http://localhost:3000"  # Authentication URL
+WEB_NEXTAUTH_SECRET=""            # Generate a secure random key
+WEB_JWT_SECRET_KEY=""             # Generate a secure random key
+```
+
+#### Backend Configuration
+
+```
+API_NODE_ENV="development"        # Keep as "development" for local setup
+API_GITLAB_CODE_MANAGEMENT_WEBHOOK=  # Your server's domain/IP for GitLab webhooks
+API_LOG_LEVEL=error               # Error logging level
+API_LOG_PRETTY=true               # Pretty print logs
+API_HOST=0.0.0.0                  # API host
+API_PORT=3001                     # API port
+API_RATE_MAX_REQUEST=100          # Rate limiting: max requests
+API_RATE_INTERVAL=1000            # Rate limiting: time window (ms)
+API_JWT_EXPIRES_IN=365d          # JWT token expiration
+API_JWT_SECRET=secret            # Generate a secure random key
+API_JWT_REFRESHSECRET=refreshSecret  # Generate a secure random key
+API_JWT_REFRESH_EXPIRES_IN=7d     # Refresh token expiration
+```
+
+### Database Configuration
+
+#### PostgreSQL
+
+```
+API_DATABASE_ENV="development"    # Database environment
+API_PG_DB_HOST=db_kodus_postgres  # PostgreSQL host
+API_PG_DB_PORT=5432              # PostgreSQL port
+API_PG_DB_USERNAME=kodusdev      # Database username
+API_PG_DB_PASSWORD=              # Database password
+API_PG_DB_DATABASE=kodus_db      # Database name
+```
+
+#### MongoDB
+
+```
+API_MG_DB_HOST=db_kodus_mongodb  # MongoDB host
+API_MG_DB_PORT=27017             # MongoDB port
+API_MG_DB_USERNAME=kodusdev      # Database username
+API_MG_DB_PASSWORD=              # Database password
+API_MG_DB_DATABASE=kodus_db      # Database name
+API_MG_DB_PRODUCTION_CONFIG=''   # Additional production settings
+```
+
+### LLM API Keys
+
+<Info>
+  Behind the scenes, Kodus uses OpenAI, Google, Anthropic, Fireworks and Novita.
+  So you will need to get the API keys for each of them.
+</Info>
+
+```
+API_OPEN_AI_APIKEY=              # OpenAI API key
+API_GOOGLE_AI_API_KEY=           # Google AI API key
+API_ANTHROPIC_API_KEY=           # Anthropic API key
+API_FIREWORKS_API_KEY=           # Fireworks API key
+API_NOVITA_AI_API_KEY=           # Novita AI API key
+```
+
+### Git Providers
+
+<Tabs>
+  <Tab title="Github">
+    ``` 
+    API_GITHUB_CODE_MANAGEMENT_WEBHOOK= # Your server's domain/IP for GitLab webhooks 
+    API_GITHUB_CLIENT_ID= # Only needed if you want to connect via oAuth with GitHub 
+    API_GITHUB_CLIENT_SECRET= # Only needed if you want to connect via oAuth with GitHub 
+    ```
+  </Tab>
+  <Tab title="Gitlab">
+    ``` 
+    API_GITLAB_CODE_MANAGEMENT_WEBHOOK= # Your server's domain/IP for GitLab webhooks 
+    API_GITLAB_CLIENT_ID= # Only needed if you want to connect via oAuth with GitLab 
+    API_GITLAB_CLIENT_SECRET= # Only needed if you want to connect via oAuth with GitLab 
+    ```
+  </Tab>
+  <Tab title="Bitbucket">
+    ``` 
+    GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK= # Your server's domain/IP for GitLab webhooks 
+    ```
+  </Tab>
+</Tabs>
+
+## Security Best Practices
+
+### Generating Secure Keys
+
+For all fields requiring random keys (like `WEB_NEXTAUTH_SECRET` and `API_JWT_SECRET`), you can generate secure keys using:
+
+```bash
+openssl rand -base64 32
+```
+
+### Important Notes
+
+1. **Never commit your `.env` file** to version control
+2. Keep your API keys and database credentials secure
+3. Use strong passwords in production environments
+4. Don't modify variables marked as "keep as is" unless you know what you're doing

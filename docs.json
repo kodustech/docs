@@ -123,7 +123,8 @@
                     "pages": [
                       "how_to_deploy/en/deploy_kodus/generic_vm",
                       "how_to_deploy/en/deploy_kodus/google_gcp",
-                      "how_to_deploy/en/deploy_kodus/amazon_ec2"
+                      "how_to_deploy/en/deploy_kodus/amazon_ec2",
+                      "how_to_deploy/en/deploy_kodus/configuring_env"
                     ]
                   }
                 ]
