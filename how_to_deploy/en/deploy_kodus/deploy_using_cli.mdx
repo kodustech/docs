@@ -1,0 +1,121 @@
+---
+title: "Deploy using our CLI"
+description: "CLI is a streamlined deployment tool for Kodus, optimized for testing and small-scale deployments."
+---
+
+## System Requirements
+
+<AccordionGroup>
+    <Accordion title="Recommended Hardware">
+        - CPU: 2+ cores
+        - RAM: 8GB+ 
+        - Storage: 60GB+ free space
+    </Accordion>
+    <Accordion title="Required Software">
+        - Docker (latest stable version)
+        - Node.js (latest LTS version)
+        - Yarn or NPM (latest stable version)
+        - Domain name or fixed IP (for external deployments)
+    </Accordion>
+    <Accordion title="Required Ports">
+        - 3000: Kodus Web App
+        - 3001: Orchestrator API
+        - 5672, 15672: RabbitMQ
+        - 5432: PostgreSQL
+        - 27017: MongoDB
+    </Accordion>
+</AccordionGroup>
+## Installation Guide
+
+### 1. Installing the CLI
+```bash
+npm install -g @kodus/cli
+```
+
+### 2. Installation Process
+Detailed walkthrough of the `kodus install` command, including:
+- Required configuration inputs
+- Database setup options (local/external)
+- AI API configuration (Google Vertex, OpenAI, Novita AI)
+- Environment variables setup
+
+### 3. Verification Steps
+Comprehensive guide to verify successful installation and service health
+
+## Troubleshooting Guide
+
+### Accessing Service Logs
+
+#### Core Services Logs
+```bash
+# Kodus Web logs
+docker logs kodus-web-prod
+
+# Orchestrator logs
+docker logs kodus-orchestrator-prod
+
+# Access log files directly from orchestrator
+docker exec -it kodus-orchestrator-prod ls /app/logs
+```
+
+#### Database Logs
+```bash
+# PostgreSQL logs
+docker logs db_kodus_postgres
+
+# MongoDB logs
+docker logs db_kodus_mongodb
+```
+
+#### Infrastructure Service Logs
+```bash
+# RabbitMQ logs
+docker logs rabbitmq-prod
+
+# Access RabbitMQ Management Console
+# Available at http://localhost:15672 (default credentials in your .env file)
+
+# Prometheus logs
+docker logs prometheus-prod
+
+# Grafana logs
+docker logs grafana-prod
+```
+
+### Common Issues and Solutions
+
+#### Container Health Check
+```bash
+# Check all container statuses
+docker ps -a | grep kodus
+
+# Check container resource usage
+docker stats
+```
+
+#### Database Connection Issues
+- How to verify PostgreSQL connection
+- How to verify MongoDB connection
+- Common connection error solutions
+
+#### RabbitMQ Connectivity
+- How to verify RabbitMQ connection
+- Common message queue issues
+- Management console troubleshooting
+
+#### Resource Issues
+- How to check container resource limits
+- Solutions for common memory/CPU problems
+
+## Architecture Overview
+Brief description of installed services:
+- Kodus Web
+- Kodus Orchestrator
+- PostgreSQL
+- MongoDB
+- RabbitMQ
+- Prometheus
+- Grafana
+
+## FAQ
+(Enhanced version of existing questions plus new troubleshooting-related entries)

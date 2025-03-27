@@ -110,24 +110,31 @@
                 ]
               },
               {
-                "group": "Quickstarts",
+                "group": "Local Quickstarts",
                 "pages": [
+                  "how_to_deploy/en/local_quickstart/orchestrator",
+                  "how_to_deploy/en/local_quickstart/web"
+                ]
+              },
+              {
+                "group": "Deploy Kodus",
+                "pages": [
+                  "how_to_deploy/en/deploy_kodus/deploy_using_cli",
                   {
-                    "group": "Local Quickstart",
-                    "pages": [
-                      "how_to_deploy/en/local_quickstart/orchestrator",
-                      "how_to_deploy/en/local_quickstart/web"
-                    ]
-                  },
-                  {
-                    "group": "Deploy Kodus",
+                    "group": "Custom Deployment",
                     "pages": [
                       "how_to_deploy/en/deploy_kodus/generic_vm",
                       "how_to_deploy/en/deploy_kodus/google_gcp",
-                      "how_to_deploy/en/deploy_kodus/amazon_ec2",
+                      "how_to_deploy/en/deploy_kodus/amazon_ec2"
+                    ]
+                  },
+                  {
+                    "group": "Configuration",
+                    "pages": [
                       "how_to_deploy/en/deploy_kodus/configuring_env"
                     ]
-                  }
+                  },
+                  "how_to_deploy/en/deploy_kodus/troubleshooting"
                 ]
               }
             ]
