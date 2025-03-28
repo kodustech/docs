@@ -6,40 +6,47 @@ description: "CLI is a streamlined deployment tool for Kodus, optimized for test
 ## System Requirements
 
 <AccordionGroup>
-    <Accordion title="Recommended Hardware">
-        - CPU: 2+ cores
-        - RAM: 8GB+ 
-        - Storage: 60GB+ free space
-    </Accordion>
-    <Accordion title="Required Software">
-        - Docker (latest stable version)
-        - Node.js (latest LTS version)
-        - Yarn or NPM (latest stable version)
-        - Domain name or fixed IP (for external deployments)
-    </Accordion>
-    <Accordion title="Required Ports">
-        - 3000: Kodus Web App
-        - 3001: Orchestrator API
-        - 5672, 15672: RabbitMQ
-        - 5432: PostgreSQL
-        - 27017: MongoDB
-    </Accordion>
+  <Accordion title="Recommended Hardware">
+    - CPU: 2+ cores - RAM: 8GB+ - Storage: 60GB+ free space
+  </Accordion>
+  <Accordion title="Required Software">
+    - Docker (latest stable version) - Node.js (latest LTS version) - Yarn or
+    NPM (latest stable version) - Domain name or fixed IP (for external
+    deployments)
+  </Accordion>
+  <Accordion title="Required Ports">
+    - 3000: Kodus Web App - 3001: Orchestrator API - 5672, 15672: RabbitMQ -
+    5432: PostgreSQL - 27017: MongoDB
+  </Accordion>
 </AccordionGroup>
+
 ## Installation Guide
 
+<Card
+  title="Need help?"
+  icon="headset"
+  href="https://cal.com/gabrielmalinosqui/30min"
+>
+  Schedule a call with our founder to get help with your deployment.
+</Card>
+
 ### 1. Installing the CLI
+
 ```bash
 npm install -g @kodus/cli
 ```
 
 ### 2. Installation Process
+
 Detailed walkthrough of the `kodus install` command, including:
+
 - Required configuration inputs
 - Database setup options (local/external)
 - AI API configuration (Google Vertex, OpenAI, Novita AI)
 - Environment variables setup
 
 ### 3. Verification Steps
+
 Comprehensive guide to verify successful installation and service health
 
 ## Troubleshooting Guide
@@ -47,6 +54,7 @@ Comprehensive guide to verify successful installation and service health
 ### Accessing Service Logs
 
 #### Core Services Logs
+
 ```bash
 # Kodus Web logs
 docker logs kodus-web-prod
@@ -59,6 +67,7 @@ docker exec -it kodus-orchestrator-prod ls /app/logs
 ```
 
 #### Database Logs
+
 ```bash
 # PostgreSQL logs
 docker logs db_kodus_postgres
@@ -68,6 +77,7 @@ docker logs db_kodus_mongodb
 ```
 
 #### Infrastructure Service Logs
+
 ```bash
 # RabbitMQ logs
 docker logs rabbitmq-prod
@@ -85,6 +95,7 @@ docker logs grafana-prod
 ### Common Issues and Solutions
 
 #### Container Health Check
+
 ```bash
 # Check all container statuses
 docker ps -a | grep kodus
@@ -94,21 +105,26 @@ docker stats
 ```
 
 #### Database Connection Issues
+
 - How to verify PostgreSQL connection
 - How to verify MongoDB connection
 - Common connection error solutions
 
 #### RabbitMQ Connectivity
+
 - How to verify RabbitMQ connection
 - Common message queue issues
 - Management console troubleshooting
 
 #### Resource Issues
+
 - How to check container resource limits
 - Solutions for common memory/CPU problems
 
 ## Architecture Overview
+
 Brief description of installed services:
+
 - Kodus Web
 - Kodus Orchestrator
 - PostgreSQL
@@ -118,4 +134,5 @@ Brief description of installed services:
 - Grafana
 
 ## FAQ
+
 (Enhanced version of existing questions plus new troubleshooting-related entries)

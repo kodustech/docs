@@ -1,13 +1,20 @@
 ---
-title: "Environment Configuration Guide"
+title: "Env Configuration Guide"
+description: "Comprehensive guide for configuring your Kodus environment variables. Learn how to set up your development and production environments securely."
 ---
-
-This guide will help you set up your environment variables for a manual installation. We've designed this configuration to be straightforward while maintaining security best practices.
 
 ## Quick Start
 
-1. Copy the example `.env` file
-2. Generate secure keys where needed
+1. Copy the example `.env` file:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Generate secure keys where needed:
+   ```bash
+   openssl rand -base64 32
+   ```
+
 3. Configure your database credentials
 4. Add your LLM API keys
 
@@ -17,96 +24,146 @@ This guide will help you set up your environment variables for a manual installa
 
 #### Frontend Configuration
 
-```
-WEB_NODE_ENV="development"        # Keep as "development" for local setup
-WEB_HOSTNAME_API="localhost"      # Change only if using a custom domain
-WEB_PORT_API=3001                 # Default API port
-WEB_PORT=3000                     # Default frontend port
-GLOBAL_API_CONTAINER_NAME="kodus-orchestrator-prod"  # Container name (change if using existing container)
-WEB_NEXTAUTH_URL="http://localhost:3000"  # Authentication URL
-WEB_NEXTAUTH_SECRET=""            # Generate a secure random key
-WEB_JWT_SECRET_KEY=""             # Generate a secure random key
+```env
+# Core System Settings
+WEB_NODE_ENV="development"                    # Keep as "development" for local setup
+WEB_HOSTNAME_API="localhost"                  # API hostname
+WEB_PORT_API=3001                            # API port
+WEB_PORT=3000                                # Web application port
+GLOBAL_API_CONTAINER_NAME="kodus-orchestrator" # API container name
+
+# Authentication Settings
+WEB_NEXTAUTH_URL="http://localhost:3000"      # Base URL for authentication
+WEB_NEXTAUTH_SECRET=""                        # NextAuth secret key (generate with: openssl rand -base64 32)
+WEB_JWT_SECRET_KEY=""                         # JWT secret key (generate with: openssl rand -base64 32)
 ```
 
 #### Backend Configuration
 
-```
-API_NODE_ENV="development"        # Keep as "development" for local setup
-API_GITLAB_CODE_MANAGEMENT_WEBHOOK=  # Your server's domain/IP for GitLab webhooks
-API_LOG_LEVEL=error               # Error logging level
-API_LOG_PRETTY=true               # Pretty print logs
-API_HOST=0.0.0.0                  # API host
-API_PORT=3001                     # API port
-API_RATE_MAX_REQUEST=100          # Rate limiting: max requests
-API_RATE_INTERVAL=1000            # Rate limiting: time window (ms)
-API_JWT_EXPIRES_IN=365d          # JWT token expiration
-API_JWT_SECRET=secret            # Generate a secure random key
-API_JWT_REFRESHSECRET=refreshSecret  # Generate a secure random key
-API_JWT_REFRESH_EXPIRES_IN=7d     # Refresh token expiration
+```env
+# API Configuration
+API_NODE_ENV="development"                    # Keep as "development" for local setup
+API_LOG_LEVEL=error                           # Error logging level
+API_LOG_PRETTY=true                           # Pretty print logs
+API_HOST=0.0.0.0                             # API host
+API_PORT=3001                                # API port
+API_RATE_MAX_REQUEST=100                      # Rate limiting: max requests
+API_RATE_INTERVAL=1000                        # Rate limiting: time window (ms)
+
+# JWT Configuration
+API_JWT_EXPIRES_IN=365d                       # Token expiration time
+API_JWT_SECRET=secret                         # JWT secret key
+API_JWT_REFRESHSECRET=refreshSecret           # Refresh token secret key
+API_JWT_REFRESH_EXPIRES_IN=7d                 # Refresh token expiration time
 ```
 
 ### Database Configuration
 
 #### PostgreSQL
 
-```
-API_DATABASE_ENV="development"    # Database environment
-API_PG_DB_HOST=db_kodus_postgres  # PostgreSQL host
-API_PG_DB_PORT=5432              # PostgreSQL port
-API_PG_DB_USERNAME=kodusdev      # Database username
-API_PG_DB_PASSWORD=              # Database password
-API_PG_DB_DATABASE=kodus_db      # Database name
+```env
+# PostgreSQL Settings
+API_DATABASE_ENV="development"                # Database environment
+API_PG_DB_HOST=db_kodus_postgres              # PostgreSQL host
+API_PG_DB_PORT=5432                          # PostgreSQL port
+API_PG_DB_USERNAME=kodusdev                  # Database username
+API_PG_DB_PASSWORD=                          # Database password
+API_PG_DB_DATABASE=kodus_db                  # Database name
 ```
 
 #### MongoDB
 
-```
-API_MG_DB_HOST=db_kodus_mongodb  # MongoDB host
-API_MG_DB_PORT=27017             # MongoDB port
-API_MG_DB_USERNAME=kodusdev      # Database username
-API_MG_DB_PASSWORD=              # Database password
-API_MG_DB_DATABASE=kodus_db      # Database name
-API_MG_DB_PRODUCTION_CONFIG=''   # Additional production settings
+```env
+# MongoDB Settings
+API_MG_DB_HOST=db_kodus_mongodb              # MongoDB host
+API_MG_DB_PORT=27017                         # MongoDB port
+API_MG_DB_USERNAME=kodusdev                  # Database username
+API_MG_DB_PASSWORD=                          # Database password
+API_MG_DB_DATABASE=kodus_db                  # Database name
+API_MG_DB_PRODUCTION_CONFIG=''               # Additional production settings
 ```
 
-### LLM API Keys
+### LLM Integration
 
 <Info>
   Behind the scenes, Kodus uses OpenAI, Google, Anthropic, Fireworks and Novita.
   So you will need to get the API keys for each of them.
 </Info>
 
-```
-API_OPEN_AI_APIKEY=              # OpenAI API key
-API_GOOGLE_AI_API_KEY=           # Google AI API key
-API_ANTHROPIC_API_KEY=           # Anthropic API key
-API_FIREWORKS_API_KEY=           # Fireworks API key
-API_NOVITA_AI_API_KEY=           # Novita AI API key
+```env
+# LLM API Keys
+API_OPEN_AI_APIKEY=                          # OpenAI API key
+API_GOOGLE_AI_API_KEY=                       # Google AI API key
+API_ANTHROPIC_API_KEY=                       # Anthropic API key
+API_FIREWORKS_API_KEY=                       # Fireworks API key
+API_NOVITA_AI_API_KEY=                       # Novita AI API key
+API_VERTEX_AI_API_KEY=                       # Vertex AI API key
+
+# Available LLM Models
+API_LLM_MODEL_CHATGPT_3_5_TURBO=gpt-4o-mini
+API_LLM_MODEL_CHATGPT_3_5_TURBO_16K=gpt-4o-mini
+API_LLM_MODEL_CHATGPT_4=gpt-4o-mini
+API_LLM_MODEL_CHATGPT_4_TURBO=gpt-4o-mini
+API_LLM_MODEL_CHATGPT_4_ALL=gpt-4o
+API_LLM_MODEL_CHATGPT_4_ALL_MINI=gpt-4o-mini
+API_LLM_MODEL_CLAUDE_3_5_SONNET=claude-3-5-sonnet-20241022
+API_LLM_MODEL_CLAUDE_3_5_SONNET_20241022=claude-3-5-sonnet-20241022
+API_LLM_MODEL_GEMINI_1_5_PRO=gpt-4o-mini
+API_LLM_MODEL_GEMINI_1_5_PRO_EXP=gpt-4o-mini
 ```
 
-### Git Providers
+### Git Provider Integration
 
 <Tabs>
-  <Tab title="Github">
-    ``` 
-    API_GITHUB_CODE_MANAGEMENT_WEBHOOK= # Your server's domain/IP for GitLab webhooks 
-    API_GITHUB_CLIENT_ID= # Only needed if you want to connect via oAuth with GitHub 
-    API_GITHUB_CLIENT_SECRET= # Only needed if you want to connect via oAuth with GitHub 
+  <Tab title="GitHub">
+    ```env
+    # GitHub Configuration
+    API_GITHUB_CODE_MANAGEMENT_WEBHOOK=          # GitHub webhook URL
+    API_GITHUB_APP_ID=                           # GitHub App ID
+    API_GITHUB_CLIENT_SECRET=                    # GitHub App Client Secret
+    API_GITHUB_PRIVATE_KEY=""                    # GitHub App Private Key
+    WEB_GITHUB_INSTALL_URL=""                    # GitHub App Installation URL
+    WEB_OAUTH_GITHUB_CLIENT_ID=""                # GitHub OAuth Client ID
+    WEB_OAUTH_GITHUB_CLIENT_SECRET=""            # GitHub OAuth Client Secret
     ```
   </Tab>
-  <Tab title="Gitlab">
-    ``` 
-    API_GITLAB_CODE_MANAGEMENT_WEBHOOK= # Your server's domain/IP for GitLab webhooks 
-    API_GITLAB_CLIENT_ID= # Only needed if you want to connect via oAuth with GitLab 
-    API_GITLAB_CLIENT_SECRET= # Only needed if you want to connect via oAuth with GitLab 
+  <Tab title="GitLab">
+    ```env
+    # GitLab Configuration
+    API_GITLAB_TOKEN_URL="https://gitlab.com/oauth/token"
+    API_GITLAB_CODE_MANAGEMENT_WEBHOOK=          # GitLab webhook URL
+    WEB_GITLAB_SCOPES="read_api read_user read_repository"
+    WEB_GITLAB_OAUTH_URL="https://gitlab.com/oauth/authorize"
+    WEB_OAUTH_GITLAB_CLIENT_ID=""                # GitLab OAuth Client ID
+    WEB_OAUTH_GITLAB_CLIENT_SECRET=""            # GitLab OAuth Client Secret
     ```
   </Tab>
   <Tab title="Bitbucket">
-    ``` 
-    GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK= # Your server's domain/IP for GitLab webhooks 
+    ```env
+    # Bitbucket Configuration
+    WEB_BITBUCKET_INSTALL_URL=""                 # Bitbucket Installation URL
+    GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK=    # Bitbucket webhook URL
     ```
   </Tab>
 </Tabs>
+
+### Additional Settings
+
+```env
+# Communication Integrations
+WEB_CONNECTION_SLACK=""                      # Slack connection URL
+WEB_CONNECTION_DISCORD=""                    # Discord connection URL
+
+# Support Settings
+WEB_ANALYTICS_HOSTNAME=""                    # Analytics hostname
+WEB_SUPPORT_DOCS_URL="https://docs.kodus.io" # Documentation URL
+WEB_SUPPORT_DISCORD_INVITE_URL="https://discord.gg/CceCdAke" # Discord invite URL
+WEB_SUPPORT_TALK_TO_FOUNDER_URL="https://cal.com/gabrielmalinosqui/30min" # Scheduling URL
+
+# RabbitMQ Configuration
+API_RABBITMQ_URI=                            # RabbitMQ connection URI
+API_RABBITMQ_ENABLED=false                   # Enable/disable RabbitMQ
+```
 
 ## Security Best Practices
 
@@ -124,3 +181,18 @@ openssl rand -base64 32
 2. Keep your API keys and database credentials secure
 3. Use strong passwords in production environments
 4. Don't modify variables marked as "keep as is" unless you know what you're doing
+5. Regularly rotate your API keys and secrets
+6. Use different credentials for development and production environments
+
+### Environment-Specific Settings
+
+#### Development
+- Keep `WEB_NODE_ENV` and `API_NODE_ENV` as "development"
+- Use local database instances
+- Enable detailed logging with `API_LOG_LEVEL=debug`
+
+#### Production
+- Set `WEB_NODE_ENV` and `API_NODE_ENV` to "production"
+- Use secure, production-grade databases
+- Set appropriate rate limits
+- Enable only necessary integrations

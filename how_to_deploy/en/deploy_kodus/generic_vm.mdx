@@ -3,8 +3,6 @@ title: "Deploy on a Generic Virtual Machine"
 description: "Deployment doesn't have to be complicated. We've streamlined the process to get Kodus up and running on virtually any VM with minimal effort."
 ---
 
-
-
 ## Prerequisites
 
 - Docker
@@ -16,6 +14,14 @@ description: "Deployment doesn't have to be complicated. We've streamlined the p
 
 ## Deployment Process
 
+<Card
+  title="Need help?"
+  icon="headset"
+  href="https://cal.com/gabrielmalinosqui/30min"
+>
+  Schedule a call with our founder to get help with your deployment.
+</Card>
+
 ### 1. Domain Name Setup (Optional)
 
 If you're planning to integrate Kodus with cloud-based Git providers (GitHub, GitLab, or Bitbucket), you'll need a domain name or fixed IP address. This allows your server to receive webhooks for proper Code Review functionality.
@@ -24,7 +30,131 @@ We recommend using a subdomain like `kodus.yourdomain.com`. After acquiring your
 
 > **Note**: If you're only connecting to self-hosted Git tools on your network, you can skip this step.
 
-### 2. Get the Kodus Installer
+### 2. Configure the .ENV file
+
+Copy the `.env.example` file to `.env` and make the necessary changes.
+
+#### Essential Environment Variables
+
+The following variables are required for basic functionality:
+
+```env
+# Core System Settings
+WEB_NODE_ENV="development"                    # Keep as "development" for local setup
+WEB_HOSTNAME_API="localhost"                  # API hostname
+WEB_PORT_API=3001                            # API port
+WEB_PORT=3000                                # Web application port
+GLOBAL_API_CONTAINER_NAME="kodus-orchestrator" # API container name
+
+# Authentication Settings
+WEB_NEXTAUTH_URL="http://localhost:3000"      # Base URL for authentication
+WEB_NEXTAUTH_SECRET=""                        # NextAuth secret key (generate with: openssl rand -base64 32)
+WEB_JWT_SECRET_KEY=""                         # JWT secret key (generate with: openssl rand -base64 32)
+
+# API Configuration
+API_NODE_ENV="development"                    # Keep as "development" for local setup
+API_LOG_LEVEL=error                           # Error logging level
+API_LOG_PRETTY=true                           # Pretty print logs
+API_HOST=0.0.0.0                             # API host
+API_PORT=3001                                # API port
+API_RATE_MAX_REQUEST=100                      # Rate limiting: max requests
+API_RATE_INTERVAL=1000                        # Rate limiting: time window (ms)
+
+# Database Configuration
+API_DATABASE_ENV="development"                # Database environment
+API_PG_DB_HOST=db_kodus_postgres              # PostgreSQL host
+API_PG_DB_PORT=5432                          # PostgreSQL port
+API_PG_DB_USERNAME=kodusdev                  # Database username
+API_PG_DB_PASSWORD=                          # Database password
+API_PG_DB_DATABASE=kodus_db                  # Database name
+
+# MongoDB Configuration
+API_MG_DB_HOST=db_kodus_mongodb              # MongoDB host
+API_MG_DB_PORT=27017                         # MongoDB port
+API_MG_DB_USERNAME=kodusdev                  # Database username
+API_MG_DB_PASSWORD=                          # Database password
+API_MG_DB_DATABASE=kodus_db                  # Database name
+```
+
+#### LLM Integration Settings
+
+Configure your AI providers by adding the following variables:
+
+```env
+# LLM API Keys
+API_OPEN_AI_APIKEY=                          # OpenAI API key
+API_GOOGLE_AI_API_KEY=                       # Google AI API key
+API_ANTHROPIC_API_KEY=                       # Anthropic API key
+API_NOVITA_AI_API_KEY=                       # Novita AI API key
+API_VERTEX_AI_API_KEY=                       # Vertex AI API key
+```
+
+#### Git Provider Configuration
+
+Choose and configure your preferred Git provider. For basic token-based authentication, you only need to set the webhook URL:
+
+<Tabs>
+  <Tab title="GitHub">
+  <Info>
+  For token-based authentication, you only need to configure the webhook URL. The other variables are required only if you want to use OAuth for authentication.
+</Info>
+    ```env
+    # Required for token-based authentication
+    API_GITHUB_CODE_MANAGEMENT_WEBHOOK=          # GitHub webhook URL
+
+    # Optional - Only needed if using OAuth
+    API_GITHUB_APP_ID=                           # GitHub App ID
+    API_GITHUB_CLIENT_SECRET=                    # GitHub App Client Secret
+    API_GITHUB_PRIVATE_KEY=""                    # GitHub App Private Key
+    WEB_GITHUB_INSTALL_URL=""                    # GitHub App Installation URL
+    WEB_OAUTH_GITHUB_CLIENT_ID=""                # GitHub OAuth Client ID
+    WEB_OAUTH_GITHUB_CLIENT_SECRET=""            # GitHub OAuth Client Secret
+    ```
+
+  </Tab>
+  <Tab title="GitLab">
+  <Info>
+  For token-based authentication, you only need to configure the webhook URL. The other variables are required only if you want to use OAuth for authentication.
+</Info>
+    ```env
+    # Required for token-based authentication
+    API_GITLAB_CODE_MANAGEMENT_WEBHOOK=          # GitLab webhook URL
+
+    # Optional - Only needed if using OAuth
+    API_GITLAB_TOKEN_URL="https://gitlab.com/oauth/token"
+    WEB_GITLAB_SCOPES="read_api read_user read_repository"
+    WEB_GITLAB_OAUTH_URL="https://gitlab.com/oauth/authorize"
+    WEB_OAUTH_GITLAB_CLIENT_ID=""                # GitLab OAuth Client ID
+    WEB_OAUTH_GITLAB_CLIENT_SECRET=""            # GitLab OAuth Client Secret
+    ```
+
+  </Tab>
+  <Tab title="Bitbucket">
+  <Info>
+  For token-based authentication, you only need to configure the webhook URL. The other variables are required only if you want to use OAuth for authentication.
+</Info>
+    ```env
+    # Required for token-based authentication
+    GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK=    # Bitbucket webhook URL
+
+    # Optional - Only needed if using OAuth
+    WEB_BITBUCKET_INSTALL_URL=""                 # Bitbucket Installation URL
+    ```
+
+  </Tab>
+</Tabs>
+
+<Warning>
+  Never commit your `.env` file to version control. Keep your API keys and
+  database credentials secure.
+</Warning>
+
+<Tip>
+  For secure key generation, use the following command: ```bash openssl rand
+  -base64 32 ```
+</Tip>
+
+### 3. Get the Kodus Installer
 
 Clone our installer repository:
 
@@ -33,10 +163,12 @@ git clone https://github.com/kodustech/kodus-installer.git
 cd kodus-installer
 ```
 
-### 3. Run the Installation Script
+### 4. Run the Installation Script
 
 <Tip>
-  Looking for more control? Check out our [docker-compose file](https://github.com/kodustech/kodus-installer/blob/main/docker-compose.yml) for manual deployment options.
+  Looking for more control? Check out our [docker-compose
+  file](https://github.com/kodustech/kodus-installer/blob/main/docker-compose.yml)
+  for manual deployment options.
 </Tip>
 
 Set the proper permissions for the installation script:
@@ -58,7 +190,6 @@ Run the script:
 - `KODUS_GIT_PROVIDER`: The Git provider you want to use.
 - `KODUS_GIT_PROVIDER_API_KEY`: The API key for the Git provider.
 
-
 ### What the Installer Does
 
 Our installer automates several important steps:
@@ -75,7 +206,9 @@ Our installer automates several important steps:
 You can verify your installation by visiting `http://localhost:3000` - you should see the Kodus Web Application interface.
 
 <Warning>
-  Code Review features will not work yet unless you complete the reverse proxy setup. Without this configuration, external Git providers cannot send webhooks to your instance.
+  Code Review features will not work yet unless you complete the reverse proxy
+  setup. Without this configuration, external Git providers cannot send webhooks
+  to your instance.
 </Warning>
 
 ## Setting Up a Reverse Proxy
