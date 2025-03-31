@@ -1,14 +1,31 @@
 ---
-title: "Deploy on a Generic Virtual Machine"
-description: "Deployment doesn't have to be complicated. We've streamlined the process to get Kodus up and running on virtually any VM with minimal effort."
+title: "Generic Virtual Machine"
+description: "Deploy Kodus on a Generic Virtual Machine."
+icon: "desktop"
 ---
 
-## Prerequisites
+## System Requirements
 
-- Docker
-- Node.js
-- Yarn or NPM
-- A Virtual Machine
+<AccordionGroup>
+  <Accordion title="Recommended Hardware">
+    - CPU: 2+ cores 
+    - RAM: 8GB+ 
+    - Storage: 60GB+ free space
+  </Accordion>
+  <Accordion title="Required Software">
+    - Docker (latest stable version) 
+    - Node.js (latest LTS version) 
+    - Yarn or NPM (latest stable version) 
+    - Domain name or fixed IP (for external deployments)
+  </Accordion>
+  <Accordion title="Required Ports">
+    - 3000: Kodus Web App 
+    - 3001: Orchestrator API 
+    - 5672, 15672: RabbitMQ 
+    - 5432: PostgreSQL 
+    - 27017: MongoDB
+  </Accordion>
+</AccordionGroup>
 
 > **Note**: Internet access is only required if you plan to connect with cloud-based Git services like GitHub, GitLab, or Bitbucket. For self-hosted Git tools within your network, external internet access is optional.
 
@@ -88,6 +105,28 @@ API_ANTHROPIC_API_KEY=                       # Anthropic API key
 API_NOVITA_AI_API_KEY=                       # Novita AI API key
 API_VERTEX_AI_API_KEY=                       # Vertex AI API key
 ```
+
+### LLM API Keys Resources
+
+When configuring your environment variables, you'll need API keys for AI providers. Use these official resources:
+
+<AccordionGroup>
+  <Accordion title="OpenAI API Key">
+    Visit the [OpenAI API Keys page](https://platform.openai.com/api-keys) to create and manage your keys.
+  </Accordion>
+  
+  <Accordion title="Google AI / Vertex AI">
+    Follow the [Google Cloud API setup guide](https://cloud.google.com/docs/authentication/api-keys) to create your credentials.
+  </Accordion>
+  
+  <Accordion title="Anthropic Claude">
+    Get started with the [Anthropic API documentation](https://docs.anthropic.com/claude/reference/getting-started-with-the-api).
+  </Accordion>
+  
+  <Accordion title="Novita AI">
+    Access the [Novita AI Developer portal](https://novita.ai/docs/guides/quickstart) for API information.
+  </Accordion>
+</AccordionGroup>
 
 #### Git Provider Configuration
 
@@ -250,12 +289,196 @@ sudo nginx -t  # Test the configuration
 sudo systemctl reload nginx  # Apply the changes
 ```
 
-## Next Steps
+## Post-Installation Guide
 
-After successfully deploying Kodus on your VM, consider these additional configurations:
+After successfully deploying Kodus on your VM, follow these steps to get the most out of your installation:
 
-1. Set up SSL with Let's Encrypt for secure connections
-2. Configure your Git provider to use your new Kodus instance
-3. Invite your team and start improving your code review process
+### Enabling SSL (Recommended)
 
-If you need assistance, our [community forum](https://community.kodus.io) is available to help with any questions you might have.
+For production deployments, we strongly recommend setting up SSL with Let's Encrypt:
+
+```bash
+# Install Certbot for Let's Encrypt
+sudo apt-get update
+sudo apt-get install certbot python3-certbot-nginx
+
+# Obtain and install certificates
+sudo certbot --nginx -d kodus.yourdomain.com
+```
+
+This will automatically configure your Nginx setup to use HTTPS and redirect HTTP traffic.
+
+### Completing Initial Setup
+
+Once you access the web interface for the first time, you'll need to:
+
+1. **Create your admin account** - This will be the first user with full system access
+2. **Configure your Git provider** - Connect GitHub, GitLab, or Bitbucket following the on-screen instructions
+3. **Select repositories** for analysis - Choose which code repositories Kody will review
+
+<Info>
+  For detailed steps on the initial configuration process, refer to our [Getting Started Guide](/how_to_use/en/quickstart).
+</Info>
+
+### Updating Kodus
+
+To update your Kodus installation to the latest version:
+
+```bash
+# Navigate to your Kodus installation directory
+cd kodus-installer
+
+# Pull the latest changes from the repository
+git pull
+
+# Pull the latest Docker images
+docker-compose pull
+
+# Restart the services with the new images
+docker-compose up -d
+```
+
+### Monitoring Your Installation
+
+You can monitor your Kodus installation using the following tools:
+
+```bash
+# Check container status
+docker-compose ps
+
+# View real-time logs from all services
+docker-compose logs -f
+
+# Monitor system resource usage
+docker stats
+```
+
+## Accessing Service Logs
+
+When troubleshooting or monitoring your Kodus installation, you may need to access service logs:
+
+<AccordionGroup>
+  <Accordion title="Core Services Logs">
+    ```bash
+    # Kodus Web logs
+    docker logs kodus-web-prod
+
+    # Orchestrator logs
+    docker logs kodus-orchestrator-prod
+
+    # Access log files directly from orchestrator
+    docker exec -it kodus-orchestrator-prod ls /app/logs
+    ```
+  </Accordion>
+  
+  <Accordion title="Database Logs">
+    ```bash
+    # PostgreSQL logs
+    docker logs db_kodus_postgres
+
+    # MongoDB logs
+    docker logs db_kodus_mongodb
+    ```
+  </Accordion>
+  
+  <Accordion title="Infrastructure Service Logs">
+    ```bash
+    # RabbitMQ logs
+    docker logs rabbitmq-prod
+
+    # Access RabbitMQ Management Console
+    # Available at http://localhost:15672 (default credentials in your .env file)
+
+    # Prometheus logs (if configured)
+    docker logs prometheus-prod
+
+    # Grafana logs (if configured)
+    docker logs grafana-prod
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting Common Issues
+
+<AccordionGroup>
+  <Accordion title="Web Interface Not Accessible">
+    If you cannot access the web interface after installation:
+    
+    ```bash
+    # Check if containers are running
+    docker ps | grep kodus-web-prod
+    
+    # Verify port mappings
+    docker port kodus-web-prod
+    
+    # Check web application logs
+    docker logs kodus-web-prod
+    ```
+    
+    **Common solutions:**
+    - Ensure ports 3000 and 3001 are open in your firewall
+    - Verify your Nginx configuration is correct
+    - Check for SSL certificate issues if using HTTPS
+  </Accordion>
+  
+  <Accordion title="Git Webhook Connection Errors">
+    If webhooks from your Git provider aren't reaching Kodus:
+    
+    ```bash
+    # Check orchestrator logs for webhook activity
+    docker logs kodus-orchestrator-prod | grep webhook
+    ```
+    
+    **Common solutions:**
+    - Verify your public URL is correctly configured
+    - Ensure your Git provider can reach your Kodus instance
+    - Check the webhook configuration in your Git provider
+  </Accordion>
+  
+  <Accordion title="Database Connection Issues">
+    If services are failing due to database connectivity problems:
+    
+    ```bash
+    # Check database status
+    docker ps | grep db_kodus_postgres
+    docker ps | grep db_kodus_mongodb
+    
+    # View initialization logs
+    docker logs db_kodus_postgres
+    docker logs db_kodus_mongodb
+    ```
+    
+    **Common solutions:**
+    - Restart the database containers
+    - Check for disk space issues
+    - Verify your .env file has correct database credentials
+  </Accordion>
+  
+  <Accordion title="Installation Script Fails">
+    If the installation script fails to complete:
+    
+    ```bash
+    # Check the script logs
+    cat kodus-installer.log
+    
+    # Verify Docker is running
+    systemctl status docker
+    
+    # Check available disk space
+    df -h
+    ```
+    
+    **Common solutions:**
+    - Ensure all required dependencies are installed
+    - Verify Docker is running and accessible
+    - Check if you have sufficient disk space
+  </Accordion>
+</AccordionGroup>
+
+<Card
+  title="Get help with our community"
+  icon="discord"
+  href="https://discord.gg/VkbfjbZr"
+>
+  Join our community to get help with your deployment.
+</Card>

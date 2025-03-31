@@ -122,6 +122,7 @@
                   "how_to_deploy/en/deploy_kodus/deploy_using_cli",
                   {
                     "group": "Custom Deployment",
+                    "icon": "server",
                     "pages": [
                       "how_to_deploy/en/deploy_kodus/generic_vm",
                       "how_to_deploy/en/deploy_kodus/google_gcp",
@@ -130,6 +131,7 @@
                   },
                   {
                     "group": "Configuration",
+                    "icon": "gear",
                     "pages": [
                       "how_to_deploy/en/deploy_kodus/configuring_env"
                     ]
@@ -149,7 +151,16 @@
     "href": "https://kodus.io"
   },
   "navbar": {
-    "links": [],
+    "links": [
+      {
+        "label": "Community",
+        "href": "https://discord.gg/VkbfjbZr"
+      },
+      {
+        "label": "Github",
+        "href": "https://github.com/kodustech"
+      }
+    ],
     "primary": {
       "type": "button",
       "label": "Get Started",
