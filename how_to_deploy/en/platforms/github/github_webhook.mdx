@@ -3,4 +3,27 @@ title: Creating a Webhook
 icon: webhook
 ---
 
+Kodus usually creates the webhook automatically. If that didn't happen, follow these steps to set it up manually:
 
+1. Head over to your GitHub repository
+2. Click on "Settings"
+3. Find "Webhooks" in the left sidebar
+4. Click "Add webhook"
+5. Time to configure your webhook:
+
+   - **Payload URL**: Drop in the URL where you want to receive notifications, the URL you put under `API_GITHUB_CODE_MANAGEMENT_WEBHOOK` in the `.env` file
+   - **Content type**: Go with `application/json`
+   - **Secret**: Leave blank
+   - **SSL verification**: Check Enable SSL verification
+   - **Which events would you like to trigger this webhook?**: Check Let me select individual events
+   - Check these boxes:
+     - Issue comment
+     - Pull request review comments
+     - Pull request review threads
+     - Pull request reviews
+     - Pull requests
+     - Pushes
+
+6. Click "Add webhook"
+
+And that's it! You've successfully set up a webhook to do code reviews in your GitHub repository.

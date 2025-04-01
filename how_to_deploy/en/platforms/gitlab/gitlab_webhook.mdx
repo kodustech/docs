@@ -3,4 +3,23 @@ title: Creating a Webhook
 icon: webhook
 ---
 
+Kodus usually creates the webhook automatically. If that didn't happen, follow these steps to set it up manually:
 
+1. Navigate to your GitLab project
+2. Go to "Settings" > "Webhooks"
+3. Time to configure your webhook:
+
+   - **URL**: Drop in the URL where you want to receive notifications, the URL you put under `API_GITLAB_CODE_MANAGEMENT_WEBHOOK` in the `.env` file
+   - **Check Show full URL**
+   - **Name**: (optional) Kodus Code Review
+   - **Description**: (optional) Kodus Code Review Webhook
+   - **Secret token**: Leave blank
+   - **SSL verification**: Enable SSL verification
+   - **Trigger**: Select the following events:
+     - Comments
+     - Issue events
+     - Merge request events
+
+4. Click "Add webhook"
+
+And that's it! You've successfully set up a webhook to do code reviews in your GitLab repository.

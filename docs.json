@@ -129,13 +129,6 @@
                       "how_to_deploy/en/deploy_kodus/amazon_ec2"
                     ]
                   },
-                  {
-                    "group": "Configuration",
-                    "icon": "gear",
-                    "pages": [
-                      "how_to_deploy/en/deploy_kodus/configuring_env"
-                    ]
-                  },
                   "how_to_deploy/en/deploy_kodus/troubleshooting"
                 ]
               },
