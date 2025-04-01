@@ -8,26 +8,22 @@ icon: "desktop"
 
 <AccordionGroup>
   <Accordion title="Recommended Hardware">
-    - CPU: 2+ cores 
-    - RAM: 8GB+ 
-    - Storage: 60GB+ free space
+    - CPU: 2+ cores - RAM: 8GB+ - Storage: 60GB+ free space
   </Accordion>
   <Accordion title="Required Software">
-    - Docker (latest stable version) 
-    - Node.js (latest LTS version) 
-    - Yarn or NPM (latest stable version) 
-    - Domain name or fixed IP (for external deployments)
+    - Docker (latest stable version) - Node.js (latest LTS version) - Yarn or
+    NPM (latest stable version) - Domain name or fixed IP (for external
+    deployments)
   </Accordion>
   <Accordion title="Required Ports">
-    - 3000: Kodus Web App 
-    - 3001: Orchestrator API 
-    - 5672, 15672: RabbitMQ 
-    - 5432: PostgreSQL 
-    - 27017: MongoDB
+    - 3000: Kodus Web App - 3001: Orchestrator API - 5672, 15672: RabbitMQ -
+    5432: PostgreSQL - 27017: MongoDB
   </Accordion>
 </AccordionGroup>
 
-> **Note**: Internet access is only required if you plan to connect with cloud-based Git services like GitHub, GitLab, or Bitbucket. For self-hosted Git tools within your network, external internet access is optional.
+<Note>
+  **Internet access is only required if you plan to connect with cloud-based Git services like GitHub, GitLab, or Bitbucket.** For self-hosted Git tools within your network, external internet access is optional.
+</Note>
 
 ## Deployment Process
 
@@ -112,19 +108,26 @@ When configuring your environment variables, you'll need API keys for AI provide
 
 <AccordionGroup>
   <Accordion title="OpenAI API Key">
-    Visit the [OpenAI API Keys page](https://platform.openai.com/api-keys) to create and manage your keys.
+    Visit the [OpenAI API Keys page](https://platform.openai.com/api-keys) to
+    create and manage your keys.
   </Accordion>
-  
-  <Accordion title="Google AI / Vertex AI">
-    Follow the [Google Cloud API setup guide](https://cloud.google.com/docs/authentication/api-keys) to create your credentials.
-  </Accordion>
-  
-  <Accordion title="Anthropic Claude">
-    Get started with the [Anthropic API documentation](https://docs.anthropic.com/claude/reference/getting-started-with-the-api).
-  </Accordion>
-  
+
+{" "}
+<Accordion title="Google AI / Vertex AI">
+  Follow the [Google Cloud API setup
+  guide](https://cloud.google.com/docs/authentication/api-keys) to create your
+  credentials.
+</Accordion>
+
+{" "}
+<Accordion title="Anthropic Claude">
+  Get started with the [Anthropic API
+  documentation](https://docs.anthropic.com/claude/reference/getting-started-with-the-api).
+</Accordion>
+
   <Accordion title="Novita AI">
-    Access the [Novita AI Developer portal](https://novita.ai/docs/guides/quickstart) for API information.
+    Access the [Novita AI Developer
+    portal](https://novita.ai/docs/guides/quickstart) for API information.
   </Accordion>
 </AccordionGroup>
 
@@ -133,7 +136,7 @@ When configuring your environment variables, you'll need API keys for AI provide
 Choose and configure your preferred Git provider. For basic token-based authentication, you only need to set the webhook URL:
 
 <Tabs>
-  <Tab title="GitHub">
+  <Tab title="Github">
   <Info>
   For token-based authentication, you only need to configure the webhook URL. The other variables are required only if you want to use OAuth for authentication.
 </Info>
@@ -151,7 +154,7 @@ Choose and configure your preferred Git provider. For basic token-based authenti
     ```
 
   </Tab>
-  <Tab title="GitLab">
+  <Tab title="Gitlab">
   <Info>
   For token-based authentication, you only need to configure the webhook URL. The other variables are required only if you want to use OAuth for authentication.
 </Info>
@@ -317,7 +320,8 @@ Once you access the web interface for the first time, you'll need to:
 3. **Select repositories** for analysis - Choose which code repositories Kody will review
 
 <Info>
-  For detailed steps on the initial configuration process, refer to our [Getting Started Guide](/how_to_use/en/quickstart).
+  For detailed steps on the initial configuration process, refer to our [Getting
+  Started Guide](/how_to_use/en/quickstart).
 </Info>
 
 ### Updating Kodus
@@ -369,6 +373,7 @@ When troubleshooting or monitoring your Kodus installation, you may need to acce
     # Access log files directly from orchestrator
     docker exec -it kodus-orchestrator-prod ls /app/logs
     ```
+
   </Accordion>
   
   <Accordion title="Database Logs">
@@ -379,6 +384,7 @@ When troubleshooting or monitoring your Kodus installation, you may need to acce
     # MongoDB logs
     docker logs db_kodus_mongodb
     ```
+
   </Accordion>
   
   <Accordion title="Infrastructure Service Logs">
@@ -395,6 +401,7 @@ When troubleshooting or monitoring your Kodus installation, you may need to acce
     # Grafana logs (if configured)
     docker logs grafana-prod
     ```
+
   </Accordion>
 </AccordionGroup>
 
@@ -402,76 +409,39 @@ When troubleshooting or monitoring your Kodus installation, you may need to acce
 
 <AccordionGroup>
   <Accordion title="Web Interface Not Accessible">
-    If you cannot access the web interface after installation:
-    
-    ```bash
-    # Check if containers are running
-    docker ps | grep kodus-web-prod
-    
-    # Verify port mappings
-    docker port kodus-web-prod
-    
-    # Check web application logs
-    docker logs kodus-web-prod
-    ```
-    
-    **Common solutions:**
-    - Ensure ports 3000 and 3001 are open in your firewall
-    - Verify your Nginx configuration is correct
-    - Check for SSL certificate issues if using HTTPS
+    If you cannot access the web interface after installation: ```bash # Check
+    if containers are running docker ps | grep kodus-web-prod # Verify port
+    mappings docker port kodus-web-prod # Check web application logs docker logs
+    kodus-web-prod ``` **Common solutions:** - Ensure ports 3000 and 3001 are
+    open in your firewall - Verify your Nginx configuration is correct - Check
+    for SSL certificate issues if using HTTPS
   </Accordion>
-  
-  <Accordion title="Git Webhook Connection Errors">
-    If webhooks from your Git provider aren't reaching Kodus:
-    
-    ```bash
-    # Check orchestrator logs for webhook activity
-    docker logs kodus-orchestrator-prod | grep webhook
-    ```
-    
-    **Common solutions:**
-    - Verify your public URL is correctly configured
-    - Ensure your Git provider can reach your Kodus instance
-    - Check the webhook configuration in your Git provider
-  </Accordion>
-  
-  <Accordion title="Database Connection Issues">
-    If services are failing due to database connectivity problems:
-    
-    ```bash
-    # Check database status
-    docker ps | grep db_kodus_postgres
-    docker ps | grep db_kodus_mongodb
-    
-    # View initialization logs
-    docker logs db_kodus_postgres
-    docker logs db_kodus_mongodb
-    ```
-    
-    **Common solutions:**
-    - Restart the database containers
-    - Check for disk space issues
-    - Verify your .env file has correct database credentials
-  </Accordion>
-  
+
+{" "}
+<Accordion title="Git Webhook Connection Errors">
+  If webhooks from your Git provider aren't reaching Kodus: ```bash # Check
+  orchestrator logs for webhook activity docker logs kodus-orchestrator-prod |
+  grep webhook ``` **Common solutions:** - Verify your public URL is correctly
+  configured - Ensure your Git provider can reach your Kodus instance - Check
+  the webhook configuration in your Git provider
+</Accordion>
+
+{" "}
+<Accordion title="Database Connection Issues">
+  If services are failing due to database connectivity problems: ```bash # Check
+  database status docker ps | grep db_kodus_postgres docker ps | grep
+  db_kodus_mongodb # View initialization logs docker logs db_kodus_postgres
+  docker logs db_kodus_mongodb ``` **Common solutions:** - Restart the database
+  containers - Check for disk space issues - Verify your .env file has correct
+  database credentials
+</Accordion>
+
   <Accordion title="Installation Script Fails">
-    If the installation script fails to complete:
-    
-    ```bash
-    # Check the script logs
-    cat kodus-installer.log
-    
-    # Verify Docker is running
-    systemctl status docker
-    
-    # Check available disk space
-    df -h
-    ```
-    
-    **Common solutions:**
-    - Ensure all required dependencies are installed
-    - Verify Docker is running and accessible
-    - Check if you have sufficient disk space
+    If the installation script fails to complete: ```bash # Check the script
+    logs cat kodus-installer.log # Verify Docker is running systemctl status
+    docker # Check available disk space df -h ``` **Common solutions:** - Ensure
+    all required dependencies are installed - Verify Docker is running and
+    accessible - Check if you have sufficient disk space
   </Accordion>
 </AccordionGroup>
 
