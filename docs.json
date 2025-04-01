@@ -138,6 +138,32 @@
                   },
                   "how_to_deploy/en/deploy_kodus/troubleshooting"
                 ]
+              },
+              {
+                "group": "Git providers configuration",
+                "pages": [
+                  {
+                    "group": "Github",
+                    "icon": "github",
+                    "pages": [
+                      "how_to_deploy/en/platforms/github/github_webhook"
+                    ]
+                  },
+                  {
+                    "group": "Gitlab",
+                    "icon": "gitlab",
+                    "pages": [
+                      "how_to_deploy/en/platforms/gitlab/gitlab_webhook"
+                    ]
+                  },
+                  {
+                    "group": "Bitbucket",
+                    "icon": "bitbucket",
+                    "pages": [
+                      "how_to_deploy/en/platforms/bitbucket/bitbucket_webhook"
+                    ]
+                  }
+                ]
               }
             ]
           }

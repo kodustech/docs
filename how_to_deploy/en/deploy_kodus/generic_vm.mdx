@@ -22,7 +22,9 @@ icon: "desktop"
 </AccordionGroup>
 
 <Note>
-  **Internet access is only required if you plan to connect with cloud-based Git services like GitHub, GitLab, or Bitbucket.** For self-hosted Git tools within your network, external internet access is optional.
+  **Internet access is only required if you plan to connect with cloud-based Git
+  services like GitHub, GitLab, or Bitbucket.** For self-hosted Git tools within
+  your network, external internet access is optional.
 </Note>
 
 ## Deployment Process
@@ -43,21 +45,52 @@ We recommend using a subdomain like `kodus.yourdomain.com`. After acquiring your
 
 > **Note**: If you're only connecting to self-hosted Git tools on your network, you can skip this step.
 
-### 2. Configure the .ENV file
+### 2. Get the Kodus Installer
 
-Copy the `.env.example` file to `.env` and make the necessary changes.
+Clone our installer repository:
 
-#### Essential Environment Variables
+```bash
+git clone https://github.com/kodustech/kodus-installer.git
+cd kodus-installer
+```
 
-The following variables are required for basic functionality:
+### 3. Configure Environment Variables
+
+First, copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Generate secure keys for the required environment variables using:
+
+```bash
+openssl rand -base64 32
+```
+
+You'll need to generate values for these security keys:
+
+- WEB_NEXTAUTH_SECRET
+- WEB_JWT_SECRET_KEY
+- API_CRYPTO_KEY
+- API_JWT_SECRET
+- API_JWT_REFRESHSECRET
+
+<Warning>
+  Never commit your `.env` file to version control. Keep your API keys and
+  database credentials secure.
+</Warning>
+
+Then update your `.env` file with the following required variables:
 
 ```env
 # Core System Settings
-WEB_NODE_ENV="development"                    # Keep as "development" for local setup
-WEB_HOSTNAME_API="localhost"                  # API hostname
-WEB_PORT_API=3001                            # API port
-WEB_PORT=3000                                # Web application port
+WEB_NODE_ENV="development"                     # Keep as "development" for local setup
+WEB_HOSTNAME_API="localhost"                   # API hostname
+WEB_PORT_API=3001                              # API port
+WEB_PORT=3000                                  # Web application port
 GLOBAL_API_CONTAINER_NAME="kodus-orchestrator" # API container name
+
 
 # Authentication Settings
 WEB_NEXTAUTH_URL="http://localhost:3000"      # Base URL for authentication
@@ -68,10 +101,15 @@ WEB_JWT_SECRET_KEY=""                         # JWT secret key (generate with: o
 API_NODE_ENV="development"                    # Keep as "development" for local setup
 API_LOG_LEVEL=error                           # Error logging level
 API_LOG_PRETTY=true                           # Pretty print logs
-API_HOST=0.0.0.0                             # API host
-API_PORT=3001                                # API port
+API_HOST=0.0.0.0                              # API host
+API_PORT=3001                                 # API port
 API_RATE_MAX_REQUEST=100                      # Rate limiting: max requests
 API_RATE_INTERVAL=1000                        # Rate limiting: time window (ms)
+API_CRYPTO_KEY=                               # Crypto key (generate with: openssl rand -base64 32)
+API_JWT_EXPIRES_IN=365d                       # JWT token expiration time
+API_JWT_SECRET=                               # JWT secret key
+API_JWT_REFRESHSECRET=                        # JWT refresh token secret key
+API_JWT_REFRESH_EXPIRES_IN=7d                 # JWT refresh token expiration time
 
 # Database Configuration
 API_DATABASE_ENV="development"                # Database environment
@@ -95,7 +133,7 @@ Configure your AI providers by adding the following variables:
 
 ```env
 # LLM API Keys
-API_OPEN_AI_APIKEY=                          # OpenAI API key
+API_OPEN_AI_API_KEY=                          # OpenAI API key
 API_GOOGLE_AI_API_KEY=                       # Google AI API key
 API_ANTHROPIC_API_KEY=                       # Anthropic API key
 API_NOVITA_AI_API_KEY=                       # Novita AI API key
@@ -113,6 +151,7 @@ When configuring your environment variables, you'll need API keys for AI provide
   </Accordion>
 
 {" "}
+
 <Accordion title="Google AI / Vertex AI">
   Follow the [Google Cloud API setup
   guide](https://cloud.google.com/docs/authentication/api-keys) to create your
@@ -120,6 +159,7 @@ When configuring your environment variables, you'll need API keys for AI provide
 </Accordion>
 
 {" "}
+
 <Accordion title="Anthropic Claude">
   Get started with the [Anthropic API
   documentation](https://docs.anthropic.com/claude/reference/getting-started-with-the-api).
@@ -151,6 +191,8 @@ Choose and configure your preferred Git provider. For basic token-based authenti
     WEB_GITHUB_INSTALL_URL=""                    # GitHub App Installation URL
     WEB_OAUTH_GITHUB_CLIENT_ID=""                # GitHub OAuth Client ID
     WEB_OAUTH_GITHUB_CLIENT_SECRET=""            # GitHub OAuth Client Secret
+    GLOBAL_GITHUB_CLIENT_ID=
+    GLOBAL_GITHUB_REDIRECT_URI=
     ```
 
   </Tab>
@@ -168,6 +210,9 @@ Choose and configure your preferred Git provider. For basic token-based authenti
     WEB_GITLAB_OAUTH_URL="https://gitlab.com/oauth/authorize"
     WEB_OAUTH_GITLAB_CLIENT_ID=""                # GitLab OAuth Client ID
     WEB_OAUTH_GITLAB_CLIENT_SECRET=""            # GitLab OAuth Client Secret
+    GLOBAL_GITLAB_CLIENT_ID=""
+    GLOBAL_GITLAB_CLIENT_SECRET=""
+    GLOBAL_GITLAB_REDIRECT_URL=""
     ```
 
   </Tab>
@@ -190,20 +235,6 @@ Choose and configure your preferred Git provider. For basic token-based authenti
   Never commit your `.env` file to version control. Keep your API keys and
   database credentials secure.
 </Warning>
-
-<Tip>
-  For secure key generation, use the following command: ```bash openssl rand
-  -base64 32 ```
-</Tip>
-
-### 3. Get the Kodus Installer
-
-Clone our installer repository:
-
-```bash
-git clone https://github.com/kodustech/kodus-installer.git
-cd kodus-installer
-```
 
 ### 4. Run the Installation Script
 
@@ -418,6 +449,7 @@ When troubleshooting or monitoring your Kodus installation, you may need to acce
   </Accordion>
 
 {" "}
+
 <Accordion title="Git Webhook Connection Errors">
   If webhooks from your Git provider aren't reaching Kodus: ```bash # Check
   orchestrator logs for webhook activity docker logs kodus-orchestrator-prod |
@@ -427,6 +459,7 @@ When troubleshooting or monitoring your Kodus installation, you may need to acce
 </Accordion>
 
 {" "}
+
 <Accordion title="Database Connection Issues">
   If services are failing due to database connectivity problems: ```bash # Check
   database status docker ps | grep db_kodus_postgres docker ps | grep
