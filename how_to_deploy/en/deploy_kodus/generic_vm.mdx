@@ -65,16 +65,20 @@ cp .env.example .env
 Generate secure keys for the required environment variables using:
 
 ```bash
+# For most security keys
 openssl rand -base64 32
+
+# Specifically for API_CRYPTO_KEY
+openssl rand -hex 32
 ```
 
 You'll need to generate values for these security keys:
 
-- WEB_NEXTAUTH_SECRET
-- WEB_JWT_SECRET_KEY
-- API_CRYPTO_KEY
-- API_JWT_SECRET
-- API_JWT_REFRESHSECRET
+- WEB_NEXTAUTH_SECRET (use openssl rand -base64 32)
+- WEB_JWT_SECRET_KEY (use openssl rand -base64 32)
+- API_CRYPTO_KEY (use openssl rand -hex 32)
+- API_JWT_SECRET (use openssl rand -base64 32)
+- API_JWT_REFRESHSECRET (use openssl rand -base64 32)
 
 <Warning>
   Never commit your `.env` file to version control. Keep your API keys and
@@ -105,7 +109,7 @@ API_HOST=0.0.0.0                              # API host
 API_PORT=3001                                 # API port
 API_RATE_MAX_REQUEST=100                      # Rate limiting: max requests
 API_RATE_INTERVAL=1000                        # Rate limiting: time window (ms)
-API_CRYPTO_KEY=                               # Crypto key (generate with: openssl rand -base64 32)
+API_CRYPTO_KEY=                               # Crypto key (generate with: openssl rand -hex 32)
 API_JWT_EXPIRES_IN=365d                       # JWT token expiration time
 API_JWT_SECRET=                               # JWT secret key
 API_JWT_REFRESHSECRET=                        # JWT refresh token secret key
