@@ -8,16 +8,22 @@ icon: "desktop"
 
 <AccordionGroup>
   <Accordion title="Recommended Hardware">
-    - CPU: 2+ cores - RAM: 8GB+ - Storage: 60GB+ free space
+    - CPU: 2+ cores 
+    - RAM: 8GB+ 
+    - Storage: 60GB+ free space
   </Accordion>
   <Accordion title="Required Software">
-    - Docker (latest stable version) - Node.js (latest LTS version) - Yarn or
-    NPM (latest stable version) - Domain name or fixed IP (for external
-    deployments)
+    - Docker (latest stable version) 
+    - Node.js (latest LTS version) 
+    - Yarn or NPM (latest stable version) 
+    - Domain name or fixed IP (for external deployments)
   </Accordion>
   <Accordion title="Required Ports">
-    - 3000: Kodus Web App - 3001: Orchestrator API - 5672, 15672: RabbitMQ -
-    5432: PostgreSQL - 27017: MongoDB
+    - 3000: Kodus Web App 
+    - 3001: Orchestrator API 
+    - 5672, 15672: RabbitMQ 
+    - 5432: PostgreSQL 
+    - 27017: MongoDB
   </Accordion>
 </AccordionGroup>
 
@@ -89,7 +95,7 @@ Then update your `.env` file with the following required variables:
 
 ```env
 # Core System Settings
-WEB_NODE_ENV="development"                     # Keep as "development" for local setup
+WEB_NODE_ENV="self-hosted"                     # Keep as "self-hosted" for self-hosted setup
 WEB_HOSTNAME_API="localhost"                   # API hostname
 WEB_PORT_API=3001                              # API port
 WEB_PORT=3000                                  # Web application port
@@ -97,7 +103,7 @@ GLOBAL_API_CONTAINER_NAME="kodus-orchestrator" # API container name
 
 
 # Authentication Settings
-WEB_NEXTAUTH_URL="http://localhost:3000"      # Base URL for authentication
+NEXTAUTH_URL="http://localhost:3000"      # Base URL for authentication
 WEB_NEXTAUTH_SECRET=""                        # NextAuth secret key (generate with: openssl rand -base64 32)
 WEB_JWT_SECRET_KEY=""                         # JWT secret key (generate with: openssl rand -base64 32)
 
