@@ -1,0 +1,48 @@
+---
+title: "Azure DevOps PAT Token"
+---
+
+## Introduction to the PAT
+
+To enable Kody to perform automatic Code Reviews, you need to generate a Personal Access Token (PAT) in Azure DevOps. This token allows Kody to securely access your repositories and conduct code analysis in a controlled way.
+
+## Generating the PAT (Personal Access Token)
+
+You can access the PAT settings directly using this link: [Azure DevOps PATs](https://dev.azure.com/).
+
+Follow these steps to set up the token correctly:
+
+1. **Access Azure DevOps and go to your security settings:**
+
+   - Go to [Azure DevOps](https://dev.azure.com/) and sign in.
+   - Click on your profile picture in the top-right corner.
+   - Select **"Security"** from the dropdown.
+
+2. **Create a new PAT:**
+
+   - Under the **Personal Access Tokens** section, click on **"New Token"**.
+
+3. **Set up the new token with the following specifications:**
+
+   - **Name:** Choose an easily identifiable name, such as `kody_code_review`.
+   - **Organization:** Select your target organization.
+   - **Expiration:** Choose an appropriate expiration time (e.g., 90 or 180 days).
+   - **Scopes:** Select the following permissions:
+
+     - **Analytics:** Read
+     - **Graph:** Read
+     - **Project and Team:** Read
+     - **Code:** Read & Write
+     - **User Profile:** Read
+
+4. **Click Create.**
+
+Copy the generated token and store it securely, as you’ll need it to configure Kody.
+
+<Note>
+  Write access to Code is required for Kody to post comments and manage pull request feedback.
+</Note>
+
+## Adding the Token to Kody
+
+After generating the token, paste it into the Kody automation setup screen. The configuration modal will open automatically when you attempt to enable the automation.

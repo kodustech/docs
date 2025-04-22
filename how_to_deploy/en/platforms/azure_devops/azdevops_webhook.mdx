@@ -1,0 +1,31 @@
+---
+title: Creating a Webhook
+icon: webhook
+---
+
+Kody usually creates the webhook automatically. If that didn't happen, follow these steps to set it up manually:
+
+1. Navigate to your Azure DevOps project.
+2. Click on "Project settings" in the bottom-left corner.
+3. Under the "General" section, select "Service hooks".
+4. Click the "+ Create Subscription" button.
+5. Time to configure your webhook:
+
+   - **Service**: Choose **"Web Hooks"**
+   - **Trigger on this type of event**: Select the event type (see below)
+   - **URL**: Enter the URL where you want to receive notifications — the same one set in `GLOBAL_AZURE_CODE_MANAGEMENT_WEBHOOK` in your `.env` file.
+   - **Details**:
+     - **Pull request created**
+     - **Pull request updated**
+     - **Pull request commented**
+   - **Filters** (optional): You can filter by repository or branch if needed.
+   - **Action**: Configure to send a POST request to the given URL.
+
+6. Click "Finish"
+
+And that's it! You've successfully set up a webhook to enable Kody to review your pull requests in Azure DevOps.
+
+<Note>
+  Make sure the URL you use is reachable and accepts incoming POST requests for
+  pull request events.
+</Note>
