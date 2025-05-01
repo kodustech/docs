@@ -74,8 +74,11 @@ Generate secure keys for the required environment variables using:
 # For most security keys
 openssl rand -base64 32
 
-# Specifically for API_CRYPTO_KEY
+# Specifically for API_CRYPTO_KEY and CODE_MANAGEMENT_SECRET
 openssl rand -hex 32
+
+# Specifically for CODE_MANAGEMENT_WEBHOOK_TOKEN
+openssl rand -base64 32 | tr -d '=' | tr '/+' '_-'
 ```
 
 You'll need to generate values for these security keys:
@@ -85,6 +88,8 @@ You'll need to generate values for these security keys:
 - API_CRYPTO_KEY (use openssl rand -hex 32)
 - API_JWT_SECRET (use openssl rand -base64 32)
 - API_JWT_REFRESHSECRET (use openssl rand -base64 32)
+- CODE_MANAGEMENT_SECRET (use openssl rand -hex 32)
+- CODE_MANAGEMENT_WEBHOOK_TOKEN (use openssl rand -base64 32 | tr -d '=' | tr '/+' '_-')
 
 <Warning>
   Never commit your `.env` file to version control. Keep your API keys and

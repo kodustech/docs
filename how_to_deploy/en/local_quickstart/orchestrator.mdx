@@ -1,6 +1,6 @@
 ---
-title: "Running Orchestrator API"
-description: "Quickstart guide to get Kodus Orchestrator API running on your local machine."
+title: "Running Kodus API"
+description: "Quickstart guide to get Kodus API running on your local machine."
 icon: "server"
 ---
 
@@ -63,6 +63,10 @@ JWT_REFRESH_SECRET=your_refresh_secret
 JWT_REFRESH_EXPIRES_IN=your_refresh_expiration
 
 # Code Management Service Configuration
+
+CODE_MANAGEMENT_SECRET=your_secret
+CODE_MANAGEMENT_WEBHOOK_TOKEN=your_webhook_token
+
 # Choose and configure ONE of the following services:
 
 # GitHub Configuration
@@ -79,7 +83,6 @@ GITLAB_CLIENT_SECRET=your_client_secret
 GITLAB_REDIRECT_URL=your_redirect_url
 GITLAB_TOKEN_URL=your_token_url
 GITLAB_CODE_MANAGEMENT_WEBHOOK=your_webhook_url
-CODE_MANAGEMENT_SECRET=your_secret
 
 # Bitbucket Configuration
 BITBUCKET_CODE_MANAGEMENT_WEBHOOK=your_webhook_url
