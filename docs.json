@@ -120,7 +120,6 @@
               {
                 "group": "Deploy Kodus",
                 "pages": [
-                  "how_to_deploy/en/deploy_kodus/deploy_using_cli",
                   {
                     "group": "Custom Deployment",
                     "icon": "server",
