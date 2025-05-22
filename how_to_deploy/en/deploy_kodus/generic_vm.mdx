@@ -374,6 +374,17 @@ sudo nginx -t  # Test the configuration
 sudo systemctl reload nginx  # Apply the changes
 ```
 
+<Warning>
+  **Important Configuration Update for Reverse Proxy:**
+
+  After setting up the reverse proxy with `kodus-web.yourdomain.com` and `kodus-api.yourdomain.com` (or your chosen subdomains), you **must** ensure your `.env` file correctly reflects these public URLs. Specifically, verify: 
+  - `WEB_HOSTNAME_API`: Should be set to **only the hostname** of your public API (e.g., `kodus-api.yourdomain.com`), without any protocol (`http://` or `https://`).
+  - `WEB_PORT_API`: Should correspond to the public port your API is accessible on (typically `443` for HTTPS or `80` for HTTP). The scheme (http/https) used by the frontend to call the API will often be inferred from this port or hardcoded in the frontend logic to use HTTPS.
+  - Webhook URLs (e.g., `API_GITHUB_CODE_MANAGEMENT_WEBHOOK`): Ensure these are updated in your `.env` file to use your full public API domain including the scheme (e.g., `https://kodus-api.yourdomain.com/webhooks/github`).
+
+  Failure to update these correctly may result in authentication issues, inability for the web application to connect to the API, or malfunctioning webhooks.
+</Warning>
+
 ## Post-Installation Guide
 
 After successfully deploying Kodus on your VM, follow these steps to get the most out of your installation:
