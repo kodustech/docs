@@ -8,22 +8,16 @@ icon: "desktop"
 
 <AccordionGroup>
   <Accordion title="Recommended Hardware">
-    - CPU: 2+ cores 
-    - RAM: 8GB+ 
-    - Storage: 60GB+ free space
+    - CPU: 2+ cores - RAM: 8GB+ - Storage: 60GB+ free space
   </Accordion>
   <Accordion title="Required Software">
-    - Docker (latest stable version) 
-    - Node.js (latest LTS version) 
-    - Yarn or NPM (latest stable version) 
-    - Domain name or fixed IP (for external deployments)
+    - Docker (latest stable version) - Node.js (latest LTS version) - Yarn or
+    NPM (latest stable version) - Domain name or fixed IP (for external
+    deployments)
   </Accordion>
   <Accordion title="Required Ports">
-    - 3000: Kodus Web App 
-    - 3001: Orchestrator API 
-    - 5672, 15672: RabbitMQ 
-    - 5432: PostgreSQL 
-    - 27017: MongoDB
+    - 3000: Kodus Web App - 3001: Orchestrator API - 5672, 15672: RabbitMQ -
+    5432: PostgreSQL - 27017: MongoDB
   </Accordion>
 </AccordionGroup>
 
@@ -45,11 +39,15 @@ icon: "desktop"
 
 ### 1. Domain Name Setup (Optional)
 
-If you're planning to integrate Kodus with cloud-based Git providers (GitHub, GitLab, or Bitbucket), you'll need a domain name or fixed IP address. This allows your server to receive webhooks for proper Code Review functionality.
+If you're planning to integrate Kodus with cloud-based Git providers (GitHub, GitLab, or Bitbucket), you'll need public-facing URLs for both the Kodus Web App and its API. This allows your server to receive webhooks for proper Code Review functionality and ensures correct application behavior.
 
-We recommend using a subdomain like `kodus.yourdomain.com`. After acquiring your domain, configure the DNS records to point to your server's IP address.
+We recommend setting up two subdomains:
+- One for the Web Application, e.g., `kodus-web.yourdomain.com`.
+- One for the API, e.g., `kodus-api.yourdomain.com`.
 
-> **Note**: If you're only connecting to self-hosted Git tools on your network, you can skip this step.
+Both subdomains should have DNS A records pointing to your server's IP address. Later in this guide, we will configure a reverse proxy (Nginx) to route requests to these subdomains to the correct internal services. This setup is essential for full functionality, including webhooks and authentication.
+
+> **Note**: If you're only connecting to self-hosted Git tools on your network and do not require public access or webhooks, you might be able to use a simpler setup, but this guide focuses on public-facing deployments.
 
 ### 2. Get the Kodus Installer
 
@@ -89,7 +87,7 @@ You'll need to generate values for these security keys:
 - API_JWT_SECRET (use openssl rand -base64 32)
 - API_JWT_REFRESHSECRET (use openssl rand -base64 32)
 - CODE_MANAGEMENT_SECRET (use openssl rand -hex 32)
-- CODE_MANAGEMENT_WEBHOOK_TOKEN (use openssl rand -base64 32 | tr -d '=' | tr '/+' '_-')
+- CODE*MANAGEMENT_WEBHOOK_TOKEN (use openssl rand -base64 32 | tr -d '=' | tr '/+' '*-')
 
 <Warning>
   Never commit your `.env` file to version control. Keep your API keys and
@@ -101,14 +99,14 @@ Then update your `.env` file with the following required variables:
 ```env
 # Core System Settings
 WEB_NODE_ENV="self-hosted"                     # Keep as "self-hosted" for self-hosted setup
-WEB_HOSTNAME_API="localhost"                   # API hostname
-WEB_PORT_API=3001                              # API port
-WEB_PORT=3000                                  # Web application port
+WEB_HOSTNAME_API="kodus-api.yourdomain.com"    # Public API hostname (e.g., kodus-api.yourdomain.com)
+WEB_PORT_API=443                               # Public API port (usually 443 for HTTPS, or 80 if not using SSL yet)
+WEB_PORT=3000                                  # Internal Web application port (reverse proxy will handle public port)
 GLOBAL_API_CONTAINER_NAME="kodus-orchestrator" # API container name
 
 
 # Authentication Settings
-NEXTAUTH_URL="http://localhost:3000"      # Base URL for authentication
+NEXTAUTH_URL="https://kodus-web.yourdomain.com" # Full public base URL for the Web App (e.g., https://kodus-web.yourdomain.com)
 WEB_NEXTAUTH_SECRET=""                        # NextAuth secret key (generate with: openssl rand -base64 32)
 WEB_JWT_SECRET_KEY=""                         # JWT secret key (generate with: openssl rand -base64 32)
 
@@ -144,18 +142,48 @@ API_MG_DB_DATABASE=kodus_db                  # Database name
 
 #### LLM Integration Settings
 
-Configure your AI providers by adding the following variables:
+Kodus offers two configuration modes for Language Models (LLMs):
 
-```env
-# LLM API Keys
-API_OPEN_AI_API_KEY=                          # OpenAI API key
-API_GOOGLE_AI_API_KEY=                       # Google AI API key
-API_ANTHROPIC_API_KEY=                       # Anthropic API key
-API_NOVITA_AI_API_KEY=                       # Novita AI API key
-API_VERTEX_AI_API_KEY=                       # Vertex AI API key
-```
+<Tabs>
+  <Tab title="Fixed Mode (Recommended for Self-Hosted)">
+    This is the simplest mode and recommended for self-hosted installations. You only need to configure a single LLM model.
 
-### LLM API Keys Resources
+    ```env
+    # Fixed Mode Configuration
+    API_LLM_PROVIDER_MODEL="gpt-3.5-turbo"     # Model you want to use
+    API_OPENAI_FORCE_BASE_URL="https://your-api.com/v1"  # Your API provider URL
+    API_OPEN_AI_API_KEY="your-api-key"          # Your API provider key
+    ```
+
+    <Info>
+      This mode is ideal for self-hosted because:
+      - Requires only a single API key
+      - Works with any OpenAI-compatible API provider
+      - Easier to configure and maintain
+    </Info>
+
+  </Tab>
+
+  <Tab title="Automatic Mode (High Quality)">
+    This mode uses multiple LLM models to achieve the best possible results. Requires more configuration but offers the highest quality analysis.
+
+    ```env
+    # Automatic Mode Configuration
+    API_OPEN_AI_API_KEY=                       # OpenAI API key
+    API_GOOGLE_AI_API_KEY=                     # Google AI API key
+    API_ANTHROPIC_API_KEY=                     # Anthropic API key
+    API_NOVITA_AI_API_KEY=                     # Novita AI API key
+    API_VERTEX_AI_API_KEY=                     # Vertex AI API key
+    ```
+
+    <Info>
+      This mode offers the best quality because:
+      - Uses multiple specialized models
+      - Our pipeline is optimized to extract the best from each model
+      - Ideal for enterprise installations prioritizing quality
+    </Info>
+
+    #### API Keys Resources
 
 When configuring your environment variables, you'll need API keys for AI providers. Use these official resources:
 
@@ -185,6 +213,8 @@ When configuring your environment variables, you'll need API keys for AI provide
     portal](https://novita.ai/docs/guides/quickstart) for API information.
   </Accordion>
 </AccordionGroup>
+  </Tab>
+</Tabs>
 
 #### Git Provider Configuration
 
@@ -197,7 +227,7 @@ Choose and configure your preferred Git provider. For basic token-based authenti
 </Info>
     ```env
     # Required for token-based authentication
-    API_GITHUB_CODE_MANAGEMENT_WEBHOOK=          # GitHub webhook URL
+    API_GITHUB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/webhooks/github"          # GitHub webhook URL (update with your API domain)
 
     # Optional - Only needed if using OAuth
     API_GITHUB_APP_ID=                           # GitHub App ID
@@ -217,7 +247,7 @@ Choose and configure your preferred Git provider. For basic token-based authenti
 </Info>
     ```env
     # Required for token-based authentication
-    API_GITLAB_CODE_MANAGEMENT_WEBHOOK=          # GitLab webhook URL
+    API_GITLAB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/webhooks/gitlab"          # GitLab webhook URL (update with your API domain)
 
     # Optional - Only needed if using OAuth
     API_GITLAB_TOKEN_URL="https://gitlab.com/oauth/token"
@@ -237,7 +267,7 @@ Choose and configure your preferred Git provider. For basic token-based authenti
 </Info>
     ```env
     # Required for token-based authentication
-    GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK=    # Bitbucket webhook URL
+    GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/webhooks/bitbucket"    # Bitbucket webhook URL (update with your API domain)
 
     # Optional - Only needed if using OAuth
     WEB_BITBUCKET_INSTALL_URL=""                 # Bitbucket Installation URL
@@ -271,13 +301,6 @@ Run the script:
 ./scripts/install.sh
 ```
 
-### .env variables that you need to change
-
-- `KODUS_ORCHESTRATOR_API_URL`: The URL of the Kodus Orchestrator API.
-- `KODUS_WEB_APP_URL`: The URL of the Kodus Web Application.
-- `KODUS_GIT_PROVIDER`: The Git provider you want to use.
-- `KODUS_GIT_PROVIDER_API_KEY`: The API key for the Git provider.
-
 ### What the Installer Does
 
 Our installer automates several important steps:
@@ -301,36 +324,49 @@ You can verify your installation by visiting `http://localhost:3000` - you shoul
 
 ## Setting Up a Reverse Proxy
 
-To make your Kodus instance accessible from external systems (required for Code Review webhooks), you'll need to configure a reverse proxy with Nginx.
+To make your Kodus instance accessible from external systems (required for Code Review webhooks and public access), you'll need to configure a reverse proxy with Nginx.
 
-Here's a sample Nginx configuration:
+Here's a sample Nginx configuration for two subdomains:
 
 ```nginx
+# Server block for the Kodus Web Application
 server {
     listen 80;
-    server_name kodus.yourdomain.com;
+    server_name kodus-web.yourdomain.com; # Replace with your actual web app domain
 
     location / {
-        proxy_pass http://localhost:3000;
+        proxy_pass http://localhost:3000; # Points to the Kodus Web App container
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
     }
+}
 
-    location /api {
-        proxy_pass http://localhost:3001;
+# Server block for the Kodus API (Orchestrator)
+server {
+    listen 80;
+    server_name kodus-api.yourdomain.com; # Replace with your actual API domain
+
+    location / {
+        proxy_pass http://localhost:3001; # Points to the Kodus Orchestrator API container
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
     }
 }
 ```
 
-Save this configuration to `/etc/nginx/sites-available/kodus` and create a symbolic link to enable it:
+Save this configuration to `/etc/nginx/sites-available/kodus` (or a name of your choice, e.g., `kodus-web` and `kodus-api` as separate files if preferred) and create a symbolic link to enable it:
 
 ```bash
 sudo ln -s /etc/nginx/sites-available/kodus /etc/nginx/sites-enabled/
@@ -351,11 +387,11 @@ For production deployments, we strongly recommend setting up SSL with Let's Encr
 sudo apt-get update
 sudo apt-get install certbot python3-certbot-nginx
 
-# Obtain and install certificates
-sudo certbot --nginx -d kodus.yourdomain.com
+# Obtain and install certificates for both domains
+sudo certbot --nginx -d kodus-web.yourdomain.com -d kodus-api.yourdomain.com # Replace with your actual domains
 ```
 
-This will automatically configure your Nginx setup to use HTTPS and redirect HTTP traffic.
+This will automatically configure your Nginx setup to use HTTPS and redirect HTTP traffic for both subdomains.
 
 ### Completing Initial Setup
 
@@ -418,10 +454,8 @@ When troubleshooting or monitoring your Kodus installation, you may need to acce
 
     # Access log files directly from orchestrator
     docker exec -it kodus-orchestrator-prod ls /app/logs
-    ```
+    ```  </Accordion>
 
-  </Accordion>
-  
   <Accordion title="Database Logs">
     ```bash
     # PostgreSQL logs
