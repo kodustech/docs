@@ -14,10 +14,21 @@ By default, a Fine-Grained PAT may not have access to your organization’s cont
 
 1. You must be the organization owner.
 1. Go to your organization's settings in GitHub:
-   * You can use this URL replacing with your org name: <small>https://github.com/organizations/YOUR_ORG_NAME/settings/personal-access-tokens)</small>.
-2. Under **Fine-Grained Personal Access Tokens**, select **"Allow access via fine-grained personal access tokens"** to enable secure access for Kody.
+   - You can use this URL replacing with your org name: <small>https://github.com/organizations/YOUR_ORG_NAME/settings/personal-access-tokens)</small>.
+1. Under **Fine-Grained Personal Access Tokens**, select **"Allow access via fine-grained personal access tokens"** to enable secure access for Kody.
 
 ## Generating the FGPAT (Fine-Grained Personal Access Token)
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/ESE-Hl-bAD0?si=pCufAgeLBe73K_g0"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
 
 Follow these steps to set up the token correctly:
 
@@ -46,16 +57,16 @@ Follow these steps to set up the token correctly:
    - **Repository Access**: Select **All repositories** to allow the token access to all repositories.
    - **Permissions**: Configure the following read-only permissions:
    - **Repository**:
-      - **Actions**: Read permission.
-      - **Commit statuses**: Read permission.
-      - **Contents**: Read and write permission.
-      - **Deployments**: Read permission.
-      - **Issues**: Read permission.
-      - **Metadata**: Read permission.
-      - **Pull requests**: Read and write permission.
-      - **Webhooks**: Read and write permission.
+     - **Actions**: Read permission.
+     - **Commit statuses**: Read permission.
+     - **Contents**: Read and write permission.
+     - **Deployments**: Read permission.
+     - **Issues**: Read permission.
+     - **Metadata**: Read permission.
+     - **Pull requests**: Read and write permission.
+     - **Webhooks**: Read and write permission.
    - **Organization**:
-      - **Members**: Read permission.
+     - **Members**: Read permission.
 
 6. **Finalize and save the token**:
    - After setting up the permissions, click on `Generate token`.
