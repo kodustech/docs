@@ -14,6 +14,14 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
+    "contextual": {
+      "options": [
+        "copy",
+        "view",
+        "chatgpt",
+        "claude"
+      ]
+    },
     "dropdowns": [
       {
         "dropdown": "How to use",
@@ -43,14 +51,11 @@
                       "how_to_use/en/code_review/configs/kody_rules"
                     ]
                   },
-                  "how_to_use/en/code_review/kody_learning",
                   {
-                    "group": "Tokens",
+                    "group": "Kody Learning",
                     "pages": [
-                      "how_to_use/en/code_review/general_config/github_pat",
-                      "how_to_use/en/code_review/general_config/gitlab_pat",
-                      "how_to_use/en/code_review/general_config/bitbucket_pat",
-                      "how_to_use/en/code_review/general_config/azure_devops_pat"
+                      "how_to_use/en/code_review/learning/kody_learning",
+                      "how_to_use/en/code_review/learning/kody_rules_generation"
                     ]
                   },
                   "how_to_use/en/code_review/troubleshooting"
@@ -72,6 +77,15 @@
               {
                 "group": "Security",
                 "pages": [
+                  {
+                    "group": "Tokens",
+                    "pages": [
+                      "how_to_use/en/code_review/general_config/github_pat",
+                      "how_to_use/en/code_review/general_config/gitlab_pat",
+                      "how_to_use/en/code_review/general_config/bitbucket_pat",
+                      "how_to_use/en/code_review/general_config/azure_devops_pat"
+                    ]
+                  },
                   "how_to_use/en/security/data_usage"
                 ]
               }
