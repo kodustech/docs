@@ -13,15 +13,15 @@
     }
   },
   "favicon": "/favicon.svg",
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude"
+    ]
+  },
   "navigation": {
-    "contextual": {
-      "options": [
-        "copy",
-        "view",
-        "chatgpt",
-        "claude"
-      ]
-    },
     "dropdowns": [
       {
         "dropdown": "How to use",
