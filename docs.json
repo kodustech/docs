@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
+  "theme": "mint",
   "name": "Kodus",
   "colors": {
     "primary": "#F59220",
     "light": "#F8B76D",
-    "dark": "#F59220"
+    "dark": "#F8B76D"
   },
   "background": {
     "color": {
@@ -203,7 +203,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Get Started",
+      "label": "Try Kodus",
       "href": "https://kodus.io/"
     }
   },
