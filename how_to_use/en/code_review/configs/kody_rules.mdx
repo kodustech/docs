@@ -21,7 +21,10 @@ You can use Kody Rules in two ways:
 
 ### Create Custom Rules
 
-Define rules based on your team's exact needs:
+Define rules based on your team's exact needs. Kody Rules can be applied at two different levels:
+
+#### File-Level Rules
+Analyze individual files to catch issues within specific code files:
 
 - Rule name: Clearly define the rule purpose.
 - File Paths: Limit rules to specific files or directories using glob patterns.
@@ -31,9 +34,19 @@ Define rules based on your team's exact needs:
 **Example:**
 
 - Rule: "Avoid equality operators (==, !=) in loop termination conditions."
-- Path: src/\*_/_.ts
+- Path: src/**/*.ts
 - Severity: Critical
-- Instructions: "Using equality operators (== or !=) can cause infinite loops if exact values aren't matched.
+- Instructions: "Using equality operators (== or !=) can cause infinite loops if exact values aren't matched."
+
+#### Pull Request-Level Rules
+Analyze the entire Pull Request for cross-file validation and PR-specific requirements:
+
+The creation process is identical to file-level rules, but you must select the "Pull-request" scope. PR-level rules receive the complete list of changed files and PR information (title, description), enabling analysis of the overall context.
+
+**Examples:**
+- Every service file must have a corresponding test file
+- PR description must be complete, clearly stating what was added or removed
+- When a new route is created in a controller, it must be registered in routes.json
 
 ### Import from Rules Library
 
