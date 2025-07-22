@@ -54,8 +54,55 @@ Additional branches to review besides default (dev, release, master)
 ## Review Behavior
 
 ### Automated Review
-- On: Reviews PRs automatically when opened
-- Off: Reviews only with `@kody start-review`
+
+When **Enable Automated Code Review** is enabled, Kody will automatically review PRs when opened. When disabled, Kody only reviews when you comment `@kody start-review`.
+
+#### Review Cadence
+
+Choose how Kody should handle follow-up reviews after the initial one:
+
+<Tabs>
+  <Tab title="Automatic">
+    **Review every new push**
+    
+    Kody will automatically run a new review whenever changes are pushed to the PR. This ensures continuous feedback on all code changes.
+    
+    Best for:
+    - Active development with frequent updates
+    - Teams that want immediate feedback on changes
+    - Critical projects requiring constant oversight
+  </Tab>
+  
+  <Tab title="Auto-pause">
+    **Pause if a push burst is detected**
+    
+    Kody automatically pauses reviews when multiple pushes happen within a short time window, preventing review spam during active development.
+    
+    Configuration:
+    - **Pushes to trigger pause**: Number of consecutive pushes (default: 3)
+    - **Time window (minutes)**: Time frame to detect push bursts (default: 15)
+    
+    Best for:
+    - Development workflows with frequent commits
+    - Avoiding review noise during active coding sessions
+    - Teams that want smart review timing
+  </Tab>
+  
+  <Tab title="Manual">
+    **Only run when you comment @kody start-review**
+    
+    Kody will only perform follow-up reviews when explicitly requested via comment. The initial review still happens automatically when the PR is opened.
+    
+    Best for:
+    - Teams that prefer controlled review timing
+    - Projects with infrequent updates
+    - Workflows where manual review triggers are preferred
+  </Tab>
+</Tabs>
+
+<Note>
+  The initial review when a PR is opened always happens automatically when Automated Code Review is enabled, regardless of the cadence setting.
+</Note>
 
 ### PR Workflow
 #### Auto-approve PRs
