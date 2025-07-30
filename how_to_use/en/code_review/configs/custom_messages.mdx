@@ -1,0 +1,80 @@
+---
+title: "Custom Messages"
+description: "Configure personalized start and end review messages for Kody"
+---
+
+## Overview
+
+Customize the messages that Kody sends at the beginning and end of code reviews. This feature allows you to personalize the communication style and add specific context or instructions for your team.
+
+## Default Behavior
+
+When you haven't customized any messages, Kody works as follows:
+
+1. **Initial Message**: Kody sends a standard start review message
+2. **Suggestions**: Kody provides all code review suggestions
+3. **Final Message**: Kody updates the initial message with a summary of the review
+
+## Custom Message Behavior
+
+Once you edit either the start or end review message for the first time, Kody's behavior changes to:
+
+1. **Initial Message**: Kody sends your custom start review message
+2. **Suggestions**: Kody provides all code review suggestions
+3. **Final Message**: Kody sends your custom end review message (without updating the initial message)
+
+This creates a complete timeline: **Initial Message → Suggestions → Final Message**
+
+## Message Configuration Options
+
+### Enable/Disable Messages
+
+You can independently enable or disable each message type:
+
+<Tabs>
+  <Tab title="Both Messages Enabled">
+    **Timeline**: Initial Message → Suggestions → Final Message This is the
+    complete review experience with both custom messages.
+  </Tab>
+
+  <Tab title="Start Message Disabled">
+    **Timeline**: Suggestions → Final Message Kody skips the initial message and
+    goes straight to suggestions.
+  </Tab>
+
+  <Tab title="End Message Disabled">
+    **Timeline**: Initial Message → Suggestions Kody sends the initial message
+    and suggestions, but no final summary.
+  </Tab>
+
+  <Tab title="Both Messages Disabled">
+    **Timeline**: Suggestions Only Kody only sends the code review suggestions
+    without any additional messages.
+  </Tab>
+</Tabs>
+
+## Dynamic Context
+
+You can enhance your custom messages with dynamic context using the **Add Context** button. This allows you to include:
+
+### changedFiles
+
+A summary of changed files, showing additions and deletions per file. This provides a detailed breakdown of what was modified in the pull request.
+
+### changedSummary
+
+A comprehensive summary of all changes in the pull request, giving an overview of the entire modification scope.
+
+### reviewOptions
+
+A reflection of the team's configured review settings, showing which analysis types are enabled or disabled for the review.
+
+<Info>
+  These context variables will be automatically populated with the actual data
+  from your pull request when Kody sends the message.
+</Info>
+
+<Note>
+  You can always revert to the default behavior by disabling both custom
+  messages or clearing the message content.
+</Note>{" "}

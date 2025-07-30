@@ -47,7 +47,8 @@
                     "pages": [
                       "how_to_use/en/code_review/configs/general",
                       "how_to_use/en/code_review/configs/suggestion_control",
-                      "how_to_use/en/code_review/configs/pr_summary"
+                      "how_to_use/en/code_review/configs/pr_summary",
+                      "how_to_use/en/code_review/configs/custom_messages"
                     ]
                   },
                   "how_to_use/en/code_review/configs/kody_rules",
