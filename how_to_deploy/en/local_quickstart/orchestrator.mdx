@@ -18,92 +18,173 @@ icon: "server"
 
 ## Running the project
 
-### 1. Clone the repository
+<Tabs>
+  <Tab title="Automated Setup (Recommended)">
+      For a quick and automated setup, use our setup script:
 
-```bash
-git clone https://github.com/kodustech/kodus-ai.git
+      ```bash
+      git clone https://github.com/kodustech/kodus-ai.git
+      cd kodus-ai
+      yarn dev:first-run
+      ```
+
+      This script will automatically:
+      - ✅ Check all required dependencies (Node.js, Yarn, Docker, OpenSSL)
+      - ✅ Install project dependencies  
+      - ✅ Create and configure the `.env` file
+      - ✅ Generate all required security keys automatically
+      - ✅ Set up Docker networks
+      - ✅ Provide clear next steps
+
+      After running the script, you only need to run `yarn docker:start && yarn migrate:dev && yarn seed`
+  </Tab>
+  <Tab title="Manual Setup">
+      If you prefer to configure everything manually:
+
+      #### 1. Clone the repository
+
+      ```bash
+      git clone https://github.com/kodustech/kodus-ai.git
+      ```
+
+      #### 2. Install dependencies
+
+      ```bash
+      yarn install
+      ```
+
+      #### 3. Configure environment variables
+
+      ```bash
+      cp .env.example .env
+      ```
+
+      #### Generate Security Keys
+
+      Before configuring your environment variables, you'll need to generate secure keys for JWT tokens and other security-related configurations:
+
+      ```bash
+      # For most security keys (JWT secrets, etc.)
+      openssl rand -base64 32
+
+      # For crypto keys and code management secrets
+      openssl rand -hex 32
+
+      # For webhook tokens (URL-safe)
+      openssl rand -base64 32 | tr -d '=' | tr '/+' '_-'
+      ```
+
+      You'll need to generate values for these security keys:
+      - `JWT_SECRET` (use `openssl rand -base64 32`)
+      - `JWT_REFRESH_SECRET` (use `openssl rand -base64 32`)
+      - `CODE_MANAGEMENT_SECRET` (use `openssl rand -hex 32`)
+      - `CODE_MANAGEMENT_WEBHOOK_TOKEN` (use `openssl rand -base64 32 | tr -d '=' | tr '/+' '_-'`)
+
+      Configure your `.env` file with the following required variables:
+
+      ```env
+      # Cloud Mode Configuration
+      API_CLOUD_MODE=false
+
+      # PostgreSQL Configuration
+      PG_DB_HOST=
+      PG_DB_PORT=
+      PG_DB_USERNAME=
+      PG_DB_PASSWORD=
+      PG_DB_DATABASE=
+
+      # MongoDB Configuration
+      MG_DB_HOST=db_mongodb
+      MG_DB_PORT=27017
+      MG_DB_USERNAME=kodusdev
+      MG_DB_PASSWORD=123456
+      MG_DB_DATABASE=kodus_db
+
+      # JWT Configuration
+      JWT_EXPIRES_IN=365d
+      JWT_SECRET=                                    # Generate with: openssl rand -base64 32
+      JWT_REFRESH_SECRET=                            # Generate with: openssl rand -base64 32
+      JWT_REFRESH_EXPIRES_IN=7d
+
+      # Code Management Service Configuration
+      CODE_MANAGEMENT_SECRET=                        # Generate with: openssl rand -hex 32
+      CODE_MANAGEMENT_WEBHOOK_TOKEN=                 # Generate with: openssl rand -base64 32 | tr -d '=' | tr '/+' '_-'
+
+      # LLM Integration Settings
+      # Choose between Fixed Mode (simpler) or Automatic Mode (higher quality)
+
+      ## Fixed Mode (Recommended for Local Development)
+      # This mode uses a single LLM model and is easier to configure
+      API_LLM_PROVIDER_MODEL="gpt-3.5-turbo"
+      API_OPENAI_FORCE_BASE_URL="https://your-api.com/v1"
+      API_OPEN_AI_API_KEY="your-api-key"
+
+      ## Automatic Mode (Higher Quality)
+      # This mode uses multiple LLM models for better results
+      # API_OPEN_AI_API_KEY=                    # OpenAI API key
+      # API_GOOGLE_AI_API_KEY=                  # Google AI API key
+      # API_ANTHROPIC_API_KEY=                  # Anthropic Claude API key
+      # API_NOVITA_AI_API_KEY=                  # Novita AI API key
+      # API_VERTEX_AI_API_KEY=                  # Vertex AI API key
+
+      # Git Provider Configuration
+      # Choose and configure ONE of the following services:
+
+      ## GitHub Configuration
+# For token-based authentication, you only need the webhook URL
+GITHUB_CODE_MANAGEMENT_WEBHOOK="http://localhost:3001/github/webhook"
+
+      # Optional - Only needed if using OAuth
+      # GITHUB_CLIENT_ID=your_client_id
+      # GITHUB_CLIENT_SECRET=your_client_secret
+      # GITHUB_PRIVATE_KEY=your_private_key
+      # GITHUB_REDIRECT_URI=your_redirect_uri
+      # GITHUB_URL_HEALTH=https://www.githubstatus.com/api/v2/status.json
+
+      ## GitLab Configuration
+# For token-based authentication, you only need the webhook URL
+# GITLAB_CODE_MANAGEMENT_WEBHOOK="http://localhost:3001/gitlab/webhook"
+
+# Optional - Only needed if using OAuth
+# GITLAB_CLIENT_ID=your_client_id
+# GITLAB_CLIENT_SECRET=your_client_secret
+# GITLAB_REDIRECT_URL=your_redirect_url
+# GITLAB_TOKEN_URL=your_token_url
+
+## Bitbucket Configuration
+# For token-based authentication, you only need the webhook URL
+# BITBUCKET_CODE_MANAGEMENT_WEBHOOK="http://localhost:3001/bitbucket/webhook"
+
+## Azure DevOps Configuration
+# For token-based authentication, you only need the webhook URL
+# GLOBAL_AZURE_REPOS_CODE_MANAGEMENT_WEBHOOK="http://localhost:3001/azure-repos/webhook"
+      ```
+
+      #### 4. Set up Docker networks
+
+      Create the required Docker networks:
+
+      ```bash
+      docker network create kodus-backend-services
+      docker network create shared-network
 ```
-
-### 2. Install dependencies
-
-```bash
-yarn install
-```
-
-### 3. Configure environment variables
-
-```bash
-cp .env.example .env
-```
-
-Configure your `.env` file with the following required variables:
-
-```env
-# PostgreSQL Configuration
-PG_DB_HOST=
-PG_DB_PORT=
-PG_DB_USERNAME=
-PG_DB_PASSWORD=
-PG_DB_DATABASE=
-
-# MongoDB Configuration
-MG_DB_HOST=db_mongodb
-MG_DB_PORT=27017
-MG_DB_USERNAME=kodusdev
-MG_DB_PASSWORD=123456
-MG_DB_DATABASE=kodus_db
-
-# OpenAI Configuration
-OPEN_AI_APIKEY=your_api_key
-
-# JWT Configuration
-JWT_EXPIRES_IN=365d
-JWT_SECRET=your_secret
-JWT_REFRESH_SECRET=your_refresh_secret
-JWT_REFRESH_EXPIRES_IN=your_refresh_expiration
-
-# Code Management Service Configuration
-
-CODE_MANAGEMENT_SECRET=your_secret
-CODE_MANAGEMENT_WEBHOOK_TOKEN=your_webhook_token
-
-# Choose and configure ONE of the following services:
-
-# GitHub Configuration
-GITHUB_CLIENT_ID=your_client_id
-GITHUB_CLIENT_SECRET=your_client_secret
-GITHUB_PRIVATE_KEY=your_private_key
-GITHUB_REDIRECT_URI=your_redirect_uri
-GITHUB_URL_HEALTH=https://www.githubstatus.com/api/v2/status.json
-GITHUB_CODE_MANAGEMENT_WEBHOOK=your_webhook_url
-
-# GitLab Configuration
-GITLAB_CLIENT_ID=your_client_id
-GITLAB_CLIENT_SECRET=your_client_secret
-GITLAB_REDIRECT_URL=your_redirect_url
-GITLAB_TOKEN_URL=your_token_url
-GITLAB_CODE_MANAGEMENT_WEBHOOK=your_webhook_url
-
-# Bitbucket Configuration
-BITBUCKET_CODE_MANAGEMENT_WEBHOOK=your_webhook_url
-
-```
+  </Tab>
+</Tabs>
 
 <Note>
-  Checkout integration docs for more information about how to get the required
-  credentials for each service.
+  **API Keys Resources:**
+  
+  When configuring your environment variables, you'll need API keys for AI providers. Use these official resources:
+  
+  - **OpenAI API Key**: Visit the [OpenAI API Keys page](https://platform.openai.com/api-keys)
+  - **Google AI / Vertex AI**: Follow the [Google Cloud API setup guide](https://cloud.google.com/docs/authentication/api-keys)
+  - **Anthropic Claude**: Get started with the [Anthropic API documentation](https://docs.anthropic.com/claude/reference/getting-started-with-the-api)
+  - **Novita AI**: Access the [Novita AI Developer portal](https://novita.ai/docs/guides/quickstart)
 </Note>
 
-### 4. Set up Docker networks
 
-Create the required Docker networks:
 
-```bash
-docker network create kodus-backend-services
-docker network create shared-network
-```
-
-### 5. Start the development environment
+## Starting the development environment
 
 Launch the services using Docker:
 
@@ -124,7 +205,7 @@ Monitor service logs:
 yarn docker:logs
 ```
 
-### 6. First-time setup
+## First-time setup
 
 If this is your first time running the project, execute the following commands:
 
@@ -207,5 +288,97 @@ The project utilizes two databases:
 
 Access the service at:
 
-- API: `http://localhost:3331`
+- API: `http://localhost:3001`
 - Debug Port: `9229`
+
+## Testing your setup
+
+Once your services are running, you can test the setup:
+
+### Quick Health Check
+
+```bash
+yarn dev:health-check
+```
+
+This comprehensive health check will verify:
+- 🐳 **Docker containers**: Kodus API, PostgreSQL, MongoDB
+- 🔌 **Port availability**: API (3001), PostgreSQL (5432), MongoDB (27017)
+- 🗄️ **Database setup**: Migrations and seed data
+- 🌐 **API endpoints**: Health endpoints and basic connectivity
+
+
+### Manual Verification
+
+1. **Check API health**: Visit `http://localhost:3001/health` in your browser
+2. **Verify database connections**: Check the logs for successful database connections
+3. **Test webhook endpoints**: Your Git provider webhooks should point to `http://localhost:3001/[provider]/webhook`
+
+### Complete Setup Command
+
+If you used the automated setup, you can run everything at once:
+
+```bash
+yarn docker:start && yarn migrate:dev && yarn seed
+```
+
+### Health Check Endpoints
+
+The health check script tests these endpoints:
+- **Simple Health**: `http://localhost:3001/health/simple` - Basic API availability
+- **Full Health**: `http://localhost:3001/health` - Complete system status
+- **Auth Endpoints**: `http://localhost:3001/auth/login` - Authentication system
+- **User Endpoints**: `http://localhost:3001/user/email` - User management system
+
+## Troubleshooting
+
+### Setup Script Issues
+
+If the automated setup script (`yarn dev:first-run`) fails:
+
+**Missing dependencies:**
+```bash
+# Check if all required tools are installed
+node --version
+yarn --version
+docker --version
+openssl version
+```
+
+**Permission issues with Docker:**
+```bash
+# Add your user to the docker group (Linux/macOS)
+sudo usermod -aG docker $USER
+# Then log out and log back in
+```
+
+**Network creation errors:**
+```bash
+# Check if networks already exist
+docker network ls | grep kodus
+# Remove conflicting networks if needed
+docker network rm kodus-backend-services shared-network
+```
+
+### Common Issues
+
+**Port conflicts:**
+- Ensure ports 3001 (API), 5432 (PostgreSQL), and 27017 (MongoDB) are available
+- Stop other services using these ports before starting Kodus
+
+**Environment variables not loading:**
+- Verify your `.env` file exists in the project root
+- Check that there are no trailing spaces in variable assignments
+- Ensure all required security keys were generated properly
+
+**Health check failures:**
+- Run `yarn dev:health-check` to get detailed diagnostics
+- Check if containers are fully started (wait 1-2 minutes after `yarn docker:start`)
+- Verify database migrations and seed data are loaded
+- Check API logs with `yarn docker:logs` for startup errors
+
+**API not responding:**
+- The API takes time to fully initialize after container startup
+- Check if migrations and seed data are loaded
+- Verify the `.env` file has all required variables
+- Run health check to see which specific components are failing
