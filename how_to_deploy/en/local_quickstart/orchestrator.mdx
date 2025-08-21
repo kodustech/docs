@@ -48,13 +48,15 @@ icon: "server"
       **Basic setup:**
       ```bash
       yarn docker:start
-      yarn migrate:dev && yarn seed
+      yarn migrate:dev
+      yarn seed
       ```
       
       **With external integrations (webhooks, etc.):**
       ```bash
       yarn docker:start
-      yarn migrate:dev && yarn seed
+      yarn migrate:dev
+      yarn seed
       yarn tunnel  # Creates public endpoint for external services
       ```
   </Tab>
