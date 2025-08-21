@@ -1,0 +1,69 @@
+---
+title: "PR Size"
+description: "Measure the average size of your Pull Requests"
+---
+
+## What is PR Size
+
+PR Size measures the average number of changes (lines added, modified, or deleted) in your Pull Requests. This metric helps you understand how your team breaks down work and can indicate potential bottlenecks in the development process.
+
+## How We Calculate It
+
+We automatically measure the size of every Pull Request by counting the total lines of code that were added, modified, or deleted.
+
+**What We Track:**
+- Total lines changed in each PR
+- Additions, modifications, and deletions
+- The average size across all your PRs
+
+**How It's Calculated:**
+```
+PR Size = (Total Lines Added + Modified + Deleted) ÷ (Number of PRs)
+```
+
+For example, if you have 3 PRs with 50, 100, and 150 lines changed, your average PR size is 100 lines.
+
+## Why It Matters
+
+PR Size is a critical metric that impacts multiple aspects of your development process:
+
+- **Review Quality**: Smaller PRs are easier to review thoroughly
+- **Deployment Speed**: Smaller changes can be deployed more frequently
+- **Risk Management**: Large changes increase the risk of introducing bugs
+- **Team Collaboration**: Smaller PRs enable faster feedback and iteration
+
+## How to Improve
+
+### Break Down Large Changes
+- **Feature Flags**: Implement features incrementally
+- **Vertical Slices**: Build complete user journeys instead of technical layers
+- **Dependency Management**: Identify and isolate independent components
+- **Iterative Development**: Build and deploy in smaller increments
+
+### Improve Planning
+- **Story Splitting**: Break user stories into smaller, focused tasks
+- **Acceptance Criteria**: Define clear, testable requirements
+- **Definition of Done**: Establish clear completion criteria
+- **Sprint Planning**: Plan work that fits within PR size targets
+
+### Process Optimization
+- **Review Guidelines**: Set expectations for PR size limits
+- **Team Training**: Educate team on the benefits of smaller PRs
+- **Code Standards**: Establish patterns that encourage modular design
+- **Refactoring**: Regularly refactor code to maintain modularity
+
+## Common Challenges
+
+- **Large Features**: Complex features that are difficult to break down
+- **Legacy Code**: Monolithic code that's hard to modify incrementally
+- **Team Habits**: Developers accustomed to large, comprehensive changes
+- **Time Pressure**: Perceived need to deliver everything at once
+- **Dependencies**: Changes that require multiple components to be modified together
+
+
+## Measurement Considerations
+
+- **Context Matters**: Different types of changes have different size expectations
+- **Team Size**: Larger teams may need smaller PRs for effective collaboration
+- **Project Phase**: Greenfield projects may have larger initial PRs
+- **Technology Stack**: Some frameworks naturally encourage larger changes

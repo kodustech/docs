@@ -1,0 +1,49 @@
+---
+title: "Deploy Frequency"
+description: "Measure how often your team deploys code to production"
+---
+
+## What is Deploy Frequency
+
+Deploy Frequency measures how many times your team successfully deploys code to production within a given time period. This metric is a key indicator of your team's ability to deliver value quickly and maintain a smooth delivery pipeline.
+
+## How We Calculate It
+
+We automatically track every time your team merges code into the main branch (or default branch). Since merges to main typically trigger deployments, this gives us a good measure of how frequently your team delivers code to production.
+
+**What We Track:**
+- Every merge to your main/default branch
+- The time period you select (daily, weekly, monthly)
+- Successful code integrations
+
+**How It's Calculated:**
+```
+Deploy Frequency = (Number of Merges to Main) ÷ (Time Period in Weeks)
+```
+
+For example, if you merge 12 times to main in a 4-week period, your deploy frequency is 3 merges per week.
+
+**Note**: We measure merges to main because they typically represent when code is ready for production deployment. If your team has a different workflow (like deploying from feature branches), this metric may need interpretation.
+
+## Why It Matters
+
+Frequent deployments ensure new features and bug fixes reach users quickly, boosting customer satisfaction and competitiveness. They also reduce risks and facilitate issue resolution.
+
+## How to Improve
+
+### Short-term Actions
+- **Automate Deployments**: Implement CI/CD pipelines
+- **Reduce PR Size**: Break large changes into smaller, focused PRs
+- **Streamline Reviews**: Set clear review guidelines and expectations
+
+### Long-term Strategies
+- **Infrastructure as Code**: Make deployments repeatable and reliable
+- **Feature Flags**: Deploy code without immediately exposing features
+- **Monitoring**: Implement comprehensive observability to catch issues early
+
+## Common Challenges
+
+- **Fear of Breaking Changes**: Implement proper testing and rollback strategies
+- **Manual Processes**: Automate repetitive deployment tasks
+- **Large Batch Sizes**: Encourage smaller, more frequent changes
+- **Review Bottlenecks**: Streamline the code review process

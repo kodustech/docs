@@ -14,12 +14,7 @@
   },
   "favicon": "/favicon.svg",
   "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude"
-    ]
+    "options": ["copy", "view", "chatgpt", "claude"]
   },
   "navigation": {
     "dropdowns": [
@@ -66,21 +61,25 @@
               {
                 "group": "Cockpit",
                 "pages": [
+                  "how_to_use/en/cockpit/overview",
                   {
-                    "group": "Productivity",
+                    "group": "Metrics",
                     "pages": [
-                      "how_to_use/en/cockpit/productivity/lead_time_for_changes",
                       "how_to_use/en/cockpit/productivity/deploy_frequency",
-                      "how_to_use/en/cockpit/productivity/change_failure_rate"
+                      "how_to_use/en/cockpit/productivity/lead_time_for_changes",
+                      "how_to_use/en/cockpit/productivity/change_failure_rate",
+                      "how_to_use/en/cockpit/productivity/pr_size",
+                      "how_to_use/en/cockpit/productivity/kody_suggestions",
+                      "how_to_use/en/cockpit/productivity/lead_time_breakdown",
+                      "how_to_use/en/cockpit/productivity/developer_activity",
+                      "how_to_use/en/cockpit/productivity/prs_by_developer"
                     ]
                   }
                 ]
               },
               {
                 "group": "Kody Issues (beta)",
-                "pages": [
-                  "how_to_use/en/issues/overview"
-                ]
+                "pages": ["how_to_use/en/issues/overview"]
               },
               {
                 "group": "Security",
@@ -128,9 +127,7 @@
             "pages": [
               {
                 "group": "Concepts",
-                "pages": [
-                  "how_to_deploy/en/kodus_architecture"
-                ]
+                "pages": ["how_to_deploy/en/kodus_architecture"]
               },
               {
                 "group": "Local Quickstarts",

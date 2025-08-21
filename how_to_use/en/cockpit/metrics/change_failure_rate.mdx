@@ -1,0 +1,102 @@
+---
+title: "Bug Ratio"
+description: "Measure the percentage of PRs that are bug fixes (also known as Change Failure Rate)"
+---
+
+## What is Bug Ratio
+
+Bug Ratio measures the percentage of Pull Requests that are bug fixes or corrections in relation to the total number of PRs. This metric helps you understand how much of your development effort is spent fixing issues versus building new features. It can also be read as "Change Failure Rate" - the rate at which changes result in failures.
+
+## How We Calculate It
+
+We automatically identify which PRs are bug fixes using AI language models (LLM) that analyze the Pull Request names and descriptions. The system then calculates the percentage of bug-related work relative to your total PR activity.
+
+**What We Track:**
+- PRs identified as bug fixes by AI analysis
+- Total number of PRs in the period
+- The percentage of bug-related work
+
+**How It's Calculated:**
+```
+Bug Ratio = (Bug Fix PRs) ÷ (Total PRs) × 100
+```
+
+For example, if 3 out of 15 PRs are identified as bug fixes, your bug ratio is 20%.
+
+**How We Identify Bug Fixes:**
+We use advanced language models to analyze PR titles and automatically classify them. The AI looks for patterns like:
+- "Fix bug in..." or "Bug fix for..."
+- "Resolve issue with..." or "Fix problem in..."
+- "Patch for..." or "Hotfix:..."
+
+## Why It Matters
+
+The Bug Ratio is a key indicator of your team's development focus and code quality. Understanding this ratio helps you:
+
+- **Development Focus**: See how much time is spent fixing vs. building
+- **Code Quality**: Identify if you're spending too much time on bugs
+- **Process Improvement**: Understand if your development process needs optimization
+- **Resource Planning**: Plan how much effort to allocate to bug fixes
+
+### Impact on Team Performance
+
+- **Productivity**: High bug ratios may indicate quality issues
+- **Feature Delivery**: Too many bugs can slow down new feature development
+- **Team Morale**: Constant bug fixing can be demotivating
+- **User Experience**: Fewer bugs mean better product quality
+
+## How to Improve
+
+### Reduce Bug Creation
+- **Better Testing**: Implement comprehensive testing strategies
+- **Code Reviews**: Ensure thorough review of all changes
+- **Static Analysis**: Use tools to catch issues before they reach production
+- **Development Standards**: Establish clear coding guidelines
+
+### Improve Bug Detection
+- **Automated Testing**: Implement CI/CD with comprehensive test suites
+- **Code Quality Tools**: Use linters and static analyzers
+- **Peer Reviews**: Encourage thorough code reviews
+- **Early Testing**: Test changes in development and staging
+
+### Process Optimization
+- **Smaller Changes**: Break large features into manageable pieces
+- **Feature Flags**: Deploy code without immediately exposing features
+- **Rollback Procedures**: Have quick rollback capabilities
+- **Post-Incident Reviews**: Learn from bugs to prevent recurrence
+
+## Common Causes of High Bug Ratios
+
+- **Rushed Development**: Pressure to deliver quickly without proper testing
+- **Complex Changes**: Large, complex features that are hard to test thoroughly
+- **Technical Debt**: Working around existing code issues
+- **Insufficient Testing**: Lack of comprehensive test coverage
+- **Poor Requirements**: Unclear specifications leading to misunderstandings
+
+## Measurement Considerations
+
+- **PR Naming Conventions**: Clear, descriptive PR names help AI classification accuracy
+- **LLM Accuracy**: The AI model continuously learns and improves its classification
+- **Consistent Terminology**: Using standard bug-related terms improves identification
+- **Context Matters**: Different project phases may have different bug ratios
+- **Manual Review**: You can verify AI classifications and provide feedback for improvement
+
+## Best Practices for PR Naming
+
+To help the AI accurately identify bug fixes, consider these naming conventions:
+
+### Good Bug Fix PR Names
+- "Fix: User login fails with invalid credentials"
+- "Bug fix: Memory leak in data processing module"
+- "Resolve issue: API returns 500 error for large requests"
+- "Patch: Fix null pointer exception in user service"
+
+### Avoid Vague Names
+- "Fix stuff" or "Bug fix"
+- "Update code" or "Improve performance"
+- "Fix things" or "Resolve issues"
+
+### Feature vs Bug Fix
+- **Bug Fix**: "Fix: Payment validation fails for expired cards"
+- **Feature**: "Add: New payment method support"
+- **Improvement**: "Enhance: Payment validation error messages"
