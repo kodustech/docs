@@ -65,14 +65,14 @@
                   {
                     "group": "Metrics",
                     "pages": [
-                      "how_to_use/en/cockpit/productivity/deploy_frequency",
-                      "how_to_use/en/cockpit/productivity/lead_time_for_changes",
-                      "how_to_use/en/cockpit/productivity/change_failure_rate",
-                      "how_to_use/en/cockpit/productivity/pr_size",
-                      "how_to_use/en/cockpit/productivity/kody_suggestions",
-                      "how_to_use/en/cockpit/productivity/lead_time_breakdown",
-                      "how_to_use/en/cockpit/productivity/developer_activity",
-                      "how_to_use/en/cockpit/productivity/prs_by_developer"
+                      "how_to_use/en/cockpit/metrics/deploy_frequency",
+                      "how_to_use/en/cockpit/metrics/lead_time_for_changes",
+                      "how_to_use/en/cockpit/metrics/change_failure_rate",
+                      "how_to_use/en/cockpit/metrics/pr_size",
+                      "how_to_use/en/cockpit/metrics/kody_suggestions",
+                      "how_to_use/en/cockpit/metrics/lead_time_breakdown",
+                      "how_to_use/en/cockpit/metrics/developer_activity",
+                      "how_to_use/en/cockpit/metrics/prs_by_developer"
                     ]
                   }
                 ]
