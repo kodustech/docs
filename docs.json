@@ -44,10 +44,16 @@
                       "how_to_use/en/code_review/configs/directory_level",
                       "how_to_use/en/code_review/configs/suggestion_control",
                       "how_to_use/en/code_review/configs/pr_summary",
-                      "how_to_use/en/code_review/configs/custom_messages"
+                      "how_to_use/en/code_review/configs/custom_messages"                     
                     ]
                   },
-                  "how_to_use/en/code_review/configs/kody_rules",
+                  {
+                    "group": "Kody Rules",
+                    "pages": [
+                      "how_to_use/en/code_review/configs/kody_rules",
+                      "how_to_use/en/code_review/configs/ide_rules_sync"
+                    ]
+                  },
                   {
                     "group": "Kody Learning",
                     "pages": [
