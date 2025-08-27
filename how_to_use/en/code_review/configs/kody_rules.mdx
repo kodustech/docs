@@ -24,24 +24,73 @@ You can use Kody Rules in two ways:
 Define rules based on your team's exact needs. Kody Rules can be applied at two different levels:
 
 #### File-Level Rules
-Analyze individual files to catch issues within specific code files:
 
-- Rule name: Clearly define the rule purpose.
-- File Paths: Limit rules to specific files or directories using glob patterns.
-- Severity: Set to Critical, High, Medium, or Low.
-- Detailed Instructions: Clearly state what's expected and why.
+Analyze individual files to catch issues within specific code files.
 
-**Example:**
+**Available Context:**
+- **File diff**: The specific changes made to the individual file being analyzed
 
-- Rule: "Avoid equality operators (==, !=) in loop termination conditions."
-- Path: src/**/*.ts
-- Severity: Critical
-- Instructions: "Using equality operators (== or !=) can cause infinite loops if exact values aren't matched."
+**How to Configure:**
+- **Rule name**: Clearly define the rule purpose
+- **File Paths**: Limit rules to specific files or directories using glob patterns
+- **Severity**: Set to Critical, High, Medium, or Low
+- **Detailed Instructions**: Clearly state what's expected and why
+
+**Configuration Example:**
+
+📋 **Rule**: "Avoid equality operators (==, !=) in loop termination conditions."
+
+📁 **Path**: `src/**/*.ts`
+
+⚠️ **Severity**: Critical
+
+📝 **Instructions**: "Using equality operators (== or !=) can cause infinite loops if exact values aren't matched."
+
+**❌ Bad Example:**
+```typescript
+// Risk of infinite loop if increment is not exactly 1
+for (let i = 0; i != 10; i += 2) {
+  console.log(i); // Will print 0, 2, 4, 6, 8, 10, 12, 14... forever
+}
+
+// Risk if array is modified during iteration
+let items = [1, 2, 3, 4, 5];
+for (let i = 0; i != items.length; i++) {
+  if (items[i] === 3) {
+    items.push(6); // Modifies length, can cause infinite loop
+  }
+}
+```
+
+**✅ Good Example:**
+```typescript
+// Safe: loop will always terminate
+for (let i = 0; i < 10; i += 2) {
+  console.log(i); // Will print 0, 2, 4, 6, 8 and stop
+}
+
+// Safe even if array is modified
+let items = [1, 2, 3, 4, 5];
+for (let i = 0; i < items.length; i++) {
+  if (items[i] === 3) {
+    items.push(6); // Loop will still terminate safely
+  }
+}
+```
 
 #### Pull Request-Level Rules
-Analyze the entire Pull Request for cross-file validation and PR-specific requirements:
 
-The creation process is identical to file-level rules, but you must select the "Pull-request" scope. PR-level rules receive the complete list of changed files and PR information (title, description), enabling analysis of the overall context.
+Analyze the entire Pull Request for cross-file validation and PR-specific requirements.
+
+**Available Context:**
+- **PR diff**: Complete diff of all changes across the entire Pull Request
+- **PR title**: The title of the Pull Request
+- **PR description**: The description/body of the Pull Request
+- **PR statistics**: Comprehensive metrics including total additions, deletions, files changed, and total lines modified
+
+**How to Configure:**
+
+The creation process is identical to file-level rules, but you must select the "Pull-request" scope. This broader context enables analysis of cross-file dependencies and overall PR quality.
 
 **Examples:**
 - Every service file must have a corresponding test file
@@ -61,10 +110,13 @@ Leverage proven best practices instantly:
 - Security: "Disallow use of insecure MD5 hashing."
 - Maintainability: "Limit React components to less than 150 lines."
 
-## Integration with IDE Rules
+## Next Steps
 
-Kody Rules work seamlessly with your existing IDE configurations through [IDE Rules Sync](/how_to_use/en/code_review/configs/ide_rules_sync). This feature automatically imports rules from popular AI coding assistants like Cursor, GitHub Copilot, and Claude, providing a comprehensive foundation for your custom Kody Rules.
-
-<Tip>
-Start with IDE Rules Sync to import your existing standards, then create custom Kody Rules for specific enforcement and team requirements.
-</Tip>
+<Columns cols={2}>
+  <Card title="Sync your existing IDE rules to Kody" icon="panel-left-close" href="/how_to_use/en/code_review/configs/rules_file_detection">
+    Kodus can automatically sync and import your existing IDE rule files to enhance Kody's code review with your team's established coding standards and preferences.
+  </Card>
+  <Card title="Generate Kody Rules from your past reviews" icon="panel-right-close" href="/how_to_use/en/code_review/learning/kody_rules_generation">
+    Kodus can automatically generate Kody Rules from your past reviews.
+  </Card>
+</Columns>

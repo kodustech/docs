@@ -51,17 +51,11 @@
                     "group": "Kody Rules",
                     "pages": [
                       "how_to_use/en/code_review/configs/kody_rules",
-                      "how_to_use/en/code_review/configs/ide_rules_sync"
-                    ]
-                  },
-                  {
-                    "group": "Kody Learning",
-                    "pages": [
-                      "how_to_use/en/code_review/learning/kody_learning",
+                      "how_to_use/en/code_review/configs/rules_file_detection",
                       "how_to_use/en/code_review/learning/kody_rules_generation"
                     ]
                   },
-                  "how_to_use/en/code_review/troubleshooting"
+                  "how_to_use/en/code_review/learning/kody_learning"
                 ]
               },
               {
