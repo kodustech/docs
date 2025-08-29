@@ -47,14 +47,15 @@
                       "how_to_use/en/code_review/configs/custom_messages"                     
                     ]
                   },
-                  {
-                    "group": "Kody Rules",
-                    "pages": [
-                      "how_to_use/en/code_review/configs/kody_rules",
-                      "how_to_use/en/code_review/configs/rules_file_detection",
-                      "how_to_use/en/code_review/learning/kody_rules_generation"
-                    ]
-                  },
+                                      {
+                      "group": "Kody Rules",
+                      "pages": [
+                        "how_to_use/en/code_review/configs/kody_rules",
+                        "how_to_use/en/code_review/configs/rules_file_detection",
+                        "how_to_use/en/code_review/configs/repository_rules",
+                        "how_to_use/en/code_review/learning/kody_rules_generation"
+                      ]
+                    },
                   "how_to_use/en/code_review/learning/kody_learning"
                 ]
               },
