@@ -1,0 +1,49 @@
+---
+title: "Business Logic Validation [Beta]"
+description: "Compare your pull request against business rules or specs with @kody -v business-logic."
+---
+
+<Callout icon="alien" iconType="regular">This is a beta feature. It is not yet production-ready and may not work as expected.</Callout>
+
+## Overview
+
+Business Logic Validation lets you confirm that a pull request implements the expected behaviour described in a spec, document, or ticket. Kody analyzes the PR diff, brings in the referenced business context, and flags mismatches before you merge.
+
+<img src="https://kodus.io/wp-content/uploads/2025/10/business-logic.gif" alt="Example of using business logic validation" />
+
+## Prerequisites
+- Any link you share (Jira, Slack, Google Docs, etc.) must be reachable through the plugins installed in your workspace.
+- If you provide the spec inline, keep it concise and structured so Kody can understand the requirements.
+
+## Running the Command
+
+1. Open the main PR comment box (outside of inline code suggestions).
+2. Mention Kody and add the validation command: `@kody -v business-logic ...`.
+3. Provide the spec content inline or paste a link that Kody can fetch via the available plugins.
+4. Submit the comment and wait for Kody's response in the same thread.
+
+The command only triggers from the main conversation box; replies inside inline suggestions are ignored.
+
+You can re-run the validation at any time—simply post the command again in a new comment. Follow-ups must be a fresh command; replying directly to Kody's message in the Git UI is not supported.
+
+## Examples
+
+- Jira ticket: `@kody -v business-logic https://kodustech.atlassian.net/jira/software/c/projects/KC/boards/2?selectedIssue=KC-1292`
+- Inline spec snippet: `@kody -v business-logic Rule XYZ — orders above $500 must issue cashback credits.`
+- Slack conversation: `@kody -v business-logic https://kodustech.slack.com/archives/C070E5E97DE/p1727814000000000`
+- Google Doc: `@kody -v business-logic https://docs.google.com/document/d/1234567890/edit`
+
+## What Kody Does
+
+- Fetches the latest diff for the pull request.
+- Retrieves the referenced specification through the appropriate plugin or uses the inline text you supplied.
+- Compares implementation details against the documented expectations.
+- Responds in the thread with confirmations or highlights of any discrepancies that require attention.
+
+If Kody cannot reach the resource or lacks permissions, it will call that out so you can adjust access or provide the information another way.
+
+## Tips
+
+- Break large specs into sections and validate them individually to keep feedback focused.
+- When sharing private links, double-check that the required plugin (e.g., Jira, Slack, Google Drive) is installed and authorized for your workspace.
+- After addressing findings, rerun the command to confirm the PR now aligns with the business rules.
