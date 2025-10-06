@@ -1,0 +1,73 @@
+---
+title: "Code Review Flow"
+---
+
+## Overview
+
+Kody reviews your PRs automatically or on demand, adds clear suggestions, and helps your team decide when to merge. Below is the simple, user-facing view of how it works.
+
+<Frame caption="High-level flow">
+  <img src="/images/flow.png" alt="Code Review Flow" />
+</Frame>
+
+<Small>
+  Optional reference: <a href="https://www.figma.com/board/ZZJcIJMJWGuyzRGMh3w5di/Kodus-Code-Review-Flow?node-id=4-274">Figma board</a>
+</Small>
+
+## When Kody Runs
+
+- PR opened
+- New commit pushed to the PR (depending on cadence)
+- Manual trigger via comment: `@kody start-review`
+
+## When Kody Skips
+
+- No new commits since the last run
+- Only merge commits with no effective changes
+- All changed files ignored by configured patterns
+- PR exceeds the configured file limit
+- Invalid or missing configuration
+
+## What Kody Does
+
+- Resolves which settings apply (global → repo → directory) and validates them
+- Collects the relevant diffs and context for this PR
+- Runs PR-level checks (e.g., custom rules and cross-file analysis when enabled)
+- Reviews changed files with focus on the diff
+- Filters and prioritizes suggestions to reduce noise (relevance, severity, dedupe, safeguards)
+- Posts inline comments and, when applicable, a PR-level summary
+- Optionally approves or requests changes if those policies are enabled
+- Remembers the last analyzed commit to keep follow-ups incremental
+
+## What You Get
+
+- Inline comments with concrete suggestions
+- Optional PR-level summary with highlights
+- Optional status: approved or changes requested (if enabled)
+
+## Settings That Matter
+
+- Automated vs manual reviews and follow-up cadence
+- Ignore patterns and base branches in scope
+- Custom rules and cross-file analysis
+- Suggestion controls: severity filter, grouping, and max suggestions
+- File limits and timeouts
+
+<CardGroup cols={2}>
+  <Card title="General Config" icon="sliders" href="/how_to_use/en/code_review/configs/general">
+    Configure modes, cadence, branches, and suggestion options
+  </Card>
+  <Card title="Review Policy" icon="shield-check" href="/how_to_use/en/code_review/policy">
+    Understand suggestions vs blocking and when to enable each
+  </Card>
+  <Card title="Troubleshooting" icon="triangle-exclamation" href="/how_to_use/en/code_review/troubleshooting">
+    Fix common issues and learn about limits
+  </Card>
+</CardGroup>
+
+## Tips
+
+- Keep PRs small and focused; large diffs reduce review quality
+- Add context (spec/ticket links) in the PR description
+- After addressing feedback, push changes or trigger `@kody start-review` to re-run
+

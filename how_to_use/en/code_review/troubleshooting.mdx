@@ -1,8 +1,7 @@
 ---
 title: "Troubleshooting"
+description: "Troubleshooting Kody Code Review"
 ---
-
-🚀 Hit a snag with Kody's code review? No worries - follow these steps to quickly resolve common issues and get back to your flow.
 
 ## Kody Code Review Not Working? Steps to Fix Common Issues
 
@@ -62,6 +61,22 @@ Kody uses a hierarchical configuration system. Here's how it works:
 - Kody applies unexpected settings or suggestions.
 - Global settings are not reflected in specific repositories.
 
----
 
-This structure makes it clear where to look and how to resolve configuration issues efficiently.
+## No Response or No Comments from Kody
+
+Work through this quick checklist:
+
+1. PR contains reviewable code changes (not only docs or images)? Kody may skip if there’s nothing relevant to analyze.
+2. Branch is in scope? By default, only PRs targeting the default branch are reviewed unless additional base branches are configured.
+3. Large PRs: Very large PRs or PRs touching a high number of files can take longer or be skipped. As a guideline, PRs with more than 200 files are not reviewed. See limits in Pricing.
+4. Mode: If automated reviews are disabled, trigger manually with `@kody start-review`.
+5. Push cadence: If using auto-pause, wait for the cool-down or request a manual review.
+6. Repository overrides: Repo-specific settings can override global ones. Clear or align them as needed.
+
+<Card title="Review Modes & Cadence" icon="clock" href="/how_to_use/en/code_review/configs/general">
+  Check automated review, cadence, and branch filters.
+</Card>
+
+<Card title="Limits & Pricing" icon="scale-balanced" href="/how_to_use/en/pricing">
+  Learn about suggested limits and how they affect reviews.
+</Card>

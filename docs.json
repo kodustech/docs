@@ -31,13 +31,16 @@
                   "how_to_use/en/overview",
                   "how_to_use/en/quickstart",
                   "how_to_use/en/workspace_roles",
-                  "how_to_use/en/pricing"
+                  "how_to_use/en/pricing",
+                  "how_to_use/en/code_review/troubleshooting"
                 ]
               },
               {
                 "group": "AI Code Review",
                 "pages": [
                   "how_to_use/en/code_review/concepts",
+                  "how_to_use/en/code_review/flow",
+                  "how_to_use/en/code_review/policy",
                   {
                     "group": "Advanced Configs",
                     "pages": [

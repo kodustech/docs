@@ -1,32 +1,34 @@
-# Mintlify Starter Kit
+# Docs
 
-Click on `Use this template` to copy the Mintlify starter kit. The starter kit contains examples including
+This repository contains the Mintlify documentation for Kodus. The site is configured via `docs.json` and content is written in `.mdx` files.
 
-- Guide pages
-- Navigation
-- Customizations
-- API Reference pages
-- Use of popular components
+## Development
 
-### Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
+Install the Mintlify CLI to preview changes locally:
 
 ```
 npm i -g mintlify
 ```
 
-Run the following command at the root of your documentation (where mint.json is)
+From the repo root (where `docs.json` is), run:
 
 ```
 mintlify dev
 ```
 
-### Publishing Changes
+## Publishing Changes
 
-Install our Github App to autopropagate changes from youre repo to your deployment. Changes will be deployed to production automatically after pushing to the default branch. Find the link to install on your dashboard. 
+Push to the default branch. If the GitHub App/integration is installed, the site auto-deploys from the default branch.
 
-#### Troubleshooting
+## Structure
 
-- Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
-- Page loads as a 404 - Make sure you are running in a folder with `mint.json`
+- `docs.json` — site configuration and navigation
+- `how_to_use/` — product usage guides (English)
+- `how_to_deploy/` — deployment guides
+- `cookbook/` — example setups and recipes
+
+## Troubleshooting
+
+- `mintlify dev` not running → Run `mintlify install` to re-install dependencies.
+- 404 on load → Ensure you're in the folder with `docs.json`.
+
