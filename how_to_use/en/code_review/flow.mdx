@@ -6,13 +6,8 @@ title: "Code Review Flow"
 
 Kody reviews your PRs automatically or on demand, adds clear suggestions, and helps your team decide when to merge. Below is the simple, user-facing view of how it works.
 
-<Frame caption="High-level flow">
-  <img src="/images/flow.png" alt="Code Review Flow" />
-</Frame>
+Reference: <a href="https://www.figma.com/board/ZZJcIJMJWGuyzRGMh3w5di/Kodus-Code-Review-Flow?node-id=4-274" target="_blank">Figma board</a>
 
-<Small>
-  Optional reference: <a href="https://www.figma.com/board/ZZJcIJMJWGuyzRGMh3w5di/Kodus-Code-Review-Flow?node-id=4-274">Figma board</a>
-</Small>
 
 ## When Kody Runs
 
@@ -45,6 +40,60 @@ Kody reviews your PRs automatically or on demand, adds clear suggestions, and he
 - Optional PR-level summary with highlights
 - Optional status: approved or changes requested (if enabled)
 
+## Status Reactions
+
+Kody uses emoji reactions to show the live status of your code review directly in your Git provider. No guessing whether she’s working, done, or ran into a problem. She always replaces the previous emoji with the latest status (for example: 🚀 → 🎉, 👀, or 😕).
+
+<Note>
+Supported on GitHub and GitLab. Azure DevOps and Bitbucket do not support reactions yet.
+</Note>
+
+### What each emoji means
+
+- 🚀 Processing — Kody is working on your code:
+  - Analyzing files
+  - Checking rules and policies
+  - Generating suggestions
+- 🎉 Completed — Review finished:
+  - All comments posted
+  - Analysis complete
+  - You can review the suggestions
+- 👀 Skipped — Review was skipped. Common reasons include:
+  - No new commits since the last run
+  - Only merge commits detected
+  - PR/MR exceeds the configured file limit
+  - No relevant files to review (ignored patterns)
+  - Branch not configured for review
+  - PR/MR in draft mode (if configured to skip drafts)
+- 😕 Error — Something went wrong:
+  - Temporary technical issue during the review
+  - Try again; contact support if it persists
+
+### Where reactions appear
+
+- Automatic review (PR opened or new commit): reaction on the PR/MR description (top of the thread)
+- Manual review (comment `@kody start-review`): reaction on your comment where you invoked Kody
+
+### Example scenarios
+
+- New PR (automatic): 🚀 while running → 🎉 when finished
+- Manual command: 🚀 on your comment → 🎉 when finished
+- No changes since last run: 👀 reaction
+- Temporary issue: 😕 reaction
+
+### FAQs
+
+- I don’t see reactions
+  - GitHub/GitLab: supported ✅
+  - Azure DevOps/Bitbucket: not supported yet ❌
+- Why did the emoji change?
+  - Normal behavior — Kody replaces the previous emoji with the new status (e.g., 🚀 → 🎉/👀/😕)
+- I saw 👀 but wanted a full review
+  - Likely skipped due to: no new commits, only merge commits, out-of-scope branch, draft PR/MR, ignored files, or file limit exceeded
+  - Solution: comment `@kody start-review` to force a new review
+- I saw 😕 — what should I do?
+  - Retry with `@kody start-review`. If it persists, check Troubleshooting or contact support
+
 ## Settings That Matter
 
 - Automated vs manual reviews and follow-up cadence
@@ -70,4 +119,3 @@ Kody reviews your PRs automatically or on demand, adds clear suggestions, and he
 - Keep PRs small and focused; large diffs reduce review quality
 - Add context (spec/ticket links) in the PR description
 - After addressing feedback, push changes or trigger `@kody start-review` to re-run
-
