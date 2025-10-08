@@ -65,10 +65,6 @@ Here's a detailed breakdown of what each role can do, based on the actual permis
 4. Select the appropriate role for the new member
 5. Send the invitation
 
-<Info>
-Invited members will receive an email invitation and need to accept it to join the workspace.
-</Info>
-
 ### Changing Member Roles
 
 1. Go to the **Members** section in your workspace
@@ -77,20 +73,12 @@ Invited members will receive an email invitation and need to accept it to join t
 4. Select the new role from the available options
 5. The change takes effect immediately
 
-<Warning>
-When changing roles, consider the impact on the member's access to resources and their ability to perform their job functions.
-</Warning>
-
 ### Removing Members
 
 1. In the **Members** section, locate the member to remove
 2. Click the **"Actions"** menu (three dots)
 3. Select **"Remove from workspace"**
 4. Confirm the removal in the dialog
-
-<Note>
-Removed members will lose access to all workspace resources immediately. They will need to be re-invited if they need access again.
-</Note>
 
 ## Security Considerations
 
@@ -101,24 +89,32 @@ Removed members will lose access to all workspace resources immediately. They wi
 
 ## Troubleshooting
 
-### Common Issues
+<AccordionGroup>
+  <Accordion title="I can't invite new members to the workspace">
+    **Solutions:**
+    - Verify you have Owner or Repository Admin role
+    - Check if your workspace has reached any system limits
+    - Ensure you have the correct permissions in your account
+  </Accordion>
 
-**"I can't invite new members to the workspace"**
-- Verify you have Owner or Repository Admin role
-- Check if your workspace has reached any system limits
-- Ensure you have the correct permissions in your account
+  <Accordion title="A member can't edit code review configurations">
+    **Solutions:**
+    - Confirm the member has Repository Admin or Owner role for the specific repository
+    - Check if the member has "own" permissions for the repository they want to edit
+    - Verify the member's role assignment is correct
+  </Accordion>
 
-**"A member can't edit code review configurations"**
-- Confirm the member has Repository Admin or Owner role for the specific repository
-- Check if the member has "own" permissions for the repository they want to edit
-- Verify the member's role assignment is correct
+  <Accordion title="Billing information is not visible to a team member">
+    **Solutions:**
+    - Ensure the member has Owner or Billing Manager role
+    - Check if billing features are enabled for your workspace
+    - Verify the member's access hasn't been restricted
+  </Accordion>
 
-**"Billing information is not visible to a team member"**
-- Ensure the member has Owner or Billing Manager role
-- Check if billing features are enabled for your workspace
-- Verify the member's access hasn't been restricted
-
-**"A member can't access cockpit features"**
-- Confirm the member has Repository Admin or Owner role
-- Check if the member is assigned to repositories they want to access
-- Verify the member's role assignment is correct
+  <Accordion title="A member can't access cockpit features">
+    **Solutions:**
+    - Confirm the member has Repository Admin or Owner role
+    - Check if the member is assigned to repositories they want to access
+    - Verify the member's role assignment is correct
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,331 @@
+---
+title: "BYOK - Bring Your Own Key"
+description: "Configure your own API keys for maximum flexibility and cost control with Teams Plan"
+---
+
+BYOK (Bring Your Own Key) gives you complete control over your AI model usage. Choose the best model for quality or the cheapest for cost optimization - the choice is yours.
+
+## Why Choose BYOK?
+
+<CardGroup cols={2}>
+  <Card title="Maximum Flexibility" icon="arrows-rotate">
+    Choose from cutting-edge models like GPT-4, Claude 3.5 Sonnet, or cost-effective alternatives like Llama via Groq
+  </Card>
+  <Card title="Cost Control" icon="dollar-sign">
+    Pay exactly what you use with full transparency. Start cheap and scale up as needed
+  </Card>
+  <Card title="Provider Choice" icon="store">
+    Use any OpenAI-compatible provider: OpenAI, Anthropic, Google, Novita, OpenRouter, or custom endpoints
+  </Card>
+  <Card title="Full Transparency" icon="chart-line">
+    Monitor your exact token usage and costs through your provider's dashboard
+  </Card>
+</CardGroup>
+
+<Card
+  title="Compare with Managed Mode"
+  icon="scale-balanced"
+  href="/how_to_use/en/pricing#teams-pricing-byok-vs-managed"
+>
+  Not sure if BYOK is right for you? Compare it with our Managed Mode that handles everything for $30/dev/month.
+</Card>
+
+## Getting Started
+
+<Steps>
+  <Step title="Access BYOK Settings">
+    Navigate to your organization settings at [app.kodus.io/organization/byok](https://app.kodus.io/organization/byok)
+  </Step>
+  
+  <Step title="Configure Primary Model">
+    Select your main provider (OpenAI, Google Gemini, Anthropic, etc.) and enter your API key with your preferred model
+  </Step>
+  
+  <Step title="Configure Fallback Model (Recommended)">
+    Set up a secondary model as backup. If your primary model has issues or becomes unavailable, reviews automatically switch to the fallback
+  </Step>
+  
+  <Step title="Test Configuration">
+    Kodus will validate both API keys and model selections before saving
+  </Step>
+</Steps>
+
+<Info>
+  **Important:** Always configure a fallback model to ensure continuous code reviews even if your primary provider experiences downtime or rate limits.
+</Info>
+
+<Warning>
+  Keep your API keys secure and never share them. Use separate keys for Kodus to better track usage and costs.
+</Warning>
+
+## Supported Providers
+
+<Tabs>
+  <Tab title="OpenAI">
+    **Best for:** Latest GPT models and reliable performance
+    
+    **How to get API key:**
+    1. Visit [OpenAI API Keys](https://platform.openai.com/api-keys)
+    2. Create a new API key for Kodus
+    3. Add billing information to your OpenAI account
+    
+    
+    <Info>
+      OpenAI offers the most reliable service with excellent model variety. Start with GPT-5-mini for best value.
+    </Info>
+  </Tab>
+
+  <Tab title="Google Gemini">
+    **Best for:** Competitive pricing with strong reasoning capabilities
+    
+    **How to get API key:**
+    1. Go to [Google AI Studio](https://aistudio.google.com/app/apikey)
+    2. Create a new API key
+    3. Enable billing in Google Cloud Console
+    
+    <Info>
+      Google Gemini offers excellent value with competitive pricing and strong performance on code analysis tasks.
+    </Info>
+  </Tab>
+
+  <Tab title="Anthropic Claude">
+    **Best for:** Detailed analysis and following complex instructions
+    
+    **How to get API key:**
+    1. Visit [Anthropic Console](https://console.anthropic.com/)
+    2. Create account and generate API key
+    3. Add credits to your account
+    
+    <Info>
+      Claude excels at understanding context and providing detailed, thoughtful code reviews with excellent instruction following.
+    </Info>
+  </Tab>
+
+  <Tab title="Novita AI">
+    **Best for:** Access to latest open-source models at competitive prices
+    
+    **How to get API key:**
+    1. Sign up at [Novita AI](https://novita.ai/)
+    2. Navigate to API settings
+    3. Generate your API key
+    
+    <Card
+      title="Novita Setup Guide"
+      icon="rocket"
+      href="/cookbook/en/novita"
+    >
+      Detailed setup instructions with screenshots for Novita AI configuration.
+    </Card>
+  </Tab>
+
+  <Tab title="OpenRouter">
+    **Best for:** Access to multiple models through one API with transparent pricing
+    
+    **How to get API key:**
+    1. Create account at [OpenRouter](https://openrouter.ai/)
+    2. Add credits to your account
+    3. Generate API key in settings
+    
+    
+    <Info>
+      OpenRouter provides access to models from multiple providers with transparent pricing and no hidden costs.
+    </Info>
+  </Tab>
+
+  <Tab title="Custom Providers">
+    **Best for:** Using specialized providers like Fireworks, Together AI, Groq, or your own endpoints
+    
+    **How to configure:**
+    1. Select "Custom OpenAI-Compatible" in Kodus settings
+    2. Enter your provider's base URL (e.g., `https://api.fireworks.ai/inference/v1`)
+    3. Add your API key from the provider
+    4. Specify the model name as required by your provider
+    
+    **Popular custom providers:**
+    - **Fireworks AI:** Fast inference with open-source models
+    - **Together AI:** Competitive pricing for open-source models  
+    - **Groq:** Ultra-fast inference speeds
+    - **Deepseek:** Specialized coding models
+
+    
+    <CardGroup cols={2}>
+      <Card title="Fireworks AI Guide" href="/cookbook/en/fireworks" icon="fire">
+        Setup guide for Fireworks AI integration
+      </Card>
+      <Card title="Together AI Guide" href="/cookbook/en/together" icon="handshake">
+        Configure Together AI for code reviews
+      </Card>
+    </CardGroup>
+  </Tab>
+</Tabs>
+
+## Recommended & Tested Models
+
+These are the models we've extensively tested and recommend for code review with Kodus:
+
+<CardGroup cols={2}>
+  <Card title="Gemini 2.5 Pro" icon="crown">
+    **Most Tested & Recommended**
+    
+    Google's latest model with exceptional code understanding, 1M+ token context window, and best cost-benefit ratio.
+    
+    - **Provider:** Google
+    - **Best for:** All-around excellence
+  </Card>
+  
+  <Card title="Gemini 2.5 Flash" icon="bolt">
+    **Best Value**
+    
+    Ultra-fast and cost-effective without compromising quality. Perfect for high-volume teams.
+    
+    - **Provider:** Google
+    - **Best for:** Budget-conscious teams
+  </Card>
+  
+  <Card title="Claude 4.5 Sonnet" icon="code">
+    **Best for Code**
+    
+    Exceptional coding capabilities with 77.2% SWE-Bench performance. Outstanding at understanding complex codebases.
+    
+    - **Provider:** Anthropic
+    - **Best for:** Code quality focus
+  </Card>
+  
+  <Card title="Claude 4.1 Opus" icon="star">
+    **Premium Quality**
+    
+    Top-tier model for the most demanding code reviews and complex architectural analysis.
+    
+    - **Provider:** Anthropic
+    - **Best for:** Enterprise projects
+  </Card>
+  
+  <Card title="GPT-5" icon="sparkles">
+    **Latest Innovation**
+    
+    OpenAI's newest model with cutting-edge capabilities and competitive pricing.
+    
+    - **Provider:** OpenAI
+    - **Best for:** Latest features
+  </Card>
+  
+  <Card title="GPT-5-mini" icon="piggy-bank">
+    **Fast & Reliable**
+    
+    Excellent balance of speed, cost, and quality from OpenAI.
+    
+    - **Provider:** OpenAI
+    - **Best for:** Reliability on budget
+  </Card>
+</CardGroup>
+
+<Info>
+  **Our recommendation:** Start with **Gemini 2.5 Pro** for the best overall experience. It's our most tested model and offers excellent quality at a great price point.
+</Info>
+
+## Best Practices
+
+### Security
+
+<CardGroup cols={2}>
+  <Card title="Dedicated Keys" icon="shield-check">
+    Create separate API keys specifically for Kodus to better track usage and enhance security
+  </Card>
+  <Card title="Regular Rotation" icon="arrows-rotate">
+    Rotate your API keys periodically and update them in Kodus settings
+  </Card>
+  <Card title="Monitor Usage" icon="chart-bar">
+    Regularly check your provider dashboards for unusual usage patterns
+  </Card>
+  <Card title="Secure Storage" icon="lock">
+    Never share or commit API keys to code repositories
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Invalid API Key Error">
+    **Solutions:**
+    - Verify the API key is correctly copied without extra spaces
+    - Check that billing is enabled on your provider account
+    - Ensure the API key has the necessary permissions
+    - Try generating a new API key if the issue persists
+  </Accordion>
+
+  <Accordion title="Model Not Found Error">
+    **Solutions:**
+    - Verify the model name matches your provider's exact format
+    - Check if the model is available in your region
+    - Ensure your account has access to the specified model
+    - Try a different model to test if the issue is model-specific
+  </Accordion>
+
+  <Accordion title="Rate Limit Issues">
+    **Solutions:**
+    - Check your provider's rate limits and upgrade if needed
+    - Consider switching to a provider with higher rate limits
+    - Contact your provider support to increase limits
+    - Distribute usage across multiple API keys if allowed
+  </Accordion>
+
+  <Accordion title="Custom URL Connection Problems">
+    **Solutions:**
+    - Verify the base URL format includes the protocol (https://)
+    - Check that the endpoint supports OpenAI-compatible API
+    - Test the URL directly with a tool like curl or Postman
+    - Ensure there are no firewall restrictions blocking the connection
+  </Accordion>
+
+  <Accordion title="High Unexpected Costs">
+    **Solutions:**
+    - Review your usage in the provider dashboard
+    - Check if you have rate limits set appropriately
+    - Consider switching to a more cost-effective model
+    - Set up billing alerts to catch spikes early
+  </Accordion>
+</AccordionGroup>
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="Can I switch providers anytime?">
+    Yes! You can change your provider and API key at any time in your BYOK settings. Changes take effect immediately for new reviews.
+  </Accordion>
+
+  <Accordion title="Can I use multiple providers simultaneously?">
+    Yes! You can (and should) configure one provider for your primary model and a different provider for your fallback model. This gives you maximum reliability and protection against provider-specific outages.
+  </Accordion>
+
+  <Accordion title="What happens if my API key runs out of credits?">
+    If you have a fallback model configured, reviews will automatically switch to it. Without a fallback, reviews will fail until you add credits or update your API key. This is why we strongly recommend configuring a fallback model.
+  </Accordion>
+  
+  <Accordion title="How does the primary/fallback system work?">
+    Your primary model handles all code reviews by default. If the primary model fails (due to rate limits, downtime, or errors), Kodus automatically switches to your fallback model. Once the primary is available again, it resumes normal operation. You only pay for the model that actually processes each review.
+  </Accordion>
+  
+  <Accordion title="Should I use the same provider for primary and fallback?">
+    We recommend using different providers (e.g., Google for primary, OpenAI for fallback) to protect against provider-specific outages. This gives you maximum reliability.
+  </Accordion>
+
+  <Accordion title="How does BYOK compare to Managed mode?">
+    **BYOK ($10/dev/month):**
+    - You manage API keys and pay providers directly
+    - Full control over model choice and costs
+    - Requires more setup and monitoring
+    
+    **Managed ($30/dev/month):**
+    - We handle everything for you
+    - Fixed predictable costs
+    - Optimized for best value within $20 token budget
+  </Accordion>
+
+  <Accordion title="Is there a minimum commitment for BYOK?">
+    No, you can cancel or switch to Managed mode at any time. Changes take effect at your next billing cycle.
+  </Accordion>
+
+  <Accordion title="Do you store our API keys securely?">
+    Yes, all API keys are encrypted at rest and in transit. We follow industry-standard security practices and never log or store your actual API keys in plain text.
+  </Accordion>
+</AccordionGroup>

@@ -32,6 +32,7 @@
                   "how_to_use/en/quickstart",
                   "how_to_use/en/workspace_roles",
                   "how_to_use/en/pricing",
+                  "how_to_use/en/byok",
                   "how_to_use/en/code_review/troubleshooting"
                 ]
               },
@@ -48,7 +49,8 @@
                       "how_to_use/en/code_review/configs/directory_level",
                       "how_to_use/en/code_review/configs/suggestion_control",
                       "how_to_use/en/code_review/configs/pr_summary",
-                      "how_to_use/en/code_review/configs/custom_messages"
+                      "how_to_use/en/code_review/configs/custom_messages",
+                      "how_to_use/en/code_review/configs/custom_prompts"
                     ]
                   },
                   {
@@ -222,7 +224,7 @@
     "links": [
       {
         "label": "Community",
-        "href": "https://discord.gg/VkbfjbZr"
+        "href": "https://discord.gg/TFZBRk9fT6"
       },
       {
         "label": "Github",
