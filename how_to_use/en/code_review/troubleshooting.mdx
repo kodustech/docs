@@ -66,9 +66,9 @@ Kody uses a hierarchical configuration system. Here's how it works:
 
 Work through this quick checklist:
 
-1. PR contains reviewable code changes (not only docs or images)? Kody may skip if there’s nothing relevant to analyze.
+1. PR contains reviewable code changes (not only docs or images)? Kody may skip if there's nothing relevant to analyze.
 2. Branch is in scope? By default, only PRs targeting the default branch are reviewed unless additional base branches are configured.
-3. Large PRs: Very large PRs or PRs touching a high number of files can take longer or be skipped. As a guideline, PRs with more than 200 files are not reviewed. See limits in Pricing.
+3. **Large PRs:** Kody reviews PRs with up to 200 **reviewable files** (after applying ignore patterns). Example: PR with 250 total files but 60 are `.lock` files → Kody reviews the remaining 190 files ✅
 4. Mode: If automated reviews are disabled, trigger manually with `@kody start-review`.
 5. Push cadence: If using auto-pause, wait for the cool-down or request a manual review.
 6. Repository overrides: Repo-specific settings can override global ones. Clear or align them as needed.

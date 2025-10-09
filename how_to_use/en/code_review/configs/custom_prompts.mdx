@@ -31,7 +31,7 @@ Custom Prompts give you complete control over how Kody analyzes your code. Tailo
 </CardGroup>
 
 <Warning>
-  When you customize a prompt, you lose automatic improvements Kodus makes to default prompts. We continuously refine our default prompts based on model updates and user feedback. You can always reset to default to get these improvements back.
+  Custom prompts don't receive automatic updates. Reset to default to get improvements.
 </Warning>
 
 <Card
@@ -236,7 +236,7 @@ Each category and severity should have a distinct focus. Don't repeat the same i
 ### Be Careful with Examples
 
 <Warning>
-  Providing specific code examples can help, but may cause the model to focus only on those exact patterns and miss variations.
+  Specific code examples may cause the model to miss variations. Describe patterns broadly instead.
 </Warning>
 
 <Tabs>
@@ -395,48 +395,23 @@ Each category and severity should have a distinct focus. Don't repeat the same i
   </Accordion>
 
   <Accordion title="Can I see the default prompts before customizing?">
-    Yes! When you open the Custom Prompts settings, each prompt shows "Default" status. Click into any prompt to view the current default content before making changes. This helps you understand what you're replacing and potentially use it as a starting point.
+    Yes. Click into any prompt in settings to view default content.
   </Accordion>
 
   <Accordion title="What happens to existing PRs when I change prompts?">
-    Custom prompt changes only affect new reviews:
-    
-    - Existing PR comments remain unchanged
-    - New reviews (triggered by new commits or `@kody start-review`) use the updated prompts
-    - You can re-review existing PRs with the new prompts by commenting `@kody start-review`
+    Changes only affect new reviews. Re-run with `@kody start-review` to apply new prompts to existing PRs.
   </Accordion>
 
   <Accordion title="Can I customize prompts with kodus-config.yml?">
-    No, custom prompts are only configurable through the web interface. This ensures prompt updates are intentional and reviewed, as they significantly impact review quality.
-    
-    Other settings like ignored paths, base branches, and suggestion limits can still be configured via `kodus-config.yml`.
+    No. Custom prompts are web-only to ensure intentional changes. Other settings (ignored paths, branches) can use `kodus-config.yml`.
   </Accordion>
 
   <Accordion title="Should I customize all prompts or just some?">
-    **Recommendation:** Only customize prompts where you have a clear, specific need.
-    
-    - Customize 1-2 prompts addressing specific pain points
-    - Keep others at default to benefit from Kodus's improvements
-    - Add more customizations gradually based on results
-    
-    Over-customization can require more maintenance and may miss improvements we make to defaults.
+    Only customize prompts with clear, specific needs. Keep others at default to benefit from our improvements. Start with 1-2 prompts.
   </Accordion>
 
   <Accordion title="How do custom prompts work with BYOK?">
-    Custom prompts work seamlessly with BYOK:
-    
-    - You can tailor prompts to your chosen model's strengths
-    - Different models may interpret the same prompt differently
-    - Consider testing prompt effectiveness when switching models
-    - Your fallback model will use the same custom prompts
-    
-    See [BYOK documentation](/how_to_use/en/byok) for model selection guidance.
-  </Accordion>
-
-  <Accordion title="Can I share custom prompts across teams?">
-    Yes! Custom prompts set at the organization level apply to all repositories. This creates consistency across teams while still allowing repository-specific overrides when needed.
-    
-    Consider documenting your custom prompts internally so team members understand the review focus and standards.
+    Works seamlessly. Tailor prompts to your model's strengths. Both primary and fallback use the same custom prompts.
   </Accordion>
 </AccordionGroup>
 

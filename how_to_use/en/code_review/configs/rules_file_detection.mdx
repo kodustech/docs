@@ -62,6 +62,16 @@ Kodus automatically detects and imports the following rule file patterns:
   - **Modified rule files** → Updates existing Kody Rules  
   - **Deleted rule files** → Removes corresponding Kody Rules
 
+### Manual Sync (Toggle Disabled)
+
+You can sync individual rule files without enabling auto-sync:
+
+1. Add `@kody-sync` anywhere in your rule file
+2. Commit the change
+3. Kody will sync only that specific file
+
+This lets you selectively sync rules without enabling automatic synchronization for all files.
+
 <Warning>
 If you manually edit a Kody Rule that was created from an IDE rule file, your changes will be overwritten the next time the corresponding file is modified and synced.
 </Warning>

@@ -39,7 +39,6 @@
               {
                 "group": "AI Code Review",
                 "pages": [
-                  "how_to_use/en/code_review/concepts",
                   "how_to_use/en/code_review/flow",
                   "how_to_use/en/code_review/policy",
                   {
@@ -154,8 +153,7 @@
                     "icon": "server",
                     "pages": [
                       "how_to_deploy/en/deploy_kodus/generic_vm",
-                      "how_to_deploy/en/deploy_kodus/google_gcp",
-                      "how_to_deploy/en/deploy_kodus/amazon_ec2"
+                      "how_to_deploy/en/deploy_kodus/google_gcp"
                     ]
                   },
                   "how_to_deploy/en/deploy_kodus/troubleshooting"

@@ -3,15 +3,16 @@ title: "Repository Rules"
 description: "Create custom Kody Rules directly in your repository using markdown files with structured templates."
 ---
 
-<Warning>
-To use Repository Rules, you must have **<a href="/how_to_use/en/code_review/configs/rules_file_detection">Rules File Detection</a>** enabled in your settings. The same sync mechanism that detects IDE rule files also processes repository-based rules.
-</Warning>
+<Info>
+Repository Rules use the same auto-sync mechanism as IDE rule file detection. Enable "Auto-sync rules from repo" in settings to activate both features. See <a href="/how_to_use/en/code_review/configs/rules_file_detection">Rules File Detection</a> for setup.
+</Info>
 
 ## How to Use
 You can create custom Kody Rules directly in your repository by placing structured markdown files in specific directories. This allows you to version control your rules alongside your code and share them across your team.
 
 ### Synchronization
 - **Automatic Detection**: Repository rules are automatically detected and synchronized when enabled
+- **Manual Sync**: Add `@kody-sync` to any rule file to sync it individually (works even with auto-sync disabled)
 - **Web Application**: Synchronized rules appear in your Kodus web application dashboard
 - **Real-time Updates**: Changes to rule files are synced when Pull Requests are closed
 
@@ -135,12 +136,18 @@ Added new endpoint `/api/users/profile` with corresponding test file `tests/api/
 
 ## Setup Requirements
 
-To use Repository Rules, you need to:
+To use Repository Rules, you have two options:
 
-1. **Enable Rules File Detection**: Go to your settings and toggle "Auto-sync rules from repo"
+### Option 1: Enable Auto-Sync (Recommended)
+1. **Enable Rules File Detection**: Toggle "Auto-sync rules from repo" in settings
 2. **Create rule files**: Place `.md` files in `.kody/rules/**` or `rules/**` directories
-3. **Commit changes**: Repository rules are detected when Pull Requests are closed
+3. **Automatic sync**: All rule files sync when PRs are closed
+
+### Option 2: Manual Sync (Selective)
+1. **Create rule files**: Place `.md` files in `.kody/rules/**` or `rules/**` directories
+2. **Add sync marker**: Include `@kody-sync` anywhere in the rule file
+3. **Commit changes**: Only marked files will sync (auto-sync toggle stays off)
 
 <Tip>
-Repository Rules use the same synchronization mechanism as [Rules File Detection](/how_to_use/en/code_review/configs/rules_file_detection). Once enabled, both IDE tool rules and repository rules will be automatically synced.
+Repository Rules use the same synchronization mechanism as [Rules File Detection](/how_to_use/en/code_review/configs/rules_file_detection). Use manual sync (`@kody-sync`) to selectively sync specific rules without enabling automatic synchronization.
 </Tip>

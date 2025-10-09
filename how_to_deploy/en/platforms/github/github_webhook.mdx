@@ -9,13 +9,13 @@ Kodus usually creates the webhook automatically. If that didn't happen, follow t
 2. Click on "Settings"
 3. Find "Webhooks" in the left sidebar
 4. Click "Add webhook"
-5. Time to configure your webhook:
+5. Configure your webhook:
 
-   - **Payload URL**: Drop in the URL where you want to receive notifications, the URL you put under `API_GITHUB_CODE_MANAGEMENT_WEBHOOK` in the `.env` file
-   - **Content type**: Go with `application/json`
+   - **Payload URL**: Enter the URL from your `.env` file: `API_GITHUB_CODE_MANAGEMENT_WEBHOOK`
+   - **Content type**: `application/json`
    - **Secret**: Leave blank
-   - **SSL verification**: Check Enable SSL verification
-   - **Which events would you like to trigger this webhook?**: Check Let me select individual events
+   - **SSL verification**: Enable SSL verification
+   - **Which events would you like to trigger this webhook?**: Let me select individual events
    - Check these boxes:
      - Issue comment
      - Pull request review comments
@@ -26,4 +26,4 @@ Kodus usually creates the webhook automatically. If that didn't happen, follow t
 
 6. Click "Add webhook"
 
-And that's it! You've successfully set up a webhook to do code reviews in your GitHub repository.
+You've successfully set up a webhook for code reviews in your GitHub repository.

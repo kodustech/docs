@@ -83,16 +83,18 @@ Supported on GitHub and GitLab. Azure DevOps and Bitbucket do not support reacti
 
 ### FAQs
 
-- I don’t see reactions
-  - GitHub/GitLab: supported ✅
-  - Azure DevOps/Bitbucket: not supported yet ❌
-- Why did the emoji change?
-  - Normal behavior — Kody replaces the previous emoji with the new status (e.g., 🚀 → 🎉/👀/😕)
-- I saw 👀 but wanted a full review
-  - Likely skipped due to: no new commits, only merge commits, out-of-scope branch, draft PR/MR, ignored files, or file limit exceeded
-  - Solution: comment `@kody start-review` to force a new review
-- I saw 😕 — what should I do?
-  - Retry with `@kody start-review`. If it persists, check Troubleshooting or join our [Discord community](https://discord.gg/TFZBRk9fT6)
+**I don't see reactions**
+- GitHub/GitLab: ✅ | Azure DevOps/Bitbucket: ❌ (not supported yet)
+
+**Why did the emoji change?**
+- Normal—Kody replaces previous status (🚀 → 🎉/👀/😕)
+
+**I saw 👀 but wanted a review**
+- Likely skipped: no new commits, merge-only, ignored files, or file limit
+- Fix: comment `@kody start-review`
+
+**I saw 😕**
+- Retry with `@kody start-review`. If persists, check [Troubleshooting](/how_to_use/en/code_review/troubleshooting) or [Discord](https://discord.gg/TFZBRk9fT6)
 
 ## Settings That Matter
 
@@ -116,6 +118,6 @@ Supported on GitHub and GitLab. Azure DevOps and Bitbucket do not support reacti
 
 ## Tips
 
-- Keep PRs small and focused; large diffs reduce review quality
-- Add context (spec/ticket links) in the PR description
-- After addressing feedback, push changes or trigger `@kody start-review` to re-run
+- Keep PRs small—large diffs reduce review quality
+- Link specs/tickets in PR description
+- Re-run with `@kody start-review` after addressing feedback

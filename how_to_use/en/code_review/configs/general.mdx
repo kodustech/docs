@@ -10,7 +10,7 @@ title: "General"
 - Per-Directory: Override rules for specific directories (ideal for monorepos, [learn more](/how_to_use/en/code_review/configs/directory_level))
 
 ### Config Priority
-`kodus-config.yml` in your repo overrides web settings when enabled.
+When opening a PR, Kody automatically detects `kodus-config.yml` in your repo root. If found, it overrides web settings for that repository. No setup required—just commit the file.
 
 <Accordion title="Sample kodus-config.yml">
 ```yaml
@@ -47,8 +47,6 @@ isRequestChangesActive: false
 ```
 </Accordion>
 
-Note: Kody Rules only configurable via web interface.
-
 ### Base Branches
 Additional branches to review besides default (dev, release, master)
 
@@ -56,81 +54,49 @@ Additional branches to review besides default (dev, release, master)
 
 ### Automated Review
 
-When **Enable Automated Code Review** is enabled, Kody will automatically review PRs when opened. When disabled, Kody only reviews when you comment `@kody start-review`.
+Controls whether Kody automatically reviews PRs when first opened, or only runs when you comment `@kody start-review`.
+
+<Info>
+  This setting only affects the **initial review** when a PR opens. For subsequent commits, see Review Cadence below.
+</Info>
 
 #### Review Cadence
 
-Choose how Kody should handle follow-up reviews after the initial one:
+Controls how Kody handles reviews on **subsequent commits** after the PR is already open.
 
 <Tabs>
   <Tab title="Automatic">
-    **Review every new push**
-    
-    Kody will automatically run a new review whenever changes are pushed to the PR. This ensures continuous feedback on all code changes.
-    
-    Best for:
-    - Active development with frequent updates
-    - Teams that want immediate feedback on changes
-    - Critical projects requiring constant oversight
+    Review every new push to the PR. You get continuous feedback on all changes.
   </Tab>
   
   <Tab title="Auto-pause">
-    **Pause if a push burst is detected**
-    
-    Kody automatically pauses reviews when multiple pushes happen within a short time window, preventing review spam during active development.
+    Pause reviews when detecting rapid consecutive pushes (e.g., 3 pushes in 15 minutes). Prevents spam during active coding. Reviews resume automatically after the configured cooldown period.
     
     Configuration:
-    - **Pushes to trigger pause**: Number of consecutive pushes (default: 3)
-    - **Time window (minutes)**: Time frame to detect push bursts (default: 15)
-    
-    Best for:
-    - Development workflows with frequent commits
-    - Avoiding review noise during active coding sessions
-    - Teams that want smart review timing
+    - **Pushes to trigger pause**: Default 3
+    - **Time window**: Default 15 minutes
   </Tab>
   
   <Tab title="Manual">
-    **Only run when you comment @kody start-review**
-    
-    Kody will only perform follow-up reviews when explicitly requested via comment. The initial review still happens automatically when the PR is opened.
-    
-    Best for:
-    - Teams that prefer controlled review timing
-    - Projects with infrequent updates
-    - Workflows where manual review triggers are preferred
+    Only run follow-up reviews when you comment `@kody start-review`. The initial review (controlled by "Automated Review" above) is independent.
   </Tab>
 </Tabs>
 
-<Note>
-  The initial review when a PR is opened always happens automatically when Automated Code Review is enabled, regardless of the cadence setting.
-</Note>
-
 ### PR Workflow
+
 #### Auto-approve PRs
-When enabled, Kody automatically approves PRs with no issues found.
+Kody approves PRs automatically when no issues are found.
 
-When to use:
-- Small, low-risk changes (like docs or tests)
-- Teams with high trust and good test coverage
-- Projects with strong CI/CD pipelines
+Platform support: GitHub, GitLab, Bitbucket
 
-Platform support:
-- ✅ GitHub: Shows as approved review
-- ✅ GitLab: Sets as approved
-- ✅ Bitbucket: Adds approval
+Use for low-risk changes (docs, tests) or teams with strong CI/CD.
 
 #### Request Changes
-When enabled, Kody requests changes when finding **critical issues.**
+Kody requests changes when finding **critical issues**.
 
-When to use:
-- Enforcing security standards
-- Preventing performance issues
-- Maintaining code quality gates
+Platform support: GitHub, Bitbucket (not GitLab yet)
 
-Platform support:
-- ✅ GitHub: Shows as "Changes Requested" review
-- ❌ GitLab: Not available yet
-- ✅ Bitbucket: Adds needs work status
+Use to enforce security standards or prevent breaking changes.
 
 ### Skip Conditions
 - Ignored Files: Use glob patterns (e.g., `**/*.js`), one per line
@@ -150,32 +116,6 @@ Platform support:
 - Code Style: Consistent formatting and standards
 - Documentation: Clear comments and API docs
 - Kody Rules: Custom rule enforcement
-
-## Automated Code Review
-
-If active, Kody will auto-review PRs when opened. If not, Kody only will trigger with `@kody start-review`.
-
-## PR Workflow
-
-### Auto-approve PRs when no issues found
-
-When active, Kody will auto-approve PRs when no issues are found.
-
-### Request Changes when critical issues detected
-
-When active, Kody will request changes when critical issues are detected.
-
-## Analysis Types
-
-- **Security**: Detects and prevents vulnerabilities in the code. For example, it can identify and suggest fixes for SQL injection, XSS, and other security threats.
-- **Performance**: Optimizes the code for speed and efficiency. For example, it can suggest using caching, reducing database queries, and optimizing loops.
-- **Error Handling**: Improves the way the code handles exceptions. For example, it can suggest using try-catch blocks, logging errors, and providing meaningful error messages.
-- **Refactoring**: Enhances the structure of the code. For example, it can suggest breaking down large functions into smaller ones, removing duplicate code, and improving naming conventions.
-- **Maintainability**: Ensures the code is easy to maintain and understand. For example, it can suggest adding comments, following coding standards, and using design patterns.
-- **Code Style**: Enforces consistent coding standards. For example, it can suggest using a consistent indentation style, following naming conventions, and using a consistent variable declaration style.
-- **Documentation**: Encourages clear and meaningful comments. For example, it can suggest adding comments to explain complex code, documenting public APIs, and providing examples of usage.
-- **Kody Rules**: Allows for the enforcement of custom rules. For example, it can be configured to enforce specific coding standards, naming conventions, or architectural rules.
-- **Potential Issues**: Helps prevent bugs and issues. For example, it can detect and suggest fixes for potential null pointer exceptions, resource leaks, and infinite loops.
 
 ## Ignored Files
 

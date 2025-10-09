@@ -3,24 +3,7 @@ title: "BYOK - Bring Your Own Key"
 description: "Configure your own API keys for maximum flexibility and cost control with Teams Plan"
 ---
 
-BYOK (Bring Your Own Key) gives you complete control over your AI model usage. Choose the best model for quality or the cheapest for cost optimization - the choice is yours.
-
-## Why Choose BYOK?
-
-<CardGroup cols={2}>
-  <Card title="Maximum Flexibility" icon="arrows-rotate">
-    Choose from cutting-edge models like GPT-4, Claude 3.5 Sonnet, or cost-effective alternatives like Llama via Groq
-  </Card>
-  <Card title="Cost Control" icon="dollar-sign">
-    Pay exactly what you use with full transparency. Start cheap and scale up as needed
-  </Card>
-  <Card title="Provider Choice" icon="store">
-    Use any OpenAI-compatible provider: OpenAI, Anthropic, Google, Novita, OpenRouter, or custom endpoints
-  </Card>
-  <Card title="Full Transparency" icon="chart-line">
-    Monitor your exact token usage and costs through your provider's dashboard
-  </Card>
-</CardGroup>
+BYOK (Bring Your Own Key) gives you complete control over AI model usage: choose any model, pay only for what you use, and monitor costs directly in your provider's dashboard.
 
 <Card
   title="Compare with Managed Mode"
@@ -290,42 +273,28 @@ These are the models we've extensively tested and recommend for code review with
 
 <AccordionGroup>
   <Accordion title="Can I switch providers anytime?">
-    Yes! You can change your provider and API key at any time in your BYOK settings. Changes take effect immediately for new reviews.
-  </Accordion>
-
-  <Accordion title="Can I use multiple providers simultaneously?">
-    Yes! You can (and should) configure one provider for your primary model and a different provider for your fallback model. This gives you maximum reliability and protection against provider-specific outages.
+    Yes. Changes take effect immediately for new reviews.
   </Accordion>
 
   <Accordion title="What happens if my API key runs out of credits?">
-    If you have a fallback model configured, reviews will automatically switch to it. Without a fallback, reviews will fail until you add credits or update your API key. This is why we strongly recommend configuring a fallback model.
+    Reviews automatically switch to your fallback model (if configured). Without a fallback, reviews fail until you add credits. Always configure a fallback model.
   </Accordion>
   
   <Accordion title="How does the primary/fallback system work?">
-    Your primary model handles all code reviews by default. If the primary model fails (due to rate limits, downtime, or errors), Kodus automatically switches to your fallback model. Once the primary is available again, it resumes normal operation. You only pay for the model that actually processes each review.
+    Primary handles all reviews by default. If it fails (rate limits, downtime, errors), Kodus switches to fallback automatically. You only pay for the model that processes each review.
   </Accordion>
   
   <Accordion title="Should I use the same provider for primary and fallback?">
-    We recommend using different providers (e.g., Google for primary, OpenAI for fallback) to protect against provider-specific outages. This gives you maximum reliability.
+    No. Use different providers (e.g., Google primary, OpenAI fallback) to protect against provider-specific outages.
   </Accordion>
 
   <Accordion title="How does BYOK compare to Managed mode?">
-    **BYOK ($10/dev/month):**
-    - You manage API keys and pay providers directly
-    - Full control over model choice and costs
-    - Requires more setup and monitoring
+    **BYOK ($10/dev/month):** You manage API keys, full control, requires setup
     
-    **Managed ($30/dev/month):**
-    - We handle everything for you
-    - Fixed predictable costs
-    - Optimized for best value within $20 token budget
-  </Accordion>
-
-  <Accordion title="Is there a minimum commitment for BYOK?">
-    No, you can cancel or switch to Managed mode at any time. Changes take effect at your next billing cycle.
+    **Managed ($30/dev/month):** We handle everything, fixed costs, zero config
   </Accordion>
 
   <Accordion title="Do you store our API keys securely?">
-    Yes, all API keys are encrypted at rest and in transit. We follow industry-standard security practices and never log or store your actual API keys in plain text.
+    Yes. Keys are encrypted at rest and in transit. We never log or store keys in plain text.
   </Accordion>
 </AccordionGroup>

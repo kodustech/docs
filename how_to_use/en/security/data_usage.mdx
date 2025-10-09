@@ -4,27 +4,20 @@ title: "AI Model Security"
 
 ## Models Used
 
-Kodus leverages cutting-edge language models for unstructured data processing and advanced analysis. The models currently in use are:
+Kodus uses the following language models for code analysis:
 
-- **GPT-4o and derivatives**: An advanced language model developed by OpenAI, known for its high-quality text comprehension and generation capabilities.
-- **Gemini 1.5 Pro and derivatives**: A multimodal model from Google, capable of processing and generating text, images, and other types of data.
-- **Claude 3.5 Sonnet and derivatives**: A language model by Anthropic, designed with a focus on safety and ethical alignment.
+- **GPT-4o and derivatives** (OpenAI)
+- **Gemini 1.5 Pro and derivatives** (Google)
+- **Claude 3.5 Sonnet and derivatives** (Anthropic)
 
 ## Data Handling
 
-### Temporary Use
+Your code is processed temporarily and never used for training:
 
-All data processed by these models is used solely for temporary contextualization, which means:
-
-- Data is retained only for the duration of the processing session.
-- After task completion, data is immediately discarded.
-
-### No Training Usage
-
-In line with our agreements with model providers:
-
-- No customer data is used to train or improve the models.
-- Privacy and confidentiality of information are rigorously maintained.
+- Data retained only during the review session
+- Immediately discarded after completion
+- Never used to train or improve models
+- Privacy maintained per provider agreements
 
 ## Terms of Use for Each Model
 
@@ -34,20 +27,10 @@ In line with our agreements with model providers:
 
 ## Security Measures
 
-To ensure the protection of our clients' data, we have implemented the following measures:
+- **Encryption**: Data encrypted in transit and at rest
+- **Data Isolation**: Models don't store or retain data after processing
+- **Controlled Access**: Strict access controls for authorized personnel only (see [Workspace Roles](/how_to_use/en/workspace_roles))
+- **Regular Audits**: Periodic security audits for compliance
+- **Security Updates**: Regular patches and updates
 
-1. **Encryption**: All data is encrypted both in transit and at rest, using state-of-the-art encryption protocols.
-
-2. **Data Isolation**: Models are designed not to store or retain data after processing.
-
-3. **Controlled Access**: We enforce strict access controls to ensure that only authorized personnel can interact with systems processing customer data. For detailed information about workspace roles and permissions, see our [Workspace Roles and Permissions](/how_to_use/en/workspace_roles) documentation.
-
-4. **Regular Audits**: We conduct periodic security audits to ensure compliance with industry best practices.
-
-5. **Security Updates**: All systems and models are regularly updated with the latest security patches.
-
-## Commitment to Privacy
-
-Kodus is committed to upholding the highest standards of data privacy and security. We comply with applicable data protection regulations and continuously enhance our practices to safeguard client information.
-
-For more information on our privacy and security policies, please contact our support team.
+Questions? Contact our support team or join [Discord](https://discord.gg/TFZBRk9fT6).

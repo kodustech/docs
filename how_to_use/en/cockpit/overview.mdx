@@ -7,63 +7,37 @@ description: "Comprehensive analytics and metrics for engineering team performan
 
 Cockpit Analytics provides comprehensive insights into your engineering team's performance through key metrics that measure productivity, code quality, and delivery efficiency. These metrics help you identify areas for improvement and track progress over time.
 
+<Warning>
+  Cockpit is available exclusively on the **Teams plan (cloud)**. Self-hosted Community installations do not include Cockpit features.
+</Warning>
+
 <Frame caption="Monitor your team's performance with real-time analytics.">
   <img src="/images/cockpit.png" />
 </Frame>
 
 ## Key Features
 
-<CardGroup cols={2}>
-  <Card title="Real-time Updates" icon="clock">
-    Data refreshes every 2 hours for up-to-date insights
-  </Card>
-  <Card title="Cloud Platform" icon="cloud">
-    Available exclusively on Kodus Cloud (not self-hosted)
-  </Card>
-  <Card title="AI-Powered" icon="brain">
-    Intelligent analysis and automated metric calculation
-  </Card>
-  <Card title="Team Focused" icon="users">
-    Designed for engineering team collaboration and improvement
-  </Card>
-</CardGroup>
+- Data refreshes every 2 hours
+- Teams plan only (cloud)
+- AI-powered metric calculation
+- 8+ DORA and custom metrics
 
 ## Key Metrics Categories
 
-<CardGroup cols={2}>
-  <Card title="Developer Productivity" icon="rocket">
-    Track deployment frequency, lead time for changes, and PR cycle times to measure delivery speed
-  </Card>
-  <Card title="Code Quality" icon="shield-check">
-    Monitor bug ratios, PR sizes, and code review effectiveness to maintain high standards
-  </Card>
-  <Card title="AI Integration" icon="brain">
-    Measure Kody suggestion implementation rates and AI-assisted productivity gains
-  </Card>
-  <Card title="Team Performance" icon="users">
-    Analyze team collaboration patterns and identify bottlenecks in the development process
-  </Card>
-</CardGroup>
+**Available Metrics:**
+- **Productivity:** Deployment frequency, lead time, PR cycle times
+- **Quality:** PR size, code review effectiveness
+- **AI Integration:** Kody suggestion implementation rates
+- **Team Performance:** Collaboration patterns, bottleneck identification
 
-## Why Analytics Matter
 
-- **Data-Driven Decisions**: Make informed decisions based on actual performance data
-- **Continuous Improvement**: Identify bottlenecks and areas for optimization
-- **Team Accountability**: Set clear goals and track progress transparently
-- **Business Impact**: Connect engineering metrics to business outcomes
+## How Developer Matching Works
 
-## Getting Started with Analytics
+Cockpit tracks developers using the **Git commit username**. This may differ from:
+- GitHub/GitLab display name
+- Email address
+- Kodus workspace account
 
-1. **Choose Your Focus**: Start with 2-3 key metrics that align with your team's goals
-2. **Set Baselines**: Establish current performance levels to measure improvement
-3. **Define Targets**: Set realistic improvement goals based on industry benchmarks
-4. **Monitor Progress**: Regularly review metrics and adjust strategies as needed
-5. **Team Engagement**: Involve your team in understanding and improving metrics
-
-## Best Practices
-
-- **Context Matters**: Consider your team size, project complexity, and business context
-- **Continuous Monitoring**: Don't just measure once - track trends over time
-- **Actionable Insights**: Use metrics to drive specific improvement actions
-- **Team Buy-in**: Ensure the team understands why metrics matter and how to improve them
-- **Balanced View**: Don't optimize for one metric at the expense of others
+<Tip>
+  If you see discrepancies in developer metrics, check that commit usernames are consistent across your team's Git configuration.
+</Tip>
