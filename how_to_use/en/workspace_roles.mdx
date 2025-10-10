@@ -75,6 +75,22 @@ Here's a detailed breakdown of what each role can do, based on the actual permis
 4. Select the appropriate role for the new member
 5. Send the invitation
 
+### Auto-Join for Workspace Members
+
+Enable auto-join to allow users with matching email domains to join your workspace automatically.
+
+**How to enable:**
+1. Go to [Organization Settings](https://app.kodus.io/organization/general)
+2. Enable auto-join for your organization
+3. Currently works with your registered account email domain only
+4. Need a different domain? Contact us in the community
+
+**How it works:**
+- Users who sign up with your email domain can choose to join your organization
+- They must confirm their email after choosing to join
+- All auto-join users enter as **Contributor** role with no repository access
+- As Owner, you need to assign them to repositories and adjust their role if needed
+
 ### Changing Member Roles
 
 1. Go to the **Members** section in your workspace
@@ -126,5 +142,13 @@ Here's a detailed breakdown of what each role can do, based on the actual permis
     - Confirm the member has Repository Admin or Owner role
     - Check if the member is assigned to repositories they want to access
     - Verify the member's role assignment is correct
+  </Accordion>
+
+  <Accordion title="A developer isn't showing up in PR licenses">
+    **Solutions:**
+    - Verify Kody is installed in the repositories where this developer opens PRs
+    - Check if the developer has opened PRs in recent months
+    - Remember: PR licenses come from Git activity, not workspace members
+    - Ensure the repository webhook is properly configured
   </Accordion>
 </AccordionGroup>
