@@ -4,14 +4,19 @@ description: "Learn about role-based access control (RBAC) in Kodus workspaces, 
 ---
 
 <Note>
-**Workspace Members vs. Developers with PR Review Access**: These are separate concepts.
+**Workspace Members vs. PR Licenses**: These are completely separate and don't affect each other.
 
 - **Workspace Members**: Admins who configure Kodus settings (unlimited)
-- **Developers with Review Access**: Developers in your Git org who get Kody reviews on their PRs (based on your plan)
-
-Example: You can have 1 workspace admin managing settings, while 20 developers get automated reviews. All plans include unlimited PRs—your plan only determines which developers get review access.
+- **PR Licenses**: Developers from your Git organization who get Kody reviews (based on your plan)
 </Note>
 
+## Understanding PR Licenses
+
+PR licenses are automatically detected from your Git repositories based on developers who opened PRs in recent months. 
+
+**Why isn't a developer showing up?** If a developer isn't appearing in your PR license count, it means Kody isn't installed in a repository where that developer has opened PRs.
+
+**Example:** You can have 1 workspace admin managing settings, while 20 developers get automated reviews. All plans include unlimited PRs—your plan only determines which developers get review access.
 
 ## Overview
 
