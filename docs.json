@@ -41,17 +41,18 @@
                 "pages": [
                   "how_to_use/en/code_review/flow",
                   "how_to_use/en/code_review/policy",
-                  {
-                    "group": "Advanced Configs",
-                    "pages": [
-                      "how_to_use/en/code_review/configs/general",
-                      "how_to_use/en/code_review/configs/directory_level",
-                      "how_to_use/en/code_review/configs/suggestion_control",
-                      "how_to_use/en/code_review/configs/pr_summary",
-                      "how_to_use/en/code_review/configs/custom_messages",
-                      "how_to_use/en/code_review/configs/custom_prompts"
-                    ]
-                  },
+                      {
+                        "group": "Advanced Configs",
+                        "pages": [
+                          "how_to_use/en/code_review/configs/general",
+                          "how_to_use/en/code_review/configs/inheritance_overrides",
+                          "how_to_use/en/code_review/configs/directory_level",
+                          "how_to_use/en/code_review/configs/suggestion_control",
+                          "how_to_use/en/code_review/configs/pr_summary",
+                          "how_to_use/en/code_review/configs/custom_messages",
+                          "how_to_use/en/code_review/configs/custom_prompts"
+                        ]
+                      },
                   {
                     "group": "Kody Rules",
                     "pages": [

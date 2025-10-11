@@ -5,64 +5,55 @@ description: "Target specific folders in your repo with custom code review setti
 
 ## Overview
 
-Directory-level review lets you assign a specific Code Review configuration to one or more folders in a repository. This is especially useful for monorepos or multi-service repos where different areas have different standards, languages, or ownership.
+Apply custom code review settings to specific folders in your repository. Ideal for monorepos where different areas have different standards or ownership.
 
-<Info>
-  Kody always selects a single configuration to review a PR.
-  The selection hierarchy is: <b>Directory</b> → <b>Repository</b> → <b>Global</b>.
-</Info>
+Kody selects a single config per PR: **Directory** → **Repository** → **Global**
+
+<Note>
+  Learn how settings flow between levels in <a href="/how_to_use/en/code_review/configs/inheritance_overrides">Config Inheritance & Overrides</a>.
+</Note>
 
 ## How it works
 
-- **Pick any folder at any depth** (for example: `api/src/services` or `api/src/services/users`).
-- **Configure as many folders as you want**, as long as they **do not overlap**.
-- **No nested/overlapping configs**: if you configure `api/src/services`, you cannot also configure `api/src/services/users` (or any subfolder inside `services`).
+- Configure any folder at any depth (e.g., `api/src/services`)
+- Configure as many folders as you want
+- **No overlapping**: if you configure `api/src/services`, you cannot also configure `api/src/services/users`
 
 ### Selection rules
 
-- **PR touches files inside exactly one configured directory** (and other unconfigured areas): the entire PR is reviewed using that directory's configuration.
-- **PR touches only unconfigured directories**: Kody uses the repository-level configuration. If the repository has no configuration, Kody uses the global configuration.
-- **PR touches files from two or more configured directories**: Kody escalates to the repository-level configuration. If the repository has no configuration, Kody uses the global configuration.
+- **One configured directory touched**: Uses that directory's config
+- **No configured directories touched**: Uses repository config (or global if no repo config)
+- **Two or more configured directories touched**: Escalates to repository config (or global if no repo config)
 
 <Note>
-  Why only one config per PR? To keep reviews predictable and consistent. Mixing multiple configs in a single review leads to conflicts and confusing behavior.
+  Kody uses one config per PR to keep reviews predictable. Mixing configs causes conflicts.
 </Note>
 
 ## Examples
 
 <Tabs>
-  <Tab title="Single configured directory + others unconfigured">
-    You configured `src/microservice-alpha`. The PR changes files in
-    `src/microservice-alpha` and other folders with no specific config.
+  <Tab title="Single configured directory">
+    You configured `src/microservice-alpha`. PR changes files in `src/microservice-alpha` and unconfigured folders.
     
-    Result: the whole PR is reviewed with the **microservice-alpha** configuration.
+    Uses **microservice-alpha** config.
   </Tab>
-  <Tab title="No configured directories touched">
-    The PR changes files only in directories that do not have a specific configuration.
+  <Tab title="No configured directories">
+    PR only touches directories without specific configs.
     
-    Result: Kody uses the **repository** configuration; if none exists, Kody uses the **global** configuration.
+    Uses **repository** config (or **global** if no repo config).
   </Tab>
-  <Tab title="Two or more configured directories touched">
-    You configured `src/microservice-alpha` and `src/microservice-beta`. The PR touches both.
+  <Tab title="Multiple configured directories">
+    You configured `src/microservice-alpha` and `src/microservice-beta`. PR touches both.
     
-    Result: Kody escalates to the **repository** configuration; if none exists, Kody uses the **global** configuration.
+    Escalates to **repository** config (or **global** if no repo config).
   </Tab>
 </Tabs>
 
-## Constraints
+## Setup
 
-- Configure **non-overlapping** directories only. Example of invalid combo:
-  - Config for `api/src/services` and a second config for `api/src/services/users`.
-- You can configure **many directories**, as long as none is inside another configured path.
+1. Open your repository's Code Review settings
+2. Add directory entries and assign configurations
+3. Save changes
 
-## Setup (high level)
-
-1. Open your repository's Code Review settings in the Kodus app.
-2. Add one or more directory entries and assign the desired review configuration to each.
-3. Save your changes. New PRs will follow the directory → repository → global selection rules.
-
-<Info>
-  If your team also uses a repo-level `kodus-config.yml`, the web settings are still subject to the repository config priority rules described in General settings.
-</Info>
-
+If you also use `kodus-config.yml`, it overrides web settings (see Config Priority in General settings).
 

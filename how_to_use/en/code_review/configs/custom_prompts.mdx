@@ -3,7 +3,7 @@ title: "Custom Prompts"
 description: "Customize Kody's review prompts for each category and severity level to match your team's needs"
 ---
 
-Custom Prompts give you complete control over how Kody analyzes your code. Tailor the AI's focus for each review category and severity level to match your team's standards, tech stack, or specific model capabilities.
+Custom Prompts give you complete control over how Kody analyzes your code and communicates findings. Tailor what the AI looks for in each review category, how it classifies severity, and how it presents suggestions to match your team's standards and communication style.
 
 <Card
   title="Access Custom Prompts Settings"
@@ -25,26 +25,14 @@ Custom Prompts give you complete control over how Kody analyzes your code. Tailo
   <Card title="Focus Control" icon="bullseye">
     Direct Kody's attention to issues that matter most to your project and reduce noise
   </Card>
-  <Card title="Domain Expertise" icon="code">
-    Add industry-specific or technology-specific context that improves review quality
+  <Card title="Communication Style" icon="comments">
+    Customize how Kody presents suggestions - detailed for critical issues or concise for minor ones
   </Card>
 </CardGroup>
 
-<Warning>
-  Custom prompts don't receive automatic updates. Reset to default to get improvements.
-</Warning>
-
-<Card
-  title="Optimize for Your Model"
-  icon="rocket"
-  href="/how_to_use/en/byok"
->
-  Using BYOK? Customize prompts to match your chosen model's strengths and instruction-following style for best results.
-</Card>
-
 ## How Custom Prompts Work
 
-Custom Prompts operate at two levels:
+Custom Prompts operate at three levels:
 
 ### Category Prompts
 
@@ -153,31 +141,20 @@ Define how Kody classifies issue severity:
   </Tab>
 </Tabs>
 
-## Configuring Custom Prompts
+### Suggestion Prompts
 
-<Steps>
-  <Step title="Navigate to Settings">
-    Go to [app.kodus.io/settings/code-review/global/custom-prompts](https://app.kodus.io/settings/code-review/global/custom-prompts) for global settings, or access per-repository settings through your repository configuration
-  </Step>
-  
-  <Step title="Choose Category or Severity">
-    Select which prompt you want to customize:
-    - **Category Prompts:** Bug, Security, or Performance
-    - **Severity Prompts:** Critical, High, Medium, or Low
-  </Step>
-  
-  <Step title="Write Your Custom Prompt">
-    Enter your custom prompt (max 2000 characters). Be specific and focused on what you want Kody to detect or how to classify issues.
-  </Step>
-  
-  <Step title="Save Configuration">
-    Click **Save Settings** to apply your custom prompts. Changes take effect immediately for new reviews.
-  </Step>
-</Steps>
+Control how Kody communicates each individual suggestion. This customizes the message format and tone that appears in PR comments, like:
 
-<Info>
-  You can customize any combination of prompts. For example, customize only the Security category while keeping default prompts for Bug and Performance.
-</Info>
+```
+The new file 'create-or-update-issues-parameter.dto.ts' does not follow 
+the company's naming convention. According to the Kody Rules, all new files 
+must use camelCase. Please rename the file to 'createOrUpdateIssuesParameter.dto.ts' 
+to adhere to the standard.
+```
+
+Your custom prompt instructs Kody on how to write suggestion messages. The prompt receives context about the severity level, problem description, suggested code, and whether it's a Kody Rules violation. Kody uses this context along with your prompt to generate appropriate messages for each suggestion.
+
+You can customize the tone, level of detail, and communication style based on your team's needs - from detailed explanations for critical issues to concise feedback for minor ones.
 
 ## Best Practices
 
@@ -235,10 +212,6 @@ Each category and severity should have a distinct focus. Don't repeat the same i
 
 ### Be Careful with Examples
 
-<Warning>
-  Specific code examples may cause the model to miss variations. Describe patterns broadly instead.
-</Warning>
-
 <Tabs>
   <Tab title="Good: Pattern Description">
     ```
@@ -262,6 +235,66 @@ Each category and severity should have a distinct focus. Don't repeat the same i
     - Template literals: `SELECT * FROM users WHERE id = ${userId}`
     - String formatting: `f"SELECT * FROM users WHERE id = {userId}"`
     - Other SQL injection vectors
+  </Tab>
+</Tabs>
+
+### Keep Suggestions Scannable
+
+For suggestion prompts, make messages easy to scan since developers review many at once:
+
+<Tabs>
+  <Tab title="Good: Clear Structure">
+    ```
+    Write suggestions with clear structure. For critical issues, 
+    start with the 🚨 emoji, state the problem, then show "Fix:" 
+    followed by the code. For other severities, keep it simple - 
+    just the problem and the suggested code.
+    
+    Put important information first so developers can quickly 
+    understand what needs to be done.
+    ```
+    
+    Clear hierarchy, important information first
+  </Tab>
+  
+  <Tab title="Bad: Wall of Text">
+    ```
+    Explain the problem and why it's important because it could 
+    cause issues in production and developers should fix it by 
+    applying the suggested code changes that will resolve the issue.
+    ```
+    
+    Hard to scan, buries the action
+  </Tab>
+</Tabs>
+
+### Use Context Meaningfully
+
+Only differentiate suggestion formats when there's a real reason:
+
+<Tabs>
+  <Tab title="Good: Meaningful Difference">
+    ```
+    For Kody Rules violations, use a stricter tone: 
+    "**Team Standard**: [problem]. Required: [code]"
+    
+    For standard suggestions, use a friendlier tone:
+    "[problem]. Suggested: [code]"
+    
+    The difference in language makes the requirement level clear.
+    ```
+    
+    Clear distinction: rules are requirements, suggestions are recommendations
+  </Tab>
+  
+  <Tab title="Bad: Superficial Label">
+    ```
+    For Kody Rules, add "[RULE]" prefix before the problem.
+    For suggestions, add "[SUGGESTION]" prefix before the problem.
+    Otherwise format them the same way.
+    ```
+    
+    Just adding labels doesn't add value
   </Tab>
 </Tabs>
 
@@ -335,6 +368,81 @@ Each category and severity should have a distinct focus. Don't repeat the same i
     ```
     
     **Benefit:** Reduces alert fatigue by aligning severity with business impact.
+  </Accordion>
+
+  <Accordion title="Severity-Based Communication">
+    **Scenario:** Want detailed explanations for critical issues but concise feedback for minor ones
+    
+    **Custom Suggestion Prompt:**
+    ```
+    When writing suggestions, adjust the level of detail based on severity:
+    
+    For Critical issues: Start with "🚨 CRITICAL:" followed by the problem. 
+    Add a line explaining "This requires immediate attention." Then provide 
+    the fix with "Fix:" prefix.
+    
+    For High severity: Use "⚠️" emoji, state the problem, then show the fix 
+    with "Fix:" prefix.
+    
+    For Medium and Low: Keep it brief - just state the problem and show the 
+    suggested code directly without extra explanation.
+    ```
+    
+    **Benefit:** Critical issues get extra context while minor issues stay brief, improving review efficiency.
+  </Accordion>
+
+  <Accordion title="Direct and Concise Feedback">
+    **Scenario:** Team prefers minimal, actionable feedback
+    
+    **Custom Suggestion Prompt:**
+    ```
+    Be direct and concise. State the problem in one sentence, then immediately 
+    show the fix with "Fix:" prefix. No additional context or explanations.
+    ```
+    
+    **Benefit:** Every suggestion is short and to-the-point without extra context.
+  </Accordion>
+
+  <Accordion title="Educational Suggestions">
+    **Scenario:** Junior developers benefit from detailed explanations
+    
+    **Custom Suggestion Prompt:**
+    ```
+    Structure suggestions in three parts:
+    
+    1. **Issue:** State the problem clearly
+    2. **Why this matters:** Explain the impact based on severity:
+       - Critical: Could cause production failures or security vulnerabilities
+       - High: May lead to bugs or performance problems  
+       - Medium/Low: Improves code quality and maintainability
+    3. **Fix:** Show the recommended code change
+    
+    Make explanations educational and help developers learn why it matters.
+    ```
+    
+    **Benefit:** Every suggestion includes educational context about importance.
+  </Accordion>
+
+  <Accordion title="Different Tone for Rules vs Suggestions">
+    **Scenario:** Kody Rules are strict requirements, suggestions are recommendations
+    
+    **Custom Suggestion Prompt:**
+    ```
+    Use different tones based on the type:
+    
+    For Kody Rules violations:
+    - Start with "**Team Standard Violation**" in bold
+    - State the problem
+    - Add "This violates documented team standards."
+    - Show "Required fix:" followed by the code
+    
+    For standard suggestions:
+    - State the problem directly
+    - Show "Suggested improvement:" followed by the code
+    - Use a friendly, recommendatory tone
+    ```
+    
+    **Benefit:** Clear distinction between mandatory rules and optional suggestions.
   </Accordion>
 </AccordionGroup>
 
@@ -412,6 +520,22 @@ Each category and severity should have a distinct focus. Don't repeat the same i
 
   <Accordion title="How do custom prompts work with BYOK?">
     Works seamlessly. Tailor prompts to your model's strengths. Both primary and fallback use the same custom prompts.
+  </Accordion>
+
+  <Accordion title="What's the difference between Category/Severity prompts and Suggestion prompts?">
+    **Category/Severity prompts** control what Kody analyzes and how it classifies issues. **Suggestion prompts** control how Kody presents findings to your team. You can customize both independently.
+  </Accordion>
+
+  <Accordion title="Can I use markdown in suggestion prompts?">
+    Yes. Suggestion prompts support standard markdown formatting including bold, italic, code blocks, and links.
+  </Accordion>
+
+  <Accordion title="What happens if my suggestion template has syntax errors?">
+    Kody will fall back to the default suggestion format and notify you of the error in settings.
+  </Accordion>
+
+  <Accordion title="Do suggestion prompts work for both Kody Rules and standard suggestions?">
+    Yes. Use the `isKodyRule` variable to create different messages for rules vs suggestions in the same prompt.
   </Accordion>
 </AccordionGroup>
 

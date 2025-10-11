@@ -1,0 +1,21 @@
+---
+alwaysApply: true
+---
+
+# Documentation Writing Rules
+
+## Core Principles
+
+- **Clarity above all**: Documentation must be extremely easy to understand
+- **No fluff**: Only include content that provides real value to users reading it
+- **English only**: Simple, natural English as written by a native speaker
+- **Consistent pattern**: Always follow the same structure as other docs, don't invent new components
+
+## Writing Guidelines
+
+- Avoid code comments unless absolutely necessary. If needed, write comments in English only
+- Keep explanations concise and direct
+- Use existing components from mintlify
+- Focus on practical, actionable information
+- Remove redundant explanations and obvious statements
+- Maintain consistent tone across all documentation

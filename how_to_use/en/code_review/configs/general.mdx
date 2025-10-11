@@ -4,13 +4,12 @@ title: "General"
 
 ## Core Settings
 
-### Global vs Per-Repo Config
-- Global: Default rules for all repos
-- Per-Repo: Override rules for specific repos
-- Per-Directory: Override rules for specific directories (ideal for monorepos, [learn more](/how_to_use/en/code_review/configs/directory_level))
+<Note>
+  Kodus has three config levels: Global, Repository, and Directory. Learn how they work in <a href="/how_to_use/en/code_review/configs/inheritance_overrides">Config Inheritance & Overrides</a>.
+</Note>
 
 ### Config Priority
-When opening a PR, Kody automatically detects `kodus-config.yml` in your repo root. If found, it overrides web settings for that repository. No setup required—just commit the file.
+`kodus-config.yml` in your repo root overrides web settings. No setup needed—just commit the file.
 
 <Accordion title="Sample kodus-config.yml">
 ```yaml
@@ -47,60 +46,55 @@ isRequestChangesActive: false
 ```
 </Accordion>
 
-### Base Branches
-Additional branches to review besides default (dev, release, master)
-
 ## Review Behavior
 
 ### Automated Review
 
-Controls whether Kody automatically reviews PRs when first opened, or only runs when you comment `@kody start-review`.
+Kody can review PRs automatically when opened, or only when you comment `@kody start-review`.
 
 <Info>
-  This setting only affects the **initial review** when a PR opens. For subsequent commits, see Review Cadence below.
+  This affects the **initial review** only. For subsequent commits, see Review Cadence below.
 </Info>
 
 #### Review Cadence
 
-Controls how Kody handles reviews on **subsequent commits** after the PR is already open.
+How Kody handles reviews on subsequent commits:
 
 <Tabs>
   <Tab title="Automatic">
-    Review every new push to the PR. You get continuous feedback on all changes.
+    Review every new push. Continuous feedback on all changes.
   </Tab>
   
   <Tab title="Auto-pause">
-    Pause reviews when detecting rapid consecutive pushes (e.g., 3 pushes in 15 minutes). Prevents spam during active coding. Reviews resume automatically after the configured cooldown period.
+    Pause reviews during rapid consecutive pushes (e.g., 3 pushes in 15 minutes). Prevents spam during active coding.
     
-    Configuration:
-    - **Pushes to trigger pause**: Default 3
-    - **Time window**: Default 15 minutes
+    Defaults: 3 pushes / 15 minutes
   </Tab>
   
   <Tab title="Manual">
-    Only run follow-up reviews when you comment `@kody start-review`. The initial review (controlled by "Automated Review" above) is independent.
+    Only run follow-up reviews when you comment `@kody start-review`.
   </Tab>
 </Tabs>
 
 ### PR Workflow
 
 #### Auto-approve PRs
-Kody approves PRs automatically when no issues are found.
+Kody approves PRs when no issues are found.
 
-Platform support: GitHub, GitLab, Bitbucket
-
-Use for low-risk changes (docs, tests) or teams with strong CI/CD.
+**Platforms:** GitHub, GitLab, Bitbucket
 
 #### Request Changes
-Kody requests changes when finding **critical issues**.
+Kody requests changes when finding critical issues.
 
-Platform support: GitHub, Bitbucket (not GitLab yet)
-
-Use to enforce security standards or prevent breaking changes.
+**Platforms:** GitHub, Bitbucket
 
 ### Skip Conditions
-- Ignored Files: Use glob patterns (e.g., `**/*.js`), one per line
-- Ignored Titles: Skip PRs with specific keywords (case-insensitive, max 100 chars)
+
+**Ignored Files:** Use glob patterns (e.g., `**/*.js`), one per line. Default: `yarn.lock`, `package-lock.json`, `package.json`, `.env`
+
+**Ignored Titles:** Skip PRs with specific keywords (case-insensitive, max 100 chars)
+
+**Base Branches:** Additional branches to review besides default (dev, release, master)
 
 ## Analysis Types
 
@@ -116,17 +110,3 @@ Use to enforce security standards or prevent breaking changes.
 - Code Style: Consistent formatting and standards
 - Documentation: Clear comments and API docs
 - Kody Rules: Custom rule enforcement
-
-## Ignored Files
-
-Skip specific files from review:
-
-- Use glob patterns (e.g., `**/*.js`)
-- One pattern per line
-- Default ignores: `yarn.lock`, `package-lock.json`, `package.json`, `.env`
-
-## Ignore Title Keywords
-
-Skip review for PRs with specific titles (case-insensitive, max 100 chars per keyword)
-
-## Base Branches
