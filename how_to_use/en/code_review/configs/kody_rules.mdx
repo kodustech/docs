@@ -23,6 +23,15 @@ You can use Kody Rules in two ways:
 
 Define rules based on your team's exact needs. Kody Rules can be applied at two different levels:
 
+#### Reference External Files
+
+Rule instructions now support referencing concrete files from any codebase Kody can access. When you save a rule, Kody identifies these references and resolves them automatically.
+
+- Use `@file:path/to/file.ts` for files inside the repository where you're editing the rule.
+- Include `@repo:org/project` when pointing to files in another repository or when configuring rules outside a repo context.
+- Provide accurate blob-style paths instead of placeholders so Kody can reliably find the file you mean.
+- References are processed in the background right after you save—watch the status indicator next to the editor to confirm completion.
+
 #### File-Level Rules
 
 Analyze individual files to catch issues within specific code files.

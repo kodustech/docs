@@ -156,6 +156,15 @@ Your custom prompt instructs Kody on how to write suggestion messages. The promp
 
 You can customize the tone, level of detail, and communication style based on your team's needs - from detailed explanations for critical issues to concise feedback for minor ones.
 
+## External References
+
+All custom prompts—Category, Severity, Suggestion, and PR Summary—support referencing real files from the codebases Kody can access. When you save an update, Kody automatically detects external references and resolves them for future reviews.
+
+- Use `@file:path/to/file.ts` to point at files in the repository you're editing; Kody will try to locate the path locally first.
+- Include `@repo:org/project` when referencing files from another repository or when editing prompts at the global level.
+- Prefer precise blob-style paths rather than placeholders so the model can reliably find the right file.
+- After saving, Kody processes the references in the background. Check the status indicator beside the prompt editor to confirm when resolution completes.
+
 ## Best Practices
 
 ### Be Specific to Your Context
@@ -538,4 +547,3 @@ Only differentiate suggestion formats when there's a real reason:
     Yes. Use the `isKodyRule` variable to create different messages for rules vs suggestions in the same prompt.
   </Accordion>
 </AccordionGroup>
-
