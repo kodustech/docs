@@ -52,6 +52,20 @@ Kody will fetch the referenced specification through the plugin and confirm whet
 
 Kody only sees the tools you enable for each workspace. Install the plugins that matter to your workflow and keep everything else private.
 
+## Custom Plugins
+
+Bring your own MCP servers when you need capabilities beyond the curated catalog.
+
+1. Open the plugin catalog inside your workspace and click **Add Custom Plugin**.
+2. Provide the endpoint details:
+   - **Plugin Name** (required) and optional **Description** to help teammates understand the integration.
+   - Optional **Logo URL** for a recognizable icon in the catalog.
+   - The MCP **URL** that hosts your server along with the expected **Protocol** (HTTP or WebSocket).
+   - Any required **Authorization** method or custom headers for authentication.
+3. Click **Create Plugin** to instantly make it available to Kody within the current workspace.
+
+Custom plugins follow the same permissions model as curated integrations: only workspaces where the plugin is installed can invoke it, and Kody never accesses endpoints you do not explicitly configure.
+
 ## Tips
 
 - Mention Kody only once per request so the correct plugin runs without duplication.
