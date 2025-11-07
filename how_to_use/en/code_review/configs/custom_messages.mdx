@@ -27,31 +27,24 @@ This creates a complete timeline: **Initial Message → Suggestions → Final Me
 
 ## Message Configuration Options
 
-### Enable/Disable Messages
+### Message Behavior
 
-You can independently enable or disable each message type:
+Use the **Message behavior** dropdown to decide when Kody should post your custom
+start and end messages:
 
-<Tabs>
-  <Tab title="Both Messages Enabled">
-    **Timeline**: Initial Message → Suggestions → Final Message This is the
-    complete review experience with both custom messages.
-  </Tab>
+- **Every push**: Kody posts the start message when the pull request opens and
+  repeats the start/end pair after every new push that triggers a review.
+- **Only when opened**: Kody sends the start and end messages only once, right
+  after the PR is opened. Future pushes just add review suggestions plus the
+  usual reaction so authors know the review reran.
+- **Off**: Custom messages are disabled. Kody still runs the review and posts
+  suggestions, but no start or end messages are sent.
 
-  <Tab title="Start Message Disabled">
-    **Timeline**: Suggestions → Final Message Kody skips the initial message and
-    goes straight to suggestions.
-  </Tab>
-
-  <Tab title="End Message Disabled">
-    **Timeline**: Initial Message → Suggestions Kody sends the initial message
-    and suggestions, but no final summary.
-  </Tab>
-
-  <Tab title="Both Messages Disabled">
-    **Timeline**: Suggestions Only Kody only sends the code review suggestions
-    without any additional messages.
-  </Tab>
-</Tabs>
+When the behavior is `Every push` or `Only when opened`, Kody uses whichever
+templates you have filled in. If you only customize the start message, only that
+message is sent; same for the end message. This keeps the familiar timeline of
+**Initial Message → Suggestions → Final Message** whenever the behavior allows
+messages to be posted.
 
 ## Dynamic Context
 
@@ -68,6 +61,20 @@ A comprehensive summary of all changes in the pull request, giving an overview o
 ### reviewOptions
 
 A reflection of the team's configured review settings, showing which analysis types are enabled or disabled for the review.
+
+### reviewCadence
+
+Provides the exact follow-up review policy so authors know what happens after
+the first automated review:
+
+- **Automatic**: Kody re-reviews every push as soon as it lands.
+- **Auto-pause**: Kody re-reviews pushes automatically, but if it detects a
+  "push burst" (for example, 3 pushes within 15 minutes, based on your
+  thresholds) it pauses follow-up reviews until you resume them. The cadence
+  context includes the push and time limits so the team knows when the pause can
+  be triggered.
+- **Manual**: Kody waits for someone to run `@kody start-review` before doing
+  another pass.
 
 <Info>
   These context variables will be automatically populated with the actual data
