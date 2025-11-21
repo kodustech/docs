@@ -1,265 +1,264 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Kodus",
-  "colors": {
-    "primary": "#F59220",
-    "light": "#F8B76D",
-    "dark": "#F8B76D"
-  },
-  "background": {
-    "color": {
-      "dark": "#101019"
-    }
-  },
-  "favicon": "/favicon.svg",
-  "contextual": {
-    "options": ["copy", "view", "chatgpt", "claude"]
-  },
-  "navigation": {
-    "dropdowns": [
-      {
-        "dropdown": "How to use",
-        "icon": "book-open",
-        "languages": [
-          {
-            "language": "en",
-            "groups": [
-              {
-                "group": "Getting Started",
-                "pages": [
-                  "how_to_use/en/overview",
-                  "how_to_use/en/quickstart",
-                  "how_to_use/en/workspace_roles",
-                  "how_to_use/en/pricing",
-                  "how_to_use/en/byok",
-                  "how_to_use/en/code_review/troubleshooting"
-                ]
-              },
-              {
-                "group": "AI Code Review",
-                "pages": [
-                  "how_to_use/en/code_review/flow",
-                  "how_to_use/en/code_review/policy",
-                  {
-                    "group": "Advanced Configs",
-                    "pages": [
-                      "how_to_use/en/code_review/configs/general",
-                      "how_to_use/en/code_review/configs/inheritance_overrides",
-                      "how_to_use/en/code_review/configs/directory_level",
-                      "how_to_use/en/code_review/configs/suggestion_control",
-                      "how_to_use/en/code_review/configs/pr_summary",
-                      "how_to_use/en/code_review/configs/custom_messages",
-                      "how_to_use/en/code_review/configs/custom_prompts"
-                    ]
-                  },
-                  {
-                    "group": "Kody Rules",
-                    "pages": [
-                      "how_to_use/en/code_review/configs/kody_rules",
-                      "how_to_use/en/code_review/configs/rules_inheritance",
-                      "how_to_use/en/code_review/configs/rules_file_detection",
-                      "how_to_use/en/code_review/configs/repository_rules",
-                      "how_to_use/en/code_review/learning/kody_rules_generation"
-                    ]
-                  },
-                  "how_to_use/en/code_review/plugins",
-                  "how_to_use/en/code_review/business_logic_validation",
-                  "how_to_use/en/code_review/learning/kody_learning"
-                ]
-              },
-              {
-                "group": "Cockpit",
-                "pages": [
-                  "how_to_use/en/cockpit/overview",
-                  {
-                    "group": "Metrics",
-                    "pages": [
-                      "how_to_use/en/cockpit/metrics/deploy_frequency",
-                      "how_to_use/en/cockpit/metrics/lead_time_for_changes",
-                      "how_to_use/en/cockpit/metrics/change_failure_rate",
-                      "how_to_use/en/cockpit/metrics/pr_size",
-                      "how_to_use/en/cockpit/metrics/kody_suggestions",
-                      "how_to_use/en/cockpit/metrics/lead_time_breakdown",
-                      "how_to_use/en/cockpit/metrics/developer_activity",
-                      "how_to_use/en/cockpit/metrics/prs_by_developer"
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": "Kody Issues",
-                "pages": ["how_to_use/en/issues/overview"]
-              },
-              {
-                "group": "Security",
-                "pages": [
-                  {
-                    "group": "Tokens",
-                    "pages": [
-                      "how_to_use/en/code_review/general_config/github_pat",
-                      "how_to_use/en/code_review/general_config/gitlab_pat",
-                      "how_to_use/en/code_review/general_config/bitbucket_pat",
-                      "how_to_use/en/code_review/general_config/azure_devops_pat"
-                    ]
-                  },
-                  "how_to_use/en/security/data_usage"
-                ]
-              }
-            ]
-          },
-          {
-            "language": "pt-BR",
-            "groups": [
-              {
-                "group": "Getting Started",
-                "pages": []
-              }
-            ]
-          },
-          {
-            "language": "zh",
-            "groups": [
-              {
-                "group": "Getting Started",
-                "pages": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "dropdown": "How to deploy",
-        "icon": "rocket-launch",
-        "languages": [
-          {
-            "language": "en",
-            "pages": [
-              {
-                "group": "Concepts",
-                "pages": ["how_to_deploy/en/kodus_architecture"]
-              },
-              {
-                "group": "Local Quickstarts",
-                "pages": [
-                  "how_to_deploy/en/local_quickstart/orchestrator",
-                  "how_to_deploy/en/local_quickstart/web"
-                ]
-              },
-              {
-                "group": "Deploy Kodus",
-                "pages": [
-                  {
-                    "group": "Custom Deployment",
-                    "icon": "server",
-                    "pages": [
-                      "how_to_deploy/en/deploy_kodus/generic_vm",
-                      "how_to_deploy/en/deploy_kodus/google_gcp"
-                    ]
-                  },
-                  "how_to_deploy/en/deploy_kodus/troubleshooting"
-                ]
-              },
-              {
-                "group": "Git providers configuration",
-                "pages": [
-                  {
-                    "group": "Github",
-                    "icon": "github",
-                    "pages": [
-                      "how_to_deploy/en/platforms/github/github_webhook"
-                    ]
-                  },
-                  {
-                    "group": "Gitlab",
-                    "icon": "gitlab",
-                    "pages": [
-                      "how_to_deploy/en/platforms/gitlab/gitlab_webhook"
-                    ]
-                  },
-                  {
-                    "group": "Bitbucket",
-                    "icon": "bitbucket",
-                    "pages": [
-                      "how_to_deploy/en/platforms/bitbucket/bitbucket_webhook"
-                    ]
-                  },
-                  {
-                    "group": "Azure DevOps",
-                    "icon": "microsoft",
-                    "pages": [
-                      "how_to_deploy/en/platforms/azure_devops/azdevops_webhook"
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "dropdown": "Cookbook",
-        "icon": "fire",
-        "languages": [
-          {
-            "language": "en",
-            "pages": [
-              {
-                "group": "Selfhosted + Open Source LLM Providers",
-                "pages": [
-                  "cookbook/en/novita",
-                  "cookbook/en/groq",
-                  "cookbook/en/together",
-                  "cookbook/en/fireworks"
-                ]
-              },
-              {
-                "group": "Custom Plugins",
-                "pages": [
-                  "cookbook/en/kodus-docs-mcp"
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg",
-    "href": "https://kodus.io"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Community",
-        "href": "https://discord.gg/TFZBRk9fT6"
-      },
-      {
-        "label": "Github",
-        "href": "https://github.com/kodustech"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Try Kodus",
-      "href": "https://kodus.io/"
-    }
-  },
-  "footer": {
-    "socials": {
-      "twitter": "https://twitter.com/kodustech",
-      "github": "https://github.com/kodustech",
-      "linkedin": "https://www.linkedin.com/company/kodustech"
-    }
-  },
-  "integrations": {
-    "ga4": {
-      "measurementId": "G-ZQTM352G3Y"
+    "$schema": "https://mintlify.com/docs.json",
+    "theme": "mint",
+    "name": "Kodus",
+    "colors": {
+        "primary": "#F59220",
+        "light": "#F8B76D",
+        "dark": "#F8B76D"
     },
-    "posthog": {
-      "apiKey": "phc_eXdASBHYhvHzYCLktmceTdRKmF3jMLnrH4iCXXUGjJI"
+    "background": {
+        "color": {
+            "dark": "#101019"
+        }
+    },
+    "favicon": "/favicon.svg",
+    "contextual": {
+        "options": ["copy", "view", "chatgpt", "claude"]
+    },
+    "navigation": {
+        "dropdowns": [
+            {
+                "dropdown": "How to use",
+                "icon": "book-open",
+                "languages": [
+                    {
+                        "language": "en",
+                        "groups": [
+                            {
+                                "group": "Getting Started",
+                                "pages": [
+                                    "how_to_use/en/overview",
+                                    "how_to_use/en/quickstart",
+                                    "how_to_use/en/workspace_roles",
+                                    "how_to_use/en/pricing",
+                                    "how_to_use/en/byok",
+                                    "how_to_use/en/code_review/troubleshooting",
+                                    "how_to_use/en/auto_license_assignment"
+                                ]
+                            },
+                            {
+                                "group": "AI Code Review",
+                                "pages": [
+                                    "how_to_use/en/code_review/flow",
+                                    "how_to_use/en/code_review/policy",
+                                    {
+                                        "group": "Advanced Configs",
+                                        "pages": [
+                                            "how_to_use/en/code_review/configs/general",
+                                            "how_to_use/en/code_review/configs/inheritance_overrides",
+                                            "how_to_use/en/code_review/configs/directory_level",
+                                            "how_to_use/en/code_review/configs/suggestion_control",
+                                            "how_to_use/en/code_review/configs/pr_summary",
+                                            "how_to_use/en/code_review/configs/custom_messages",
+                                            "how_to_use/en/code_review/configs/custom_prompts"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Kody Rules",
+                                        "pages": [
+                                            "how_to_use/en/code_review/configs/kody_rules",
+                                            "how_to_use/en/code_review/configs/rules_inheritance",
+                                            "how_to_use/en/code_review/configs/rules_file_detection",
+                                            "how_to_use/en/code_review/configs/repository_rules",
+                                            "how_to_use/en/code_review/learning/kody_rules_generation"
+                                        ]
+                                    },
+                                    "how_to_use/en/code_review/plugins",
+                                    "how_to_use/en/code_review/business_logic_validation",
+                                    "how_to_use/en/code_review/learning/kody_learning"
+                                ]
+                            },
+                            {
+                                "group": "Cockpit",
+                                "pages": [
+                                    "how_to_use/en/cockpit/overview",
+                                    {
+                                        "group": "Metrics",
+                                        "pages": [
+                                            "how_to_use/en/cockpit/metrics/deploy_frequency",
+                                            "how_to_use/en/cockpit/metrics/lead_time_for_changes",
+                                            "how_to_use/en/cockpit/metrics/change_failure_rate",
+                                            "how_to_use/en/cockpit/metrics/pr_size",
+                                            "how_to_use/en/cockpit/metrics/kody_suggestions",
+                                            "how_to_use/en/cockpit/metrics/lead_time_breakdown",
+                                            "how_to_use/en/cockpit/metrics/developer_activity",
+                                            "how_to_use/en/cockpit/metrics/prs_by_developer"
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "group": "Kody Issues",
+                                "pages": ["how_to_use/en/issues/overview"]
+                            },
+                            {
+                                "group": "Security",
+                                "pages": [
+                                    {
+                                        "group": "Tokens",
+                                        "pages": [
+                                            "how_to_use/en/code_review/general_config/github_pat",
+                                            "how_to_use/en/code_review/general_config/gitlab_pat",
+                                            "how_to_use/en/code_review/general_config/bitbucket_pat",
+                                            "how_to_use/en/code_review/general_config/azure_devops_pat"
+                                        ]
+                                    },
+                                    "how_to_use/en/security/data_usage"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "language": "pt-BR",
+                        "groups": [
+                            {
+                                "group": "Getting Started",
+                                "pages": []
+                            }
+                        ]
+                    },
+                    {
+                        "language": "zh",
+                        "groups": [
+                            {
+                                "group": "Getting Started",
+                                "pages": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "dropdown": "How to deploy",
+                "icon": "rocket-launch",
+                "languages": [
+                    {
+                        "language": "en",
+                        "pages": [
+                            {
+                                "group": "Concepts",
+                                "pages": ["how_to_deploy/en/kodus_architecture"]
+                            },
+                            {
+                                "group": "Local Quickstarts",
+                                "pages": [
+                                    "how_to_deploy/en/local_quickstart/orchestrator",
+                                    "how_to_deploy/en/local_quickstart/web"
+                                ]
+                            },
+                            {
+                                "group": "Deploy Kodus",
+                                "pages": [
+                                    {
+                                        "group": "Custom Deployment",
+                                        "icon": "server",
+                                        "pages": [
+                                            "how_to_deploy/en/deploy_kodus/generic_vm",
+                                            "how_to_deploy/en/deploy_kodus/google_gcp"
+                                        ]
+                                    },
+                                    "how_to_deploy/en/deploy_kodus/troubleshooting"
+                                ]
+                            },
+                            {
+                                "group": "Git providers configuration",
+                                "pages": [
+                                    {
+                                        "group": "Github",
+                                        "icon": "github",
+                                        "pages": [
+                                            "how_to_deploy/en/platforms/github/github_webhook"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Gitlab",
+                                        "icon": "gitlab",
+                                        "pages": [
+                                            "how_to_deploy/en/platforms/gitlab/gitlab_webhook"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Bitbucket",
+                                        "icon": "bitbucket",
+                                        "pages": [
+                                            "how_to_deploy/en/platforms/bitbucket/bitbucket_webhook"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Azure DevOps",
+                                        "icon": "microsoft",
+                                        "pages": [
+                                            "how_to_deploy/en/platforms/azure_devops/azdevops_webhook"
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "dropdown": "Cookbook",
+                "icon": "fire",
+                "languages": [
+                    {
+                        "language": "en",
+                        "pages": [
+                            {
+                                "group": "Selfhosted + Open Source LLM Providers",
+                                "pages": [
+                                    "cookbook/en/novita",
+                                    "cookbook/en/groq",
+                                    "cookbook/en/together",
+                                    "cookbook/en/fireworks"
+                                ]
+                            },
+                            {
+                                "group": "Custom Plugins",
+                                "pages": ["cookbook/en/kodus-docs-mcp"]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "logo": {
+        "light": "/logo/light.svg",
+        "dark": "/logo/dark.svg",
+        "href": "https://kodus.io"
+    },
+    "navbar": {
+        "links": [
+            {
+                "label": "Community",
+                "href": "https://discord.gg/TFZBRk9fT6"
+            },
+            {
+                "label": "Github",
+                "href": "https://github.com/kodustech"
+            }
+        ],
+        "primary": {
+            "type": "button",
+            "label": "Try Kodus",
+            "href": "https://kodus.io/"
+        }
+    },
+    "footer": {
+        "socials": {
+            "twitter": "https://twitter.com/kodustech",
+            "github": "https://github.com/kodustech",
+            "linkedin": "https://www.linkedin.com/company/kodustech"
+        }
+    },
+    "integrations": {
+        "ga4": {
+            "measurementId": "G-ZQTM352G3Y"
+        },
+        "posthog": {
+            "apiKey": "phc_eXdASBHYhvHzYCLktmceTdRKmF3jMLnrH4iCXXUGjJI"
+        }
     }
-  }
 }
