@@ -217,7 +217,11 @@
                             },
                             {
                                 "group": "Custom Plugins",
-                                "pages": ["cookbook/en/kodus-docs-mcp"]
+                                "pages": ["cookbook/en/custom-plugin-install"]
+                            },
+                            {
+                                "group": "Custom Context Playbooks",
+                                "pages": ["cookbook/en/guide-handbook-guardrails"]
                             }
                         ]
                     }
