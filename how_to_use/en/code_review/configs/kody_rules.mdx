@@ -21,29 +21,94 @@ You can use Kody Rules in two ways:
 
 ### Create Custom Rules
 
-Define rules based on your team's exact needs. Kody Rules can be applied at two different levels:
+Define rules based on your team's exact needs. Kody Rules can be applied at two different levels: **[File-Level](#file-level-rules)** and **[Pull Request-Level](#pull-request-level-rules)**. Both levels support variables, file references, and MCP functions to build powerful, context-aware rules.
 
-#### Reference External Files
+#### Variables, File References & MCP Functions
 
-Rule instructions now support referencing concrete files from any codebase Kody can access. When you save a rule, Kody identifies these references and resolves them automatically.
+Rules can access rich context through variables, file references, and MCP functions. Here's what's available:
 
-- Use `@file:path/to/file.ts` for files inside the repository where you're editing the rule.
-- Include `@repo:org/project` when pointing to files in another repository or when configuring rules outside a repo context.
-- Provide accurate blob-style paths instead of placeholders so Kody can reliably find the file you mean.
-- References are processed in the background right after you save—watch the status indicator next to the editor to confirm completion.
+**Variables:**
+
+Variables represent the context data available during rule execution. Understanding what's available helps you compose better rules by combining variables with MCP functions and file references.
+
+- **File-Level**:
+  - `fileDiff` - The specific changes made to the individual file being analyzed
+  
+- **PR-Level**:
+  - `pr_title` - The title of the Pull Request
+  - `pr_description` - The description/body of the Pull Request
+  - `pr_total_additions` - Total number of lines added
+  - `pr_total_deletions` - Total number of lines deleted
+  - `pr_total_files` - Total number of files changed
+  - `pr_total_lines_changed` - Total number of lines modified
+  - `pr_files_diff` - Complete diff of all changes across the entire Pull Request
+  - `pr_tags` - Tags associated with the Pull Request
+  - `pr_author` - Author of the Pull Request
+  - `pr_number` - Pull Request number
+
+Use these variables in your rule instructions to access context data, and combine them with MCP functions to fetch additional information or perform dynamic analysis.
+
+**File References:**
+
+Reference files directly in your rule instructions to compare code, validate patterns, enforce consistency, and leverage existing templates or standards.
+
+- **`@file:path/to/file.ts`** - Reference files in the same repository where you're editing the rule
+  - Use when referencing templates, examples, or configuration files within your current repository
+  - Example: `@file:src/services/userService.ts`
+  
+- **`@repo:org/project`** - Reference files in another repository or when configuring rules outside a repo context
+  - Use when enforcing consistency across multiple repositories or referencing shared standards
+  - Example: `@repo:team/api-standards`
+
+**How File References Work:**
+
+- Kody identifies file references automatically when you save a rule
+- References are resolved in the background—watch the status indicator next to the editor to confirm completion
+- Use accurate blob-style paths (e.g., `src/utils/helpers.ts`) instead of placeholders
+- File contents are injected into the rule context, allowing Kody to compare, validate, or enforce patterns
+- Works in both File-Level and Pull Request-Level rules
+
+**MCP Functions:**
+
+Access MCP (Model Context Protocol) functions through the `@MCP` dropdown in the rule editor to fetch additional data and context. You can use any MCP tool or server connected in your workspace's [Plugins](/how_to_use/en/code_review/plugins) page.
+
+Available functions include:
+
+- Repository operations: List repositories, get repository files, content, and languages
+- PR analysis: Get pull request details, list commits, analyze PR file content
+- File content retrieval: Fetch file contents and diffs
+- Cross-file validation: Perform advanced analysis across multiple files
+- Custom integrations: Any MCP server you've connected as a plugin (Jira, custom tools, etc.)
+
+MCP functions execute during rule evaluation, enabling rules that adapt to current repository state and fetch real-time data.
+
+**Best Practices:**
+
+- Use specific file paths rather than generic placeholders
+- Reference stable files that represent your team's standards
+- Test file references exist before saving rules to avoid resolution errors
+- Combine variables, file references, and MCP functions for comprehensive validation
 
 #### File-Level Rules
 
 Analyze individual files to catch issues within specific code files.
 
 **Available Context:**
-- **File diff**: The specific changes made to the individual file being analyzed
+
+See the [Variables, File References & MCP Functions](#variables-file-references--mcp-functions) section above for details. Available at this level: `fileDiff` variable, file references (`@file`, `@repo`), and MCP functions.
+
+**What You Can Do:**
+
+- Compare against reference files using `@file` or `@repo`
+- Fetch related files or repository data using MCP functions
+- Combine variables, file references, and MCP functions to validate patterns, check consistency, or enforce architectural rules
 
 **How to Configure:**
+
 - **Rule name**: Clearly define the rule purpose
 - **File Paths**: Limit rules to specific files or directories using glob patterns
 - **Severity**: Set to Critical, High, Medium, or Low
-- **Detailed Instructions**: Clearly state what's expected and why
+- **Detailed Instructions**: Use `fileDiff`, reference files with `@file`/`@repo`, and call MCP functions to compose powerful rules with rich context
 
 **Configuration Example:**
 
@@ -56,6 +121,7 @@ Analyze individual files to catch issues within specific code files.
 📝 **Instructions**: "Using equality operators (== or !=) can cause infinite loops if exact values aren't matched."
 
 **❌ Bad Example:**
+
 ```typescript
 // Risk of infinite loop if increment is not exactly 1
 for (let i = 0; i != 10; i += 2) {
@@ -72,6 +138,7 @@ for (let i = 0; i != items.length; i++) {
 ```
 
 **✅ Good Example:**
+
 ```typescript
 // Safe: loop will always terminate
 for (let i = 0; i < 10; i += 2) {
@@ -92,19 +159,61 @@ for (let i = 0; i < items.length; i++) {
 Analyze the entire Pull Request for cross-file validation and PR-specific requirements.
 
 **Available Context:**
-- **PR diff**: Complete diff of all changes across the entire Pull Request
-- **PR title**: The title of the Pull Request
-- **PR description**: The description/body of the Pull Request
-- **PR statistics**: Comprehensive metrics including total additions, deletions, files changed, and total lines modified
+
+See the [Variables, File References & MCP Functions](#variables-file-references--mcp-functions) section above for details. Available at this level: PR variables (`pr_title`, `pr_description`, `pr_files_diff`, etc.), file references (`@file`, `@repo`), and MCP functions.
+
+**What You Can Do:**
+
+- Validate PR metadata using variables like `pr_title`, `pr_description`, `pr_author`
+- Reference configuration files or templates using `@file` or `@repo`
+- Fetch additional context using MCP functions (e.g., check if related files exist, validate against repository structure)
+- Combine PR variables, file references, and MCP functions to create comprehensive validation rules
 
 **How to Configure:**
 
 The creation process is identical to file-level rules, but you must select the "Pull-request" scope. This broader context enables analysis of cross-file dependencies and overall PR quality.
 
 **Examples:**
+
 - Every service file must have a corresponding test file
 - PR description must be complete, clearly stating what was added or removed
 - When a new route is created in a controller, it must be registered in routes.json
+- Use `pr_total_lines_changed` to flag PRs exceeding size limits
+- Combine `pr_files_diff` with MCP functions to validate cross-file dependencies
+- Reference `@file:routes.json` to ensure new routes are registered
+- Use MCP functions to check if test files exist for modified service files
+
+#### Composing Powerful Rules
+
+Combine variables, MCP functions, and file references to create sophisticated rules with rich context. Here's what's available at each level:
+
+**File-Level Composition:**
+
+- Use `fileDiff` to analyze the specific changes in a file
+- Reference related files with `@file:path/to/template.ts` to compare against patterns
+- Call MCP functions to fetch repository data or check if related files exist
+- **Example**: "Analyze `fileDiff` and ensure it follows the pattern in `@file:src/utils/example.ts`. Use MCP to verify related test files exist."
+
+**PR-Level Composition:**
+
+- Use PR variables (`pr_title`, `pr_description`, `pr_files_diff`, etc.) to validate PR metadata and size
+- Reference configuration files with `@file:config.json` or `@repo:org/shared-config` to enforce consistency
+- Call MCP functions to perform cross-file validation, check repository structure, or fetch commit history
+- **Example**: "If `pr_files_diff` contains new routes, verify they're registered in `@file:routes.json`. Use MCP to check if corresponding test files exist for all modified service files."
+
+**Cross-Repository Validation:**
+
+- Reference files from other repositories with `@repo:org/project` to maintain consistency across projects
+- Combine with MCP functions to validate against shared standards or templates
+- **Example**: "Ensure API endpoints follow the pattern defined in `@repo:org/api-standards`. Use MCP to fetch the latest standards document."
+
+**Dynamic Analysis:**
+
+- MCP functions execute during rule evaluation, enabling rules that adapt to current repository state
+- Fetch real-time data about files, commits, or repository structure
+- **Example**: "Use MCP to check the current repository structure and ensure new files follow the existing directory patterns."
+
+This composition enables rules that understand not just code changes, but the broader context of your codebase, team practices, and project requirements.
 
 ### Import from Rules Library
 
