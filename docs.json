@@ -104,7 +104,8 @@
                                             "how_to_use/en/code_review/general_config/azure_devops_pat"
                                         ]
                                     },
-                                    "how_to_use/en/security/data_usage"
+                                    "how_to_use/en/security/data_usage",
+                                    "how_to_use/en/security/sso"
                                 ]
                             }
                         ]
