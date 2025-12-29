@@ -29,11 +29,18 @@
                                 "group": "Getting Started",
                                 "pages": [
                                     "how_to_use/en/overview",
-                                    "how_to_use/en/quickstart",
-                                    "how_to_use/en/workspace_roles",
+                                    "how_to_use/en/quickstart"
+                                ]
+                            },
+                            {
+                                "group": "Workspace",
+                                "pages": ["how_to_use/en/workspace_roles"]
+                            },
+                            {
+                                "group": "Billing & Licenses",
+                                "pages": [
                                     "how_to_use/en/pricing",
                                     "how_to_use/en/byok",
-                                    "how_to_use/en/code_review/troubleshooting",
                                     "how_to_use/en/auto_license_assignment"
                                 ]
                             },
@@ -68,6 +75,10 @@
                                     "how_to_use/en/code_review/business_logic_validation",
                                     "how_to_use/en/code_review/learning/kody_learning"
                                 ]
+                            },
+                            {
+                                "group": "Troubleshooting",
+                                "pages": ["how_to_use/en/code_review/troubleshooting"]
                             },
                             {
                                 "group": "Cockpit",
