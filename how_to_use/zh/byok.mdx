@@ -1,0 +1,300 @@
+---
+title: "BYOK - 自带密钥"
+description: "使用团队计划配置您自己的 API 密钥以获得最大灵活性和成本控制"
+---
+
+BYOK(自带密钥)为您提供对 AI 模型使用的完全控制:选择任何模型,只为您使用的付费,并直接在提供商的仪表板中监控成本。
+
+<Card
+  title="与托管模式比较"
+  icon="scale-balanced"
+  href="/how_to_use/en/pricing#teams-pricing-byok-vs-managed"
+>
+  不确定 BYOK 是否适合您?将其与我们的托管模式进行比较,托管模式以每开发 $30/月处理一切。
+</Card>
+
+## 入门
+
+<Steps>
+  <Step title="访问 BYOK 设置">
+    导航到您的组织设置 [app.kodus.io/organization/byok](https://app.kodus.io/organization/byok)
+  </Step>
+
+  <Step title="配置主模型">
+    选择您的主要提供商(OpenAI、Google Gemini、Anthropic 等)并使用您首选的模型输入您的 API 密钥
+  </Step>
+
+  <Step title="配置后备模型(推荐)">
+    设置辅助模型作为备份。如果您的主模型出现问题或不可用,审查会自动切换到后备模型
+  </Step>
+
+  <Step title="测试配置">
+    Kodus 将在保存前验证 API 密钥和模型选择
+  </Step>
+</Steps>
+
+<Info>
+  **重要:**始终配置后备模型以确保即使主要提供商遇到停机或速率限制,也能持续进行代码审查。
+</Info>
+
+<Warning>
+  保护您的 API 密钥安全,切勿共享。为 Kodus 使用单独的密钥以更好地跟踪使用和成本。
+</Warning>
+
+## 支持的提供商
+
+<Tabs>
+  <Tab title="OpenAI">
+    **最适合:**最新 GPT 模型和可靠性能
+
+    **如何获取 API 密钥:**
+    1. 访问 [OpenAI API 密钥](https://platform.openai.com/api-keys)
+    2. 为 Kodus 创建新的 API 密钥
+    3. 向您的 OpenAI 账户添加计费信息
+
+
+    <Info>
+      OpenAI 提供最可靠的服务和出色的模型多样性。从 GPT-5-mini 开始以获得最佳价值。
+    </Info>
+  </Tab>
+
+  <Tab title="Google Gemini">
+    **最适合:**具有强大推理能力的竞争性定价
+
+    **如何获取 API 密钥:**
+    1. 转到 [Google AI Studio](https://aistudio.google.com/app/apikey)
+    2. 创建新的 API 密钥
+    3. 在 Google Cloud Console 中启用计费
+
+    <Info>
+      Google Gemini 在代码分析任务上提供出色的价值,具有竞争性定价和强大的性能。
+    </Info>
+  </Tab>
+
+  <Tab title="Anthropic Claude">
+    **最适合:**详细分析和遵循复杂指令
+
+    **如何获取 API 密钥:**
+    1. 访问 [Anthropic Console](https://console.anthropic.com/)
+    2. 创建账户并生成 API 密钥
+    3. 向您的账户添加积分
+
+    <Info>
+      Claude 擅长理解上下文并提供详细、深思熟虑的代码审查,具有出色的指令遵循能力。
+    </Info>
+  </Tab>
+
+  <Tab title="Novita AI">
+    **最适合:**以竞争性价格访问最新的开源模型
+
+    **如何获取 API 密钥:**
+    1. 在 [Novita AI](https://novita.ai/) 注册
+    2. 导航到 API 设置
+    3. 生成您的 API 密钥
+
+    <Card
+      title="Novita 设置指南"
+      icon="rocket"
+      href="/cookbook/en/novita"
+    >
+      带有 Novita AI 配置截图的详细设置说明。
+    </Card>
+  </Tab>
+
+  <Tab title="OpenRouter">
+    **最适合:**通过一个 API 访问多个模型,价格透明
+
+    **如何获取 API 密钥:**
+    1. 在 [OpenRouter](https://openrouter.ai/) 创建账户
+    2. 向您的账户添加积分
+    3. 在设置中生成 API 密钥
+
+
+    <Info>
+      OpenRouter 提供对多个提供商的模型的访问,价格透明,无隐藏成本。
+    </Info>
+  </Tab>
+
+  <Tab title="自定义提供商">
+    **最适合:**使用 Fireworks、Together AI、Groq 等专门提供商或您自己的端点
+
+    **如何配置:**
+    1. 在 Kodus 设置中选择"自定义 OpenAI 兼容"
+    2. 输入您提供商的基础 URL(例如 `https://api.fireworks.ai/inference/v1`)
+    3. 从提供商添加您的 API 密钥
+    4. 按提供商要求指定模型名称
+
+    **流行的自定义提供商:**
+    - **Fireworks AI:**使用开源模型的快速推理
+    - **Together AI:**开源模型的竞争性定价
+    - **Groq:**超快的推理速度
+    - **Deepseek:**专门的编码模型
+
+
+    <CardGroup cols={2}>
+      <Card title="Fireworks AI 指南" href="/cookbook/en/fireworks" icon="fire">
+        Fireworks AI 集成设置指南
+      </Card>
+      <Card title="Together AI 指南" href="/cookbook/en/together" icon="handshake">
+        配置 Together AI 进行代码审查
+      </Card>
+    </CardGroup>
+  </Tab>
+</Tabs>
+
+## 推荐和测试的模型
+
+这些是我们经过广泛测试并推荐用于 Kodus 代码审查的模型:
+
+<CardGroup cols={2}>
+  <Card title="Gemini 2.5 Pro" icon="crown">
+    **最多测试和推荐**
+
+    Google 的最新模型,具有卓越的代码理解能力、1M+ 令牌上下文窗口和最佳性价比。
+
+    - **提供商:** Google
+    - **最适合:**全面卓越
+  </Card>
+
+  <Card title="Gemini 2.5 Flash" icon="bolt">
+    **最佳价值**
+
+    超快且经济实惠,不影响质量。非常适合大容量团队。
+
+    - **提供商:** Google
+    - **最适合:**注重预算的团队
+  </Card>
+
+  <Card title="Claude 4.5 Sonnet" icon="code">
+    **最适合代码**
+
+    卓越的编码能力,SWE-Bench 性能为 77.2%。出色地理解复杂代码库。
+
+    - **提供商:** Anthropic
+    - **最适合:**代码质量重点
+  </Card>
+
+  <Card title="Claude 4.1 Opus" icon="star">
+    **高端质量**
+
+    用于最苛刻的代码审查和复杂架构分析的顶级模型。
+
+    - **提供商:** Anthropic
+    - **最适合:**企业项目
+  </Card>
+
+  <Card title="GPT-5" icon="sparkles">
+    **最新创新**
+
+    OpenAI 的最新模型,具有尖端功能和竞争性定价。
+
+    - **提供商:** OpenAI
+    - **最适合:**最新功能
+  </Card>
+
+  <Card title="GPT-5-mini" icon="piggy-bank">
+    **快速可靠**
+
+    OpenAI 的速度、成本和质量的出色平衡。
+
+    - **提供商:** OpenAI
+    - **最适合:**预算内的可靠性
+  </Card>
+</CardGroup>
+
+<Info>
+  **我们的推荐:**从 **Gemini 2.5 Pro** 开始以获得最佳整体体验。它是我们测试最多的模型,以优惠的价格提供出色的质量。
+</Info>
+
+## 最佳实践
+
+### 安全
+
+<CardGroup cols={2}>
+  <Card title="专用密钥" icon="shield-check">
+    专门为 Kodus 创建单独的 API 密钥以更好地跟踪使用并增强安全性
+  </Card>
+  <Card title="定期轮换" icon="arrows-rotate">
+    定期轮换您的 API 密钥并在 Kodus 设置中更新它们
+  </Card>
+  <Card title="监控使用" icon="chart-bar">
+    定期检查您的提供商仪表板以查找异常使用模式
+  </Card>
+  <Card title="安全存储" icon="lock">
+    切勿将 API 密钥共享或提交到代码库
+  </Card>
+</CardGroup>
+
+## 故障排除
+
+<AccordionGroup>
+  <Accordion title="无效的 API 密钥错误">
+    **解决方案:**
+    - 验证 API 密钥是否正确复制,没有多余的空格
+    - 检查您的提供商账户是否启用了计费
+    - 确保 API 密钥具有必要的权限
+    - 如果问题持续存在,请尝试生成新的 API 密钥
+  </Accordion>
+
+  <Accordion title="未找到模型错误">
+    **解决方案:**
+    - 验证模型名称是否与提供商的确切格式匹配
+    - 检查模型在您的地区是否可用
+    - 确保您的账户可以访问指定的模型
+    - 尝试不同的模型以测试问题是否特定于模型
+  </Accordion>
+
+  <Accordion title="速率限制问题">
+    **解决方案:**
+    - 检查您提供商的速率限制并根据需要升级
+    - 考虑切换到速率限制更高的提供商
+    - 联系您的提供商支持以增加限制
+    - 如果允许,在多个 API 密钥之间分配使用
+  </Accordion>
+
+  <Accordion title="自定义 URL 连接问题">
+    **解决方案:**
+    - 验证基础 URL 格式包括协议(https://)
+    - 检查端点是否支持 OpenAI 兼容 API
+    - 使用 curl 或 Postman 等工具直接测试 URL
+    - 确保没有防火墙限制阻止连接
+  </Accordion>
+
+  <Accordion title="意外的高成本">
+    **解决方案:**
+    - 在提供商仪表板中审查您的使用情况
+    - 检查是否适当设置了速率限制
+    - 考虑切换到更具成本效益的模型
+    - 设置计费警报以尽早发现激增
+  </Accordion>
+</AccordionGroup>
+
+## 常见问题
+
+<AccordionGroup>
+  <Accordion title="我可以随时切换提供商吗?">
+    可以。更改立即对新审查生效。
+  </Accordion>
+
+  <Accordion title="如果我的 API 密钥用完积分会怎样?">
+    审查会自动切换到您的后备模型(如果已配置)。没有后备,审查会失败,直到您添加积分。始终配置后备模型。
+  </Accordion>
+
+  <Accordion title="主/后备系统如何工作?">
+    主模型默认处理所有审查。如果失败(速率限制、停机、错误),Kodus 会自动切换到后备。您只为处理每次审查的模型付费。
+  </Accordion>
+
+  <Accordion title="我应该对主和后备使用相同的提供商吗?">
+    不应该。使用不同的提供商(例如,Google 主,OpenAI 后备)以防止特定于提供商的中断。
+  </Accordion>
+
+  <Accordion title="BYOK 与托管模式相比如何?">
+    **BYOK ($10/开发/月):**您管理 API 密钥,完全控制,需要设置
+
+    **托管 ($30/开发/月):**我们处理一切,固定成本,零配置
+  </Accordion>
+
+  <Accordion title="您是否安全存储我们的 API 密钥?">
+    是的。密钥在静态和传输中加密。我们从不以明文记录或存储密钥。
+  </Accordion>
+</AccordionGroup>

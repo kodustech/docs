@@ -1,0 +1,49 @@
+---
+title: "业务逻辑验证 [Beta]"
+description: "使用 @kody -v business-logic 将您的拉取请求与业务规则或规范进行比较。"
+---
+
+<Callout icon="alien" iconType="regular">这是一个 beta 功能。它尚未准备好用于生产，可能无法按预期工作。</Callout>
+
+## 概述
+
+业务逻辑验证让您确认拉取请求是否实现了规范、文档或工单中描述的预期行为。Kody 分析 PR 差异，引入引用的业务上下文，并在合并之前标记不匹配。
+
+<img src="https://kodus.io/wp-content/uploads/2025/10/business-logic.gif" alt="使用业务逻辑验证的示例" />
+
+## 前提条件
+- 您共享的任何链接（Jira、Slack、Google Docs 等）必须可通过工作区中安装的插件访问。
+- 如果您内联提供规范，请保持其简洁和结构化，以便 Kody 可以理解要求。
+
+## 运行命令
+
+1. 打开主 PR 评论框（在内联代码建议之外）。
+2. 提及 Kody 并添加验证命令：`@kody -v business-logic ...`。
+3. 内联提供规范内容或粘贴 Kody 可以通过可用插件获取的链接。
+4. 提交评论并在同一线程中等待 Kody 的响应。
+
+该命令仅从主对话框触发；内联建议内的回复将被忽略。
+
+您可以随时重新运行验证——只需在新评论中再次发布命令即可。后续操作必须是新命令；不支持直接在 Git UI 中回复 Kody 的消息。
+
+## 示例
+
+- Jira 工单：`@kody -v business-logic https://kodustech.atlassian.net/jira/software/c/projects/KC/boards/2?selectedIssue=KC-1292`
+- 内联规范片段：`@kody -v business-logic 规则 XYZ — 超过 $500 的订单必须发放返现积分。`
+- Slack 对话：`@kody -v business-logic https://kodustech.slack.com/archives/C070E5E97DE/p1727814000000000`
+- Google 文档：`@kody -v business-logic https://docs.google.com/document/d/1234567890/edit`
+
+## Kody 做什么
+
+- 获取拉取请求的最新差异。
+- 通过适当的插件检索引用的规范，或使用您提供的内联文本。
+- 将实现细节与记录的期望进行比较。
+- 在线程中回复确认或突出显示任何需要注意的差异。
+
+如果 Kody 无法访问资源或缺少权限，它会指出这一点，以便您可以调整访问权限或以其他方式提供信息。
+
+## 提示
+
+- 将大型规范分解为多个部分并分别验证，以保持反馈的重点。
+- 共享私有链接时，请仔细检查所需的插件（例如，Jira、Slack、Google Drive）是否已为您的工作区安装和授权。
+- 解决发现的问题后，重新运行命令以确认 PR 现在与业务规则一致。
