@@ -122,20 +122,101 @@
                         ]
                     },
                     {
-                        "language": "pt-BR",
-                        "groups": [
-                            {
-                                "group": "Getting Started",
-                                "pages": []
-                            }
-                        ]
-                    },
-                    {
                         "language": "zh",
                         "groups": [
                             {
-                                "group": "Getting Started",
-                                "pages": []
+                                "group": "快速开始",
+                                "pages": [
+                                    "how_to_use/zh/overview",
+                                    "how_to_use/zh/quickstart"
+                                ]
+                            },
+                            {
+                                "group": "工作区",
+                                "pages": ["how_to_use/zh/workspace_roles"]
+                            },
+                            {
+                                "group": "计费与许可证",
+                                "pages": [
+                                    "how_to_use/zh/pricing",
+                                    "how_to_use/zh/byok",
+                                    "how_to_use/zh/auto_license_assignment"
+                                ]
+                            },
+                            {
+                                "group": "AI 代码审查",
+                                "pages": [
+                                    "how_to_use/zh/code_review/flow",
+                                    "how_to_use/zh/code_review/policy",
+                                    {
+                                        "group": "高级配置",
+                                        "pages": [
+                                            "how_to_use/zh/code_review/configs/general",
+                                            "how_to_use/zh/code_review/configs/inheritance_overrides",
+                                            "how_to_use/zh/code_review/configs/directory_level",
+                                            "how_to_use/zh/code_review/configs/suggestion_control",
+                                            "how_to_use/zh/code_review/configs/pr_summary",
+                                            "how_to_use/zh/code_review/configs/custom_messages",
+                                            "how_to_use/zh/code_review/configs/custom_prompts"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Kody 规则",
+                                        "pages": [
+                                            "how_to_use/zh/code_review/configs/kody_rules",
+                                            "how_to_use/zh/code_review/configs/rules_inheritance",
+                                            "how_to_use/zh/code_review/configs/rules_file_detection",
+                                            "how_to_use/zh/code_review/configs/repository_rules",
+                                            "how_to_use/zh/code_review/learning/kody_rules_generation"
+                                        ]
+                                    },
+                                    "how_to_use/zh/code_review/plugins",
+                                    "how_to_use/zh/code_review/business_logic_validation",
+                                    "how_to_use/zh/code_review/learning/kody_learning"
+                                ]
+                            },
+                            {
+                                "group": "故障排除",
+                                "pages": ["how_to_use/zh/code_review/troubleshooting"]
+                            },
+                            {
+                                "group": "驾驶舱",
+                                "pages": [
+                                    "how_to_use/zh/cockpit/overview",
+                                    {
+                                        "group": "指标",
+                                        "pages": [
+                                            "how_to_use/zh/cockpit/metrics/deploy_frequency",
+                                            "how_to_use/zh/cockpit/metrics/lead_time_for_changes",
+                                            "how_to_use/zh/cockpit/metrics/change_failure_rate",
+                                            "how_to_use/zh/cockpit/metrics/pr_size",
+                                            "how_to_use/zh/cockpit/metrics/kody_suggestions",
+                                            "how_to_use/zh/cockpit/metrics/lead_time_breakdown",
+                                            "how_to_use/zh/cockpit/metrics/developer_activity",
+                                            "how_to_use/zh/cockpit/metrics/prs_by_developer"
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "group": "Kody 工单",
+                                "pages": ["how_to_use/zh/issues/overview"]
+                            },
+                            {
+                                "group": "安全",
+                                "pages": [
+                                    {
+                                        "group": "令牌",
+                                        "pages": [
+                                            "how_to_use/zh/code_review/general_config/github_pat",
+                                            "how_to_use/zh/code_review/general_config/gitlab_pat",
+                                            "how_to_use/zh/code_review/general_config/bitbucket_pat",
+                                            "how_to_use/zh/code_review/general_config/azure_devops_pat"
+                                        ]
+                                    },
+                                    "how_to_use/zh/security/data_usage",
+                                    "how_to_use/zh/security/sso"
+                                ]
                             }
                         ]
                     }
@@ -207,6 +288,69 @@
                                 ]
                             }
                         ]
+                    },
+                    {
+                        "language": "zh",
+                        "pages": [
+                            {
+                                "group": "概念",
+                                "pages": ["how_to_deploy/zh/kodus_architecture"]
+                            },
+                            {
+                                "group": "本地快速开始",
+                                "pages": [
+                                    "how_to_deploy/zh/local_quickstart/orchestrator",
+                                    "how_to_deploy/zh/local_quickstart/web"
+                                ]
+                            },
+                            {
+                                "group": "部署 Kodus",
+                                "pages": [
+                                    {
+                                        "group": "自定义部署",
+                                        "icon": "server",
+                                        "pages": [
+                                            "how_to_deploy/zh/deploy_kodus/generic_vm",
+                                            "how_to_deploy/zh/deploy_kodus/google_gcp"
+                                        ]
+                                    },
+                                    "how_to_deploy/zh/deploy_kodus/troubleshooting"
+                                ]
+                            },
+                            {
+                                "group": "Git 提供商配置",
+                                "pages": [
+                                    {
+                                        "group": "Github",
+                                        "icon": "github",
+                                        "pages": [
+                                            "how_to_deploy/zh/platforms/github/github_webhook"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Gitlab",
+                                        "icon": "gitlab",
+                                        "pages": [
+                                            "how_to_deploy/zh/platforms/gitlab/gitlab_webhook"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Bitbucket",
+                                        "icon": "bitbucket",
+                                        "pages": [
+                                            "how_to_deploy/zh/platforms/bitbucket/bitbucket_webhook"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Azure DevOps",
+                                        "icon": "microsoft",
+                                        "pages": [
+                                            "how_to_deploy/zh/platforms/azure_devops/azdevops_webhook"
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             },
@@ -233,6 +377,28 @@
                             {
                                 "group": "Custom Context Playbooks",
                                 "pages": ["cookbook/en/guide-handbook-guardrails"]
+                            }
+                        ]
+                    },
+                    {
+                        "language": "zh",
+                        "pages": [
+                            {
+                                "group": "自托管 + 开源 LLM 提供商",
+                                "pages": [
+                                    "cookbook/zh/novita",
+                                    "cookbook/zh/groq",
+                                    "cookbook/zh/together",
+                                    "cookbook/zh/fireworks"
+                                ]
+                            },
+                            {
+                                "group": "自定义插件",
+                                "pages": ["cookbook/zh/custom-plugin-install"]
+                            },
+                            {
+                                "group": "自定义上下文剧本",
+                                "pages": ["cookbook/zh/guide-handbook-guardrails"]
                             }
                         ]
                     }

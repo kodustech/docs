@@ -1,0 +1,150 @@
+---
+title: "故障排除指南"
+description: "解决 Kodus 的常见问题。"
+icon: "headset"
+---
+
+## 快速修复
+
+### "我无法访问 Web 界面"
+
+1. 检查容器是否正在运行：
+
+```bash
+docker ps | grep kodus-web-prod
+```
+
+2. 验证端口是否正确映射：
+
+```bash
+docker port kodus-web-prod
+```
+
+3. 检查 Web 容器日志：
+
+```bash
+docker logs kodus-web-prod
+```
+
+### "Git Webhook 不工作"
+
+1. 验证您的域名设置：
+
+```bash
+curl -I https://your-domain.com
+```
+
+2. 检查编排器日志中的 webhook 尝试：
+
+```bash
+docker logs kodus-orchestrator-prod | grep webhook
+```
+
+3. 验证您的反向代理配置：
+
+```bash
+sudo nginx -t
+```
+
+### "数据库连接问题"
+
+1. 检查数据库容器状态：
+
+```bash
+docker ps | grep db_kodus_postgres
+docker ps | grep db_kodus_mongodb
+```
+
+2. 验证数据库日志：
+
+```bash
+docker logs db_kodus_postgres
+docker logs db_kodus_mongodb
+```
+
+3. 测试数据库连接：
+
+```bash
+docker exec -it db_kodus_postgres psql -U $API_PG_DB_USERNAME -d $API_PG_DB_DATABASE
+docker exec -it db_kodus_mongodb mongosh -u $API_MG_DB_USERNAME -p $API_MG_DB_PASSWORD
+```
+
+### "由于缺少向量类型导致迁移失败"
+
+如果在迁移期间遇到错误 "type vector does not exist"，这是因为您的 PostgreSQL 数据库中未启用 pgvector 扩展。以下是修复方法：
+
+1. 连接到您的 PostgreSQL 数据库：
+
+```bash
+docker exec -it db_kodus_postgres psql -U $API_PG_DB_USERNAME -d $API_PG_DB_DATABASE
+```
+
+2. 启用 pgvector 扩展：
+
+```sql
+CREATE EXTENSION IF NOT EXISTS vector;
+```
+
+3. 启用扩展后，再次尝试运行迁移：
+
+```bash
+docker exec -it kodus-api-prod npm run migration:run
+```
+
+如果您仍然遇到问题，可以验证扩展是否已正确安装：
+
+```sql
+SELECT * FROM pg_extension WHERE extname = 'vector';
+```
+
+## 常见问题
+
+### RabbitMQ 问题
+
+如果您看到消息队列错误：
+
+1. 检查 RabbitMQ 状态：
+
+```bash
+docker logs rabbitmq-prod
+```
+
+2. 访问 `http://localhost:15672` 的管理控制台以验证队列和连接
+
+3. 如果需要，重启服务：
+
+```bash
+docker restart rabbitmq-prod
+```
+
+### 资源问题
+
+如果服务缓慢或崩溃：
+
+1. 检查资源使用情况：
+
+```bash
+docker stats
+```
+
+2. 验证容器限制：
+
+```bash
+docker inspect kodus-orchestrator-prod | grep -A 5 "Resources"
+```
+
+3. 如果需要，在 docker-compose.yml 中调整资源限制
+
+## 获取帮助
+
+### 支持请求中应包含的内容
+
+- 确切的错误消息
+- 受影响服务的相关日志
+- 您的部署方法（CLI、VM 等）
+- 重现问题的步骤
+
+### 在哪里获取帮助
+
+- [Discord 社区](https://discord.gg/TFZBRk9fT6)
+- [GitHub Issues](https://github.com/kodustech/kodus-installer/issues)

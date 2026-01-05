@@ -1,0 +1,60 @@
+---
+title: "Kodus 架构"
+description: "深入了解 Kodus 的技术基础设施。"
+icon: "puzzle-piece"
+---
+
+## 概述
+
+本文档概述了支持 Kodus 基础设施的架构。我们的系统建立在分布式架构上,利用容器化和网络分段来确保最大的可扩展性、安全性和可维护性。
+
+## 网络和关键组件
+
+基础设施战略性地划分为两个主要网络:
+
+- kodus-backend-services:编排我们的核心和辅助服务
+- kodus-shared-services:容纳我们的共享基础设施组件
+
+## 组件
+
+### 1. Kodus Web 应用程序
+
+我们的前端平台使用 Next.js 构建,通过与 API 层的直接通信提供无缝的用户体验。
+
+### 2. Kodus Orchestrator Docker 容器
+
+此容器作为我们基础设施的支柱,管理我们的核心后端服务:
+
+- Next API:我们的中央服务层,处理业务逻辑和请求处理
+- Postgres:用于结构化数据的企业级关系数据库
+- MongoDB:用于灵活数据存储的高性能 NoSQL 数据库
+
+### 3. 辅助服务(Aux Services)
+
+我们的辅助服务在隔离的容器中运行,每个容器提供专门的功能:
+
+- 🔒 Kodus Service Billing(闭源):处理支付处理和订阅管理
+- 🔒 Kodus Service Analytics(闭源):支持我们的数据分析和平台见解
+- Kodus Service Slack:启用无缝 Slack 集成
+- Kodus Service Discord:提供 Discord 社区集成
+- Kodus Function GitLab Refresh Token:管理 GitLab 身份验证生命周期
+
+### 4. 共享基础设施(kodus-infrastructure)
+
+我们的共享服务网络(kodus-shared-services)提供关键的基础设施支持:
+
+RabbitMQ:企业消息代理,实现可靠的异步通信
+
+Prometheus:高级监控和指标收集系统
+
+Grafana:用于实时指标分析的复杂可视化平台
+
+## 下一步
+<CardGroup cols={2}>
+  <Card title="本地运行 Kodus" icon="laptop" href="/how_to_deploy/en/local_quickstart/orchestrator">
+    非常适合开发并深入了解 Kodus。
+  </Card>
+  <Card title="将 Kodus 部署到生产环境" icon="rocket" href="/how_to_deploy/en/deploy_kodus/generic_vm">
+    非常适合生产部署并体验 Kodus 的全部功能。
+  </Card>
+</CardGroup>

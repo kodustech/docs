@@ -1,0 +1,375 @@
+---
+title: "通用虚拟机"
+description: "在通用虚拟机上部署 Kodus。"
+icon: "desktop"
+---
+
+<Snippet file="deploy-basic-setup.mdx" />
+
+## 部署过程
+
+<Card
+  title="需要帮助？"
+  icon="headset"
+  href="https://cal.com/gabrielmalinosqui/30min"
+>
+  与我们的创始人安排通话，获取部署帮助。
+</Card>
+
+#### LLM 集成设置
+
+    Kodus 为语言模型（LLM）提供两种配置模式：
+
+    <Tabs>
+      <Tab title="固定模式（推荐用于自托管）">
+        这是最简单的模式，推荐用于自托管安装。您只需要配置单个 LLM 模型。
+
+        ```env
+        # 固定模式配置
+        API_LLM_PROVIDER_MODEL="gpt-3.5-turbo"     # 您想要使用的模型
+        API_OPENAI_FORCE_BASE_URL="https://your-api.com/v1"  # 您的 API 提供商 URL
+        API_OPEN_AI_API_KEY="your-api-key"          # 您的 API 提供商密钥
+        ```
+
+        <Info>
+          此模式非常适合自托管，因为：
+          - 只需要单个 API 密钥
+          - 适用于任何兼容 OpenAI 的 API 提供商
+          - 更易于配置和维护
+        </Info>
+
+        <Card
+          title="模型配置指南"
+          icon="sparkles"
+          href="/cookbook/en"
+        >
+          查看我们针对热门提供商（如 Novita、OpenAI、Anthropic 等）的特定模型指南，获取详细的设置说明。
+        </Card>
+
+      </Tab>
+
+      <Tab title="自动模式（高质量）">
+        此模式使用多个 LLM 模型以获得最佳结果。需要更多配置，但提供最高质量的分析。
+
+        ```env
+        # 自动模式配置
+        API_OPEN_AI_API_KEY=                       # OpenAI API 密钥
+        API_GOOGLE_AI_API_KEY=                     # Google AI API 密钥
+        API_ANTHROPIC_API_KEY=                     # Anthropic API 密钥
+        API_NOVITA_AI_API_KEY=                     # Novita AI API 密钥
+        API_VERTEX_AI_API_KEY=                     # Vertex AI API 密钥
+        ```
+
+        <Info>
+          此模式提供最佳质量，因为：
+          - 使用多个专业化模型
+          - 我们的流水线经过优化，可以从每个模型中提取最佳效果
+          - 非常适合优先考虑质量的企业安装
+        </Info>
+
+#### API 密钥资源
+
+配置环境变量时，您需要 AI 提供商的 API 密钥。使用以下官方资源：
+
+<AccordionGroup>
+  <Accordion title="OpenAI API 密钥">
+    访问 [OpenAI API 密钥页面](https://platform.openai.com/api-keys) 创建和管理您的密钥。
+  </Accordion>
+
+{" "}
+
+<Accordion title="Google AI / Vertex AI">
+  遵循 [Google Cloud API 设置指南](https://cloud.google.com/docs/authentication/api-keys) 创建您的凭证。
+</Accordion>
+
+{" "}
+
+<Accordion title="Anthropic Claude">
+  从 [Anthropic API 文档](https://docs.anthropic.com/claude/reference/getting-started-with-the-api) 开始。
+</Accordion>
+
+  <Accordion title="Novita AI">
+    访问 [Novita AI 开发者门户](https://novita.ai/docs/guides/quickstart) 获取 API 信息。
+  </Accordion>
+</AccordionGroup>
+  </Tab>
+</Tabs>
+
+#### Git 提供商配置
+
+选择并配置您首选的 Git 提供商。对于基本的令牌身份验证，您只需要设置 webhook URL：
+
+<Tabs>
+  <Tab title="Github">
+  <Info>
+  对于基于令牌的身份验证，您只需要配置 webhook URL。只有在您想使用 OAuth 进行身份验证时才需要其他变量。
+</Info>
+    ```env
+    # 基于令牌的身份验证所需
+    API_GITHUB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/github/webhook"          # GitHub webhook URL（使用您的 API 域名更新）
+
+    # 可选 - 仅在使用 OAuth 时需要
+    API_GITHUB_APP_ID=                           # GitHub 应用 ID
+    API_GITHUB_CLIENT_SECRET=                    # GitHub 应用客户端密钥
+    API_GITHUB_PRIVATE_KEY=""                    # GitHub 应用私钥
+    WEB_GITHUB_INSTALL_URL=""                    # GitHub 应用安装 URL
+    WEB_OAUTH_GITHUB_CLIENT_ID=""                # GitHub OAuth 客户端 ID
+    WEB_OAUTH_GITHUB_CLIENT_SECRET=""            # GitHub OAuth 客户端密钥
+    GLOBAL_GITHUB_CLIENT_ID=
+    GLOBAL_GITHUB_REDIRECT_URI=
+    ```
+
+  </Tab>
+  <Tab title="Gitlab">
+  <Info>
+  对于基于令牌的身份验证，您只需要配置 webhook URL。只有在您想使用 OAuth 进行身份验证时才需要其他变量。
+</Info>
+    ```env
+    # 基于令牌的身份验证所需
+    API_GITLAB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/gitlab/webhook"          # GitLab webhook URL（使用您的 API 域名更新）
+
+    # 可选 - 仅在使用 OAuth 时需要
+    API_GITLAB_TOKEN_URL="https://gitlab.com/oauth/token"
+    WEB_GITLAB_SCOPES="read_api read_user read_repository"
+    WEB_GITLAB_OAUTH_URL="https://gitlab.com/oauth/authorize"
+    WEB_OAUTH_GITLAB_CLIENT_ID=""                # GitLab OAuth 客户端 ID
+    WEB_OAUTH_GITLAB_CLIENT_SECRET=""            # GitLab OAuth 客户端密钥
+    GLOBAL_GITLAB_CLIENT_ID=""
+    GLOBAL_GITLAB_CLIENT_SECRET=""
+    GLOBAL_GITLAB_REDIRECT_URL=""
+    ```
+
+  </Tab>
+  <Tab title="Bitbucket">
+  <Info>
+  对于基于令牌的身份验证，您只需要配置 webhook URL。只有在您想使用 OAuth 进行身份验证时才需要其他变量。
+</Info>
+    ```env
+    # 基于令牌的身份验证所需
+    GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/bitbucket/webhook"    # Bitbucket webhook URL（使用您的 API 域名更新）
+    ```
+
+  </Tab>
+
+  <Tab title="Azure DevOps">
+  <Info>
+  对于基于令牌的身份验证，您只需要配置 webhook URL。只有在您想使用 OAuth 进行身份验证时才需要其他变量。
+</Info>
+    ```env
+    # 基于令牌的身份验证所需
+    GLOBAL_AZURE_REPOS_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/azure-repos/webhook"    # Azure DevOps webhook URL（使用您的 API 域名更新）
+    ```
+
+  </Tab>
+</Tabs>
+
+<Warning>
+  切勿将您的 `.env` 文件提交到版本控制。请保护好您的 API 密钥和数据库凭证。
+</Warning>
+
+<Snippet file="deploy-installation.mdx" />
+
+## 设置反向代理
+
+为了使您的 Kodus 实例可以从外部系统访问（代码审查 webhook 和公共访问所必需），您需要使用 Nginx 配置反向代理。
+
+以下是两个子域的 Nginx 配置示例：
+
+```nginx
+# Kodus Web 应用程序的服务器块
+server {
+    listen 80;
+    server_name kodus-web.yourdomain.com; # 替换为您实际的 Web 应用域名
+
+    location / {
+        proxy_pass http://localhost:3000; # 指向 Kodus Web 应用容器
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+# Kodus API（编排器）的服务器块
+server {
+    listen 80;
+    server_name kodus-api.yourdomain.com; # 替换为您实际的 API 域名
+
+    location / {
+        proxy_pass http://localhost:3001; # 指向 Kodus 编排器 API 容器
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+将此配置保存到 `/etc/nginx/sites-available/kodus`（或您选择的名称，例如，如果愿意，可以将 `kodus-web` 和 `kodus-api` 作为单独的文件），并创建符号链接以启用它：
+
+```bash
+sudo ln -s /etc/nginx/sites-available/kodus /etc/nginx/sites-enabled/
+sudo nginx -t  # 测试配置
+sudo systemctl reload nginx  # 应用更改
+```
+
+<Warning>
+  **反向代理的重要配置更新：**
+
+  在使用 `kodus-web.yourdomain.com` 和 `kodus-api.yourdomain.com`（或您选择的子域）设置反向代理后，您**必须**确保您的 `.env` 文件正确反映这些公共 URL。具体来说，请验证：
+  - `WEB_HOSTNAME_API`：应设置为**仅公共 API 的主机名**（例如，`kodus-api.yourdomain.com`），不包含任何协议（`http://` 或 `https://`）。
+  - `WEB_PORT_API`：应对应于您的 API 可访问的公共端口（HTTPS 通常为 `443`，HTTP 通常为 `80`）。前端用于调用 API 的方案（http/https）通常将从此端口推断，或在前端逻辑中硬编码为使用 HTTPS。
+  - Webhook URL（例如，`API_GITHUB_CODE_MANAGEMENT_WEBHOOK`）：确保在您的 `.env` 文件中更新这些，以使用包含方案的完整公共 API 域名（例如，`https://kodus-api.yourdomain.com/webhooks/github`）。
+
+  如果未正确更新这些内容，可能会导致身份验证问题、Web 应用程序无法连接到 API 或 webhook 失效。
+</Warning>
+
+## 安装后指南
+
+在虚拟机上成功部署 Kodus 后，请按照以下步骤充分利用您的安装：
+
+### 启用 SSL（推荐）
+
+对于生产部署，我们强烈建议使用 Let's Encrypt 设置 SSL：
+
+```bash
+# 安装 Let's Encrypt 的 Certbot
+sudo apt-get update
+sudo apt-get install certbot python3-certbot-nginx
+
+# 为两个域名获取并安装证书
+sudo certbot --nginx -d kodus-web.yourdomain.com -d kodus-api.yourdomain.com # 替换为您实际的域名
+```
+
+这将自动配置您的 Nginx 设置以使用 HTTPS，并为两个子域重定向 HTTP 流量。
+
+### 完成初始设置
+
+首次访问 Web 界面时，您需要：
+
+1. **创建管理员帐户** - 这将是第一个具有完全系统访问权限的用户
+2. **配置您的 Git 提供商** - 按照屏幕上的说明连接 GitHub、GitLab 或 Bitbucket
+3. **选择仓库**进行分析 - 选择 Kody 将审查的代码仓库
+
+<Info>
+  有关初始配置过程的详细步骤，请参阅我们的[快速开始指南](/how_to_use/en/quickstart)。
+</Info>
+
+### 更新 Kodus
+
+要将您的 Kodus 安装更新到最新版本：
+
+```bash
+# 导航到您的 Kodus 安装目录
+cd kodus-installer
+
+# 从仓库拉取最新更改
+git pull
+
+# 拉取最新的 Docker 镜像
+docker-compose pull
+
+# 使用新镜像重启服务
+docker-compose up -d
+```
+
+### 监控您的安装
+
+您可以使用以下工具监控您的 Kodus 安装：
+
+```bash
+# 检查容器状态
+docker-compose ps
+
+# 查看所有服务的实时日志
+docker-compose logs -f
+
+# 监控系统资源使用情况
+docker stats
+```
+
+## 访问服务日志
+
+在故障排除或监控 Kodus 安装时，您可能需要访问服务日志：
+
+<AccordionGroup>
+  <Accordion title="核心服务日志">
+    ```bash
+    # Kodus Web 日志
+    docker logs kodus-web-prod
+
+    # 编排器日志
+    docker logs kodus-orchestrator-prod
+
+    # 直接从编排器访问日志文件
+    docker exec -it kodus-orchestrator-prod ls /app/logs
+    ```  </Accordion>
+
+  <Accordion title="数据库日志">
+    ```bash
+    # PostgreSQL 日志
+    docker logs db_kodus_postgres
+
+    # MongoDB 日志
+    docker logs db_kodus_mongodb
+    ```
+
+  </Accordion>
+
+  <Accordion title="基础设施服务日志">
+    ```bash
+    # RabbitMQ 日志
+    docker logs rabbitmq-prod
+
+    # 访问 RabbitMQ 管理控制台
+    # 可在 http://localhost:15672 访问（默认凭证在您的 .env 文件中）
+
+    # Prometheus 日志（如果已配置）
+    docker logs prometheus-prod
+
+    # Grafana 日志（如果已配置）
+    docker logs grafana-prod
+    ```
+
+  </Accordion>
+</AccordionGroup>
+
+## 常见问题故障排除
+
+<AccordionGroup>
+  <Accordion title="Web 界面无法访问">
+    如果安装后无法访问 Web 界面：```bash # 检查容器是否正在运行 docker ps | grep kodus-web-prod # 验证端口映射 docker port kodus-web-prod # 检查 Web 应用程序日志 docker logs kodus-web-prod ``` **常见解决方案：** - 确保防火墙中打开了端口 3000 和 3001 - 验证您的 Nginx 配置是否正确 - 如果使用 HTTPS，请检查 SSL 证书问题
+  </Accordion>
+
+{" "}
+
+<Accordion title="Git Webhook 连接错误">
+  如果来自 Git 提供商的 webhook 未到达 Kodus：```bash # 检查编排器日志中的 webhook 活动 docker logs kodus-orchestrator-prod | grep webhook ``` **常见解决方案：** - 验证您的公共 URL 是否配置正确 - 确保您的 Git 提供商可以访问您的 Kodus 实例 - 检查 Git 提供商中的 webhook 配置
+</Accordion>
+
+{" "}
+
+<Accordion title="数据库连接问题">
+  如果服务由于数据库连接问题而失败：```bash # 检查数据库状态 docker ps | grep db_kodus_postgres docker ps | grep db_kodus_mongodb # 查看初始化日志 docker logs db_kodus_postgres docker logs db_kodus_mongodb ``` **常见解决方案：** - 重启数据库容器 - 检查磁盘空间问题 - 验证您的 .env 文件是否有正确的数据库凭证
+</Accordion>
+
+  <Accordion title="安装脚本失败">
+    如果安装脚本无法完成：```bash # 检查脚本日志 cat kodus-installer.log # 验证 Docker 是否正在运行 systemctl status docker # 检查可用磁盘空间 df -h ``` **常见解决方案：** - 确保安装了所有必需的依赖项 - 验证 Docker 是否正在运行且可访问 - 检查您是否有足够的磁盘空间
+  </Accordion>
+</AccordionGroup>
+
+<Card
+  title="从我们的社区获取帮助"
+  icon="discord"
+  href="https://discord.gg/TFZBRk9fT6"
+>
+  加入我们的社区以获取部署帮助。
+</Card>
