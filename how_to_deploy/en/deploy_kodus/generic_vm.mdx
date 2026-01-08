@@ -1,154 +1,105 @@
 ---
-title: "Generic Virtual Machine"
+title: "Installation"
 description: "Deploy Kodus on a Generic Virtual Machine."
-icon: "desktop"
+icon: "plug"
 ---
 
 <Snippet file="deploy-basic-setup.mdx" />
 
-## Deployment Process
+## Environment Variables Configuration
 
-<Card
-  title="Need help?"
-  icon="headset"
-  href="https://cal.com/gabrielmalinosqui/30min"
->
-  Schedule a call with our founder to get help with your deployment.
-</Card>
+Use this section to fill your `.env`. Start with the public URLs, then set up
+databases and RabbitMQ, and finally add provider-specific settings.
 
-#### LLM Integration Settings
+### Namespace Configuration
 
-    Kodus offers two configuration modes for Language Models (LLMs):
+These settings define the public URLs and host binding used by the web app and API.
+If you are not using MCP Manager, you can skip the MCP entries here and the
+full block below.
 
-    <Tabs>
-      <Tab title="Fixed Mode (Recommended for Self-Hosted)">
-        This is the simplest mode and recommended for self-hosted installations. You only need to configure a single LLM model.
+```env
+WEB_HOSTNAME_API="kodus-api.yourdomain.com"    # Public API hostname (e.g., kodus-api.yourdomain.com)
+NEXTAUTH_URL="https://kodus-web.yourdomain.com" # Full public base URL for the Web App (e.g., https://kodus-web.yourdomain.com)
+API_HOST=0.0.0.0                              # API host (0.0.0.0 for local development)
 
-        ```env
-        # Fixed Mode Configuration
-        API_LLM_PROVIDER_MODEL="gpt-3.5-turbo"     # Model you want to use
-        API_OPENAI_FORCE_BASE_URL="https://your-api.com/v1"  # Your API provider URL
-        API_OPEN_AI_API_KEY="your-api-key"          # Your API provider key
-        ```
+# Only needed if you want to use MCP features.
+API_KODUS_SERVICE_MCP_MANAGER=http://kodus-mcp-manager:3101 # MCP Manager URL
+API_KODUS_MCP_SERVER_URL=http://kodus-api.yourdomain.com/mcp # Kodus MCP Server URL
+```
 
-        <Info>
-          This mode is ideal for self-hosted because:
-          - Requires only a single API key
-          - Works with any OpenAI-compatible API provider
-          - Easier to configure and maintain
-        </Info>
+### LLM Provider Configuration
 
-        <Card
-          title="Model Configuration Guides"
-          icon="sparkles"
-          href="/cookbook/en"
-        >
-          Check our model-specific guides for detailed setup instructions with popular providers like Novita, OpenAI, Anthropic, and more.
-        </Card>
+```env
+API_LLM_PROVIDER_MODEL="gpt-5"     # Model you want to use
+API_OPENAI_FORCE_BASE_URL="https://your-api.com/v1"  # Your API provider URL
+API_OPEN_AI_API_KEY="your-api-key"          # Your API provider key
+```
 
-      </Tab>
+Check our [model-specific guides](https://docs.kodus.io/cookbook/en) for detailed setup instructions with popular providers like Novita, OpenAI, Anthropic, and more.
 
-      <Tab title="Automatic Mode (High Quality)">
-        This mode uses multiple LLM models to achieve the best possible results. Requires more configuration but offers the highest quality analysis.
+### Database configuration
 
-        ```env
-        # Automatic Mode Configuration
-        API_OPEN_AI_API_KEY=                       # OpenAI API key
-        API_GOOGLE_AI_API_KEY=                     # Google AI API key
-        API_ANTHROPIC_API_KEY=                     # Anthropic API key
-        API_NOVITA_AI_API_KEY=                     # Novita AI API key
-        API_VERTEX_AI_API_KEY=                     # Vertex AI API key
-        ```
+Use local containers for Postgres and MongoDB by default. Update credentials
+to match your security requirements.
 
-        <Info>
-          This mode offers the best quality because:
-          - Uses multiple specialized models
-          - Our pipeline is optimized to extract the best from each model
-          - Ideal for enterprise installations prioritizing quality
-        </Info>
+```env
+# Use local containers for Postgres and MongoDB
+USE_LOCAL_DB=true
 
-#### API Keys Resources
+# PostgreSQL Settings
+API_DATABASE_ENV="development"                # development, production, test
+API_PG_DB_HOST=db_kodus_postgres              # PostgreSQL host
+API_PG_DB_PORT=5432                          # PostgreSQL port
+API_PG_DB_USERNAME=kodusdev                  # Database username
+API_PG_DB_PASSWORD=                          # Database password
+API_PG_DB_DATABASE=kodus_db                  # Database name
 
-When configuring your environment variables, you'll need API keys for AI providers. Use these official resources:
+# MongoDB Settings
+API_MG_DB_HOST=db_kodus_mongodb              # MongoDB host
+API_MG_DB_PORT=27017                         # MongoDB port
+API_MG_DB_USERNAME=kodusdev                  # Database username
+API_MG_DB_PASSWORD=                          # Database password
+API_MG_DB_DATABASE=kodus                     # Database name
+API_MG_DB_PRODUCTION_CONFIG=''               # Additional production settings
+```
 
-<AccordionGroup>
-  <Accordion title="OpenAI API Key">
-    Visit the [OpenAI API Keys page](https://platform.openai.com/api-keys) to
-    create and manage your keys.
-  </Accordion>
+### RabbitMQ configuration
 
-{" "}
+RabbitMQ is required in 2.0. Keep the URI in sync with the values below.
 
-<Accordion title="Google AI / Vertex AI">
-  Follow the [Google Cloud API setup
-  guide](https://cloud.google.com/docs/authentication/api-keys) to create your
-  credentials.
-</Accordion>
+```env
+# RabbitMQ Configuration
+USE_LOCAL_RABBITMQ=true
+RABBITMQ_HOSTNAME=rabbitmq                   # RabbitMQ hostname in Docker network
+RABBITMQ_DEFAULT_USER=kodus                  # RabbitMQ user (change in production)
+RABBITMQ_DEFAULT_PASS=kodus                  # RabbitMQ password (change in production)
 
-{" "}
+# Keep the URI in sync with the user, password, and vhost above
+API_RABBITMQ_URI=amqp://kodus:kodus@rabbitmq:5672/kodus-ai # RabbitMQ connection URI
+API_RABBITMQ_ENABLED=true                    # RabbitMQ is required
+```
 
-<Accordion title="Anthropic Claude">
-  Get started with the [Anthropic API
-  documentation](https://docs.anthropic.com/claude/reference/getting-started-with-the-api).
-</Accordion>
+### Git Provider Configuration
 
-  <Accordion title="Novita AI">
-    Access the [Novita AI Developer
-    portal](https://novita.ai/docs/guides/quickstart) for API information.
-  </Accordion>
-</AccordionGroup>
-  </Tab>
-</Tabs>
-
-#### Git Provider Configuration
-
-Choose and configure your preferred Git provider. For basic token-based authentication, you only need to set the webhook URL:
+Choose and configure your preferred Git provider. You can set one or more
+providers; for basic token-based authentication, you only need the webhook URL.
 
 <Tabs>
   <Tab title="Github">
-  <Info>
-  For token-based authentication, you only need to configure the webhook URL. The other variables are required only if you want to use OAuth for authentication.
-</Info>
     ```env
     # Required for token-based authentication
     API_GITHUB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/github/webhook"          # GitHub webhook URL (update with your API domain)
-
-    # Optional - Only needed if using OAuth
-    API_GITHUB_APP_ID=                           # GitHub App ID
-    API_GITHUB_CLIENT_SECRET=                    # GitHub App Client Secret
-    API_GITHUB_PRIVATE_KEY=""                    # GitHub App Private Key
-    WEB_GITHUB_INSTALL_URL=""                    # GitHub App Installation URL
-    WEB_OAUTH_GITHUB_CLIENT_ID=""                # GitHub OAuth Client ID
-    WEB_OAUTH_GITHUB_CLIENT_SECRET=""            # GitHub OAuth Client Secret
-    GLOBAL_GITHUB_CLIENT_ID=
-    GLOBAL_GITHUB_REDIRECT_URI=
     ```
 
   </Tab>
-  <Tab title="Gitlab">
-  <Info>
-  For token-based authentication, you only need to configure the webhook URL. The other variables are required only if you want to use OAuth for authentication.
-</Info>
+  <Tab title="GitLab">
     ```env
     # Required for token-based authentication
     API_GITLAB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/gitlab/webhook"          # GitLab webhook URL (update with your API domain)
-
-    # Optional - Only needed if using OAuth
-    API_GITLAB_TOKEN_URL="https://gitlab.com/oauth/token"
-    WEB_GITLAB_SCOPES="read_api read_user read_repository"
-    WEB_GITLAB_OAUTH_URL="https://gitlab.com/oauth/authorize"
-    WEB_OAUTH_GITLAB_CLIENT_ID=""                # GitLab OAuth Client ID
-    WEB_OAUTH_GITLAB_CLIENT_SECRET=""            # GitLab OAuth Client Secret
-    GLOBAL_GITLAB_CLIENT_ID=""
-    GLOBAL_GITLAB_CLIENT_SECRET=""
-    GLOBAL_GITLAB_REDIRECT_URL=""
     ```
 
   </Tab>
   <Tab title="Bitbucket">
-  <Info>
-  For token-based authentication, you only need to configure the webhook URL. The other variables are required only if you want to use OAuth for authentication.
-</Info>
     ```env
     # Required for token-based authentication
     GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/bitbucket/webhook"    # Bitbucket webhook URL (update with your API domain)
@@ -157,9 +108,6 @@ Choose and configure your preferred Git provider. For basic token-based authenti
   </Tab>
 
   <Tab title="Azure DevOps">
-  <Info>
-  For token-based authentication, you only need to configure the webhook URL. The other variables are required only if you want to use OAuth for authentication.
-</Info>
     ```env
     # Required for token-based authentication
     GLOBAL_AZURE_REPOS_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/azure-repos/webhook"    # Azure DevOps webhook URL (update with your API domain)
@@ -168,233 +116,51 @@ Choose and configure your preferred Git provider. For basic token-based authenti
   </Tab>
 </Tabs>
 
-<Warning>
-  Never commit your `.env` file to version control. Keep your API keys and
-  database credentials secure.
-</Warning>
-
-<Snippet file="deploy-installation.mdx" />
-
-## Setting Up a Reverse Proxy
-
-To make your Kodus instance accessible from external systems (required for Code Review webhooks and public access), you'll need to configure a reverse proxy with Nginx.
-
-Here's a sample Nginx configuration for two subdomains:
-
-```nginx
-# Server block for the Kodus Web Application
-server {
-    listen 80;
-    server_name kodus-web.yourdomain.com; # Replace with your actual web app domain
-
-    location / {
-        proxy_pass http://localhost:3000; # Points to the Kodus Web App container
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-
-# Server block for the Kodus API (Orchestrator)
-server {
-    listen 80;
-    server_name kodus-api.yourdomain.com; # Replace with your actual API domain
-
-    location / {
-        proxy_pass http://localhost:3001; # Points to the Kodus Orchestrator API container
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-```
-
-Save this configuration to `/etc/nginx/sites-available/kodus` (or a name of your choice, e.g., `kodus-web` and `kodus-api` as separate files if preferred) and create a symbolic link to enable it:
-
-```bash
-sudo ln -s /etc/nginx/sites-available/kodus /etc/nginx/sites-enabled/
-sudo nginx -t  # Test the configuration
-sudo systemctl reload nginx  # Apply the changes
-```
-
-<Warning>
-  **Important Configuration Update for Reverse Proxy:**
-
-  After setting up the reverse proxy with `kodus-web.yourdomain.com` and `kodus-api.yourdomain.com` (or your chosen subdomains), you **must** ensure your `.env` file correctly reflects these public URLs. Specifically, verify: 
-  - `WEB_HOSTNAME_API`: Should be set to **only the hostname** of your public API (e.g., `kodus-api.yourdomain.com`), without any protocol (`http://` or `https://`).
-  - `WEB_PORT_API`: Should correspond to the public port your API is accessible on (typically `443` for HTTPS or `80` for HTTP). The scheme (http/https) used by the frontend to call the API will often be inferred from this port or hardcoded in the frontend logic to use HTTPS.
-  - Webhook URLs (e.g., `API_GITHUB_CODE_MANAGEMENT_WEBHOOK`): Ensure these are updated in your `.env` file to use your full public API domain including the scheme (e.g., `https://kodus-api.yourdomain.com/webhooks/github`).
-
-  Failure to update these correctly may result in authentication issues, inability for the web application to connect to the API, or malfunctioning webhooks.
-</Warning>
-
-## Post-Installation Guide
-
-After successfully deploying Kodus on your VM, follow these steps to get the most out of your installation:
-
-### Enabling SSL (Recommended)
-
-For production deployments, we strongly recommend setting up SSL with Let's Encrypt:
-
-```bash
-# Install Certbot for Let's Encrypt
-sudo apt-get update
-sudo apt-get install certbot python3-certbot-nginx
-
-# Obtain and install certificates for both domains
-sudo certbot --nginx -d kodus-web.yourdomain.com -d kodus-api.yourdomain.com # Replace with your actual domains
-```
-
-This will automatically configure your Nginx setup to use HTTPS and redirect HTTP traffic for both subdomains.
-
-### Completing Initial Setup
-
-Once you access the web interface for the first time, you'll need to:
-
-1. **Create your admin account** - This will be the first user with full system access
-2. **Configure your Git provider** - Connect GitHub, GitLab, or Bitbucket following the on-screen instructions
-3. **Select repositories** for analysis - Choose which code repositories Kody will review
+### MCP Manager Configuration
 
 <Info>
-  For detailed steps on the initial configuration process, refer to our [Getting
-  Started Guide](/how_to_use/en/quickstart).
+  Only needed if you want to use MCP Manager.
 </Info>
 
-### Updating Kodus
+MCP Manager is the service that connects Kody to external tools and exposes
+them in the Plugins screen. Check our [MCP Manager documentation](/how_to_deploy/en/deploy_kodus/mcp_manager)
+for more information.
 
-To update your Kodus installation to the latest version:
+```env
+API_MCP_SERVER_ENABLED=false # Change to true if you want to use MCP Manager
+---
+API_KODUS_SERVICE_MCP_MANAGER=http://kodus-mcp-manager:3101
+API_KODUS_MCP_SERVER_URL=http://localhost:3001/mcp
 
-```bash
-# Navigate to your Kodus installation directory
-cd kodus-installer
-
-# Pull the latest changes from the repository
-git pull
-
-# Pull the latest Docker images
-docker-compose pull
-
-# Restart the services with the new images
-docker-compose up -d
+# MCP Manager Configuration
+API_MCP_MANAGER_LOG_LEVEL=info
+API_MCP_MANAGER_PORT=3101
+API_MCP_MANAGER_NODE_ENV=development
+API_MCP_MANAGER_DATABASE_ENV=development
+API_MCP_MANAGER_CORS_ORIGINS=*
+API_MCP_MANAGER_JWT_SECRET=
+API_MCP_MANAGER_COMPOSIO_BASE_URL=https://backend.composio.dev/api/v3
+API_MCP_MANAGER_COMPOSIO_API_KEY=
+API_MCP_MANAGER_MCP_PROVIDERS=kodusmcp,composio,custom
+API_MCP_MANAGER_REDIRECT_URI=http://localhost:3000/setup/mcp/oauth
+API_MCP_MANAGER_PG_DB_SCHEMA=mcp-manager
+API_MCP_MANAGER_ENCRYPTION_SECRET=
 ```
 
-### Monitoring Your Installation
+<Columns cols={2}>
+  <Card
+    title="Need help?"
+    icon="headset"
+    href="https://cal.com/gabrielmalinosqui/30min"
+  >
+    Schedule a call with our founder to get help with your deployment.
+  </Card>
 
-You can monitor your Kodus installation using the following tools:
-
-```bash
-# Check container status
-docker-compose ps
-
-# View real-time logs from all services
-docker-compose logs -f
-
-# Monitor system resource usage
-docker stats
-```
-
-## Accessing Service Logs
-
-When troubleshooting or monitoring your Kodus installation, you may need to access service logs:
-
-<AccordionGroup>
-  <Accordion title="Core Services Logs">
-    ```bash
-    # Kodus Web logs
-    docker logs kodus-web-prod
-
-    # Orchestrator logs
-    docker logs kodus-orchestrator-prod
-
-    # Access log files directly from orchestrator
-    docker exec -it kodus-orchestrator-prod ls /app/logs
-    ```  </Accordion>
-
-  <Accordion title="Database Logs">
-    ```bash
-    # PostgreSQL logs
-    docker logs db_kodus_postgres
-
-    # MongoDB logs
-    docker logs db_kodus_mongodb
-    ```
-
-  </Accordion>
-  
-  <Accordion title="Infrastructure Service Logs">
-    ```bash
-    # RabbitMQ logs
-    docker logs rabbitmq-prod
-
-    # Access RabbitMQ Management Console
-    # Available at http://localhost:15672 (default credentials in your .env file)
-
-    # Prometheus logs (if configured)
-    docker logs prometheus-prod
-
-    # Grafana logs (if configured)
-    docker logs grafana-prod
-    ```
-
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting Common Issues
-
-<AccordionGroup>
-  <Accordion title="Web Interface Not Accessible">
-    If you cannot access the web interface after installation: ```bash # Check
-    if containers are running docker ps | grep kodus-web-prod # Verify port
-    mappings docker port kodus-web-prod # Check web application logs docker logs
-    kodus-web-prod ``` **Common solutions:** - Ensure ports 3000 and 3001 are
-    open in your firewall - Verify your Nginx configuration is correct - Check
-    for SSL certificate issues if using HTTPS
-  </Accordion>
-
-{" "}
-
-<Accordion title="Git Webhook Connection Errors">
-  If webhooks from your Git provider aren't reaching Kodus: ```bash # Check
-  orchestrator logs for webhook activity docker logs kodus-orchestrator-prod |
-  grep webhook ``` **Common solutions:** - Verify your public URL is correctly
-  configured - Ensure your Git provider can reach your Kodus instance - Check
-  the webhook configuration in your Git provider
-</Accordion>
-
-{" "}
-
-<Accordion title="Database Connection Issues">
-  If services are failing due to database connectivity problems: ```bash # Check
-  database status docker ps | grep db_kodus_postgres docker ps | grep
-  db_kodus_mongodb # View initialization logs docker logs db_kodus_postgres
-  docker logs db_kodus_mongodb ``` **Common solutions:** - Restart the database
-  containers - Check for disk space issues - Verify your .env file has correct
-  database credentials
-</Accordion>
-
-  <Accordion title="Installation Script Fails">
-    If the installation script fails to complete: ```bash # Check the script
-    logs cat kodus-installer.log # Verify Docker is running systemctl status
-    docker # Check available disk space df -h ``` **Common solutions:** - Ensure
-    all required dependencies are installed - Verify Docker is running and
-    accessible - Check if you have sufficient disk space
-  </Accordion>
-</AccordionGroup>
-
-<Card
-  title="Get help with our community"
-  icon="discord"
-  href="https://discord.gg/TFZBRk9fT6"
->
-  Join our community to get help with your deployment.
-</Card>
+  <Card
+    title="Get help with our community"
+    icon="discord"
+    href="https://discord.gg/TFZBRk9fT6"
+  >
+    Join our community to get help with your deployment.
+  </Card>
+</Columns>

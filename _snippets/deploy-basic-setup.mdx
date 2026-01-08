@@ -5,13 +5,19 @@
     - CPU: 2+ cores - RAM: 8GB+ - Storage: 60GB+ free space
   </Accordion>
   <Accordion title="Required Software">
-    - Docker (latest stable version) - Node.js (latest LTS version) - Yarn or
-    NPM (latest stable version) - Domain name or fixed IP (for external
+    - Docker (latest stable version) 
+    - Node.js (latest LTS version) 
+    - Yarn or NPM (latest stable version) 
+    - Domain name or fixed IP (for external
     deployments)
   </Accordion>
   <Accordion title="Required Ports">
-    - 3000: Kodus Web App - 3001: Orchestrator API - 5672, 15672: RabbitMQ -
-    5432: PostgreSQL - 27017: MongoDB
+    - 3000: Kodus Web App 
+    - 3001: API 
+    - 3332: Webhooks 
+    - 5672, 15672, 15692: RabbitMQ (AMQP, management, metrics) 
+    - 3101: MCP Manager (API, metrics) 
+    - 5432: PostgreSQL - 27017: MongoDB
   </Accordion>
 </AccordionGroup>
 
@@ -21,7 +27,7 @@
   your network, external internet access is optional.
 </Note>
 
-### Domain Name Setup (Optional)
+## Domain Name Setup (Optional)
 
 If you're planning to integrate Kodus with cloud-based Git providers (GitHub, GitLab, or Bitbucket), you'll need public-facing URLs for both the Kodus Web App and its API. This allows your server to receive webhooks for proper Code Review functionality and ensures correct application behavior.
 
@@ -33,92 +39,56 @@ Both subdomains should have DNS A records pointing to your server's IP address. 
 
 > **Note**: If you're only connecting to self-hosted Git tools on your network and do not require public access or webhooks, you might be able to use a simpler setup, but this guide focuses on public-facing deployments.
 
-### Get the Kodus Installer
+## Setup
 
-Clone our installer repository:
+<Steps>
+  <Step title="Clone the installer repository">
+    ```bash
+    git clone https://github.com/kodustech/kodus-installer.git
+    cd kodus-installer
+    ```
+  </Step>
+  <Step title="Copy the example environment file">
+    ```bash
+    cp .env.example .env
+    ```
+  </Step>
+  <Step title="Generate secure keys for the required environment variables">
+    ```bash
+    ./generate-keys.sh
+    ```
+  </Step>
+  <Step title="Edit the environment file">
+    Edit `.env` with your values using your preferred text editor. 
+    ```bash
+    nano .env
+    ```
 
-```bash
-git clone https://github.com/kodustech/kodus-installer.git
-cd kodus-installer
-```
+    See [Environment Variables Configuration](/how_to_deploy/en/deploy_kodus/generic_vm#environment-variables-configuration) for detailed instructions.  
+  </Step>
 
-### Configure Environment Variables
+  <Step title="Run the installer">
+    ```bash
+    ./scripts/install.sh
+    ```
+  </Step>
+  <Step title="Success 🎉">
+  When complete, Kodus Services should be running on your machine.
+  You can verify your installation using the following script:
+  ```bash
+  ./scripts/doctor.sh
+  ```
+  </Step>
+  <Step title="Access the web interface">
+    Once you access the web interface for the first time, you'll need to:
 
-First, copy the example environment file:
+1. **Create your admin account** - This will be the first user with full system access
+2. **Configure your Git provider** - Connect GitHub, GitLab, or Bitbucket following the on-screen instructions
+3. **Select repositories** for analysis - Choose which code repositories Kody will review
 
-```bash
-cp .env.example .env
-```
-
-Generate secure keys for the required environment variables using:
-
-```bash
-# For most security keys
-openssl rand -base64 32
-
-# Specifically for API_CRYPTO_KEY and CODE_MANAGEMENT_SECRET
-openssl rand -hex 32
-
-# Specifically for CODE_MANAGEMENT_WEBHOOK_TOKEN
-openssl rand -base64 32 | tr -d '=' | tr '/+' '_-'
-```
-
-You'll need to generate values for these security keys:
-
-- WEB_NEXTAUTH_SECRET (use openssl rand -base64 32)
-- WEB_JWT_SECRET_KEY (use openssl rand -base64 32)
-- API_CRYPTO_KEY (use openssl rand -hex 32)
-- API_JWT_SECRET (use openssl rand -base64 32)
-- API_JWT_REFRESHSECRET (use openssl rand -base64 32)
-- CODE_MANAGEMENT_SECRET (use openssl rand -hex 32)
-- CODE_MANAGEMENT_WEBHOOK_TOKEN (use openssl rand -base64 32 | tr -d '=' | tr '/+' '_-')
-
-<Warning>
-  Never commit your `.env` file to version control. Keep your API keys and
-  database credentials secure.
-</Warning>
-
-Then update your `.env` file with the following required variables:
-
-```env
-# Core System Settings
-WEB_NODE_ENV="self-hosted"                     # Keep as "self-hosted" for self-hosted setup
-WEB_HOSTNAME_API="kodus-api.yourdomain.com"    # Public API hostname (e.g., kodus-api.yourdomain.com)
-WEB_PORT_API=443                               # Public API port (usually 443 for HTTPS, or 80 if not using SSL yet)
-WEB_PORT=3000                                  # Internal Web application port (reverse proxy will handle public port)
-GLOBAL_API_CONTAINER_NAME="kodus-orchestrator" # API container name
-
-# Authentication Settings
-NEXTAUTH_URL="https://kodus-web.yourdomain.com" # Full public base URL for the Web App (e.g., https://kodus-web.yourdomain.com)
-WEB_NEXTAUTH_SECRET=""                        # NextAuth secret key (generate with: openssl rand -base64 32)
-WEB_JWT_SECRET_KEY=""                         # JWT secret key (generate with: openssl rand -base64 32)
-
-# API Configuration
-API_NODE_ENV="development"                    # Keep as "development" for local setup
-API_LOG_LEVEL=error                           # Error logging level
-API_LOG_PRETTY=true                           # Pretty print logs
-API_HOST=0.0.0.0                              # API host
-API_PORT=3001                                 # API port
-API_RATE_MAX_REQUEST=100                      # Rate limiting: max requests
-API_RATE_INTERVAL=1000                        # Rate limiting: time window (ms)
-API_CRYPTO_KEY=                               # Crypto key (generate with: openssl rand -hex 32)
-API_JWT_EXPIRES_IN=365d                       # JWT token expiration time
-API_JWT_SECRET=                               # JWT secret key
-API_JWT_REFRESHSECRET=                        # JWT refresh token secret key
-API_JWT_REFRESH_EXPIRES_IN=7d                 # JWT refresh token expiration time
-
-# Database Configuration
-API_DATABASE_ENV="development"                # Database environment
-API_PG_DB_HOST=db_kodus_postgres              # PostgreSQL host
-API_PG_DB_PORT=5432                          # PostgreSQL port
-API_PG_DB_USERNAME=kodusdev                  # Database username
-API_PG_DB_PASSWORD=                          # Database password
-API_PG_DB_DATABASE=kodus_db                  # Database name
-
-# MongoDB Configuration
-API_MG_DB_HOST=db_kodus_mongodb              # MongoDB host
-API_MG_DB_PORT=27017                         # MongoDB port
-API_MG_DB_USERNAME=kodusdev                  # Database username
-API_MG_DB_PASSWORD=                          # Database password
-API_MG_DB_DATABASE=kodus_db                  # Database name
-``` 
+<Info>
+  For detailed steps on the initial configuration process, refer to our [Getting
+  Started Guide](/how_to_use/en/quickstart).
+</Info>
+  </Step>
+</Steps>

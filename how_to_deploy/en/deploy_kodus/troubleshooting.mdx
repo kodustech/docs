@@ -6,24 +6,33 @@ icon: "headset"
 
 ## Quick Fixes
 
+### "Run diagnostics"
+
+The installer ships with a doctor script that checks the stack and common misconfigurations.
+
+```bash
+cd kodus-installer
+./scripts/doctor.sh
+```
+
 ### "I can't access the web interface"
 
 1. Check if the containers are running:
 
 ```bash
-docker ps | grep kodus-web-prod
+docker-compose ps kodus-web
 ```
 
 2. Verify the ports are correctly mapped:
 
 ```bash
-docker port kodus-web-prod
+docker-compose port kodus-web 3000
 ```
 
 3. Check the web container logs:
 
 ```bash
-docker logs kodus-web-prod
+docker-compose logs kodus-web
 ```
 
 ### "Git webhooks aren't working"
@@ -34,10 +43,10 @@ docker logs kodus-web-prod
 curl -I https://your-domain.com
 ```
 
-2. Check the orchestrator logs for webhook attempts:
+2. Check the webhooks logs for webhook attempts:
 
 ```bash
-docker logs kodus-orchestrator-prod | grep webhook
+docker-compose logs webhooks | grep webhook
 ```
 
 3. Verify your reverse proxy configuration:
@@ -51,22 +60,22 @@ sudo nginx -t
 1. Check database container status:
 
 ```bash
-docker ps | grep db_kodus_postgres
-docker ps | grep db_kodus_mongodb
+docker-compose ps db_kodus_postgres
+docker-compose ps db_kodus_mongodb
 ```
 
 2. Verify database logs:
 
 ```bash
-docker logs db_kodus_postgres
-docker logs db_kodus_mongodb
+docker-compose logs db_kodus_postgres
+docker-compose logs db_kodus_mongodb
 ```
 
 3. Test database connections:
 
 ```bash
-docker exec -it db_kodus_postgres psql -U $API_PG_DB_USERNAME -d $API_PG_DB_DATABASE
-docker exec -it db_kodus_mongodb mongosh -u $API_MG_DB_USERNAME -p $API_MG_DB_PASSWORD
+docker-compose exec db_kodus_postgres psql -U $API_PG_DB_USERNAME -d $API_PG_DB_DATABASE
+docker-compose exec db_kodus_mongodb mongosh -u $API_MG_DB_USERNAME -p $API_MG_DB_PASSWORD
 ```
 
 ### "Migration failed due to missing vector type"
@@ -76,7 +85,7 @@ If you encounter the error "type vector does not exist" during migrations, this 
 1. Connect to your PostgreSQL database:
 
 ```bash
-docker exec -it db_kodus_postgres psql -U $API_PG_DB_USERNAME -d $API_PG_DB_DATABASE
+docker-compose exec db_kodus_postgres psql -U $API_PG_DB_USERNAME -d $API_PG_DB_DATABASE
 ```
 
 2. Enable the pgvector extension:
@@ -88,7 +97,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
 3. After enabling the extension, try running your migrations again:
 
 ```bash
-docker exec -it kodus-api-prod npm run migration:run
+docker-compose exec api npm run migration:run
 ```
 
 If you're still experiencing issues, you can verify the extension is properly installed:
@@ -106,7 +115,7 @@ If you're seeing message queue errors:
 1. Check RabbitMQ status:
 
 ```bash
-docker logs rabbitmq-prod
+docker-compose logs rabbitmq
 ```
 
 2. Access the management console at `http://localhost:15672` to verify queues and connections
@@ -114,7 +123,7 @@ docker logs rabbitmq-prod
 3. Restart the service if needed:
 
 ```bash
-docker restart rabbitmq-prod
+docker-compose restart rabbitmq
 ```
 
 ### Resource Problems
@@ -130,7 +139,7 @@ docker stats
 2. Verify container limits:
 
 ```bash
-docker inspect kodus-orchestrator-prod | grep -A 5 "Resources"
+docker inspect $(docker-compose ps -q api) | grep -A 5 "Resources"
 ```
 
 3. Adjust resource limits in docker-compose.yml if needed
