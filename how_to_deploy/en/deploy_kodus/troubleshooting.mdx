@@ -35,6 +35,14 @@ docker-compose port kodus-web 3000
 docker-compose logs kodus-web
 ```
 
+### "Edge Runtime errors in `kodus-web` logs"
+
+If you see errors like `A Node.js API is used ... not supported in the Edge Runtime` (often with an `axios` import trace), part of the web app is running in the Edge Runtime, which does not support Node.js APIs.
+
+1. Update to the latest `kodus-web` image (re-run the installer or run `docker-compose pull kodus-web` and `docker-compose up -d`).
+2. If you are building from source, make sure auth/server routes run on the Node.js runtime (set `export const runtime = "nodejs"` and avoid `runtime = "edge"` on those routes).
+3. Rebuild and restart the container.
+
 ### "Git webhooks aren't working"
 
 1. Verify your domain setup:

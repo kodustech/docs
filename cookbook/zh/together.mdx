@@ -106,6 +106,14 @@ server {
 server {
     listen 80;
     server_name kodus-api.yourdomain.com;
+    location ~ ^/(github|gitlab|bitbucket|azure-repos)/webhook {
+        proxy_pass http://localhost:3332;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
     location / {
         proxy_pass http://localhost:3001;
         proxy_set_header Host $host;
@@ -122,7 +130,7 @@ server {
 
 ```bash
 # 专门验证 Together AI API 连接
-docker logs kodus-orchestrator-prod | grep -i together
+docker-compose logs api worker | grep -i together
 ```
 
 <Tip>
@@ -149,7 +157,7 @@ docker logs kodus-orchestrator-prod | grep -i together
   <Accordion title="连接错误">
     - 验证您的服务器是否有互联网访问权限以访问 `api.together.xyz`
     - 检查是否有任何防火墙限制
-    - 查看编排器日志以获取详细的错误消息
+    - 查看 API/worker 日志以获取详细的错误消息
     - 确保您使用的是正确的 API 端点
   </Accordion>
 

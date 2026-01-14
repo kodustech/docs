@@ -106,6 +106,14 @@ server {
 server {
     listen 80;
     server_name kodus-api.yourdomain.com;
+    location ~ ^/(github|gitlab|bitbucket|azure-repos)/webhook {
+        proxy_pass http://localhost:3332;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
     location / {
         proxy_pass http://localhost:3001;
         proxy_set_header Host $host;
@@ -122,7 +130,7 @@ In addition to the basic installation verification, confirm that Together AI is 
 
 ```bash
 # Verify Together AI API connection specifically
-docker logs kodus-orchestrator-prod | grep -i together
+docker-compose logs api worker | grep -i together
 ```
 
 <Tip>
@@ -149,7 +157,7 @@ docker logs kodus-orchestrator-prod | grep -i together
   <Accordion title="Connection Errors">
     - Verify your server has internet access to reach `api.together.xyz`
     - Check if there are any firewall restrictions
-    - Review the orchestrator logs for detailed error messages
+    - Review the API/worker logs for detailed error messages
     - Ensure you're using the correct API endpoint
   </Accordion>
   
