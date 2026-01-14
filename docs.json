@@ -17,13 +17,13 @@
     "options": ["copy", "view", "chatgpt", "claude"]
   },
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "How to use",
-        "icon": "book-open",
-        "languages": [
+        "language": "en",
+        "tabs": [
           {
-            "language": "en",
+            "tab": "How to use",
+            "icon": "gamepad-modern",
             "groups": [
               {
                 "group": "Getting Started",
@@ -119,7 +119,97 @@
             ]
           },
           {
-            "language": "zh",
+            "tab": "How to deploy",
+            "icon": "rocket-launch",
+            "groups": [
+              {
+                "group": "Concepts",
+                "pages": ["how_to_deploy/en/kodus_architecture"]
+              },
+              {
+                "group": "Local Quickstarts",
+                "pages": [
+                  "how_to_deploy/en/local_quickstart/orchestrator",
+                  "how_to_deploy/en/local_quickstart/web"
+                ]
+              },
+              {
+                "group": "Deploy with Docker",
+                "pages": [
+                  "how_to_deploy/en/deploy_kodus/generic_vm",
+                  "how_to_deploy/en/deploy_kodus/mcp_manager",
+                  "how_to_deploy/en/deploy_kodus/reverse_proxy",
+                  "how_to_deploy/en/deploy_kodus/troubleshooting",
+                  "how_to_deploy/en/deploy_kodus/updating"
+                ]
+              },
+              {
+                "group": "Git providers configuration",
+                "pages": [
+                  {
+                    "group": "Github",
+                    "icon": "github",
+                    "pages": [
+                      "how_to_deploy/en/platforms/github/github_app",
+                      "how_to_deploy/en/platforms/github/github_webhook"
+                    ]
+                  },
+                  {
+                    "group": "Gitlab",
+                    "icon": "gitlab",
+                    "pages": [
+                      "how_to_deploy/en/platforms/gitlab/gitlab_webhook"
+                    ]
+                  },
+                  {
+                    "group": "Bitbucket",
+                    "icon": "bitbucket",
+                    "pages": [
+                      "how_to_deploy/en/platforms/bitbucket/bitbucket_webhook"
+                    ]
+                  },
+                  {
+                    "group": "Azure DevOps",
+                    "icon": "microsoft",
+                    "pages": [
+                      "how_to_deploy/en/platforms/azure_devops/azdevops_webhook"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Cookbook",
+            "icon": "fire",
+            "pages": [
+              {
+                "group": "Selfhosted + Open Source LLM Providers",
+                "pages": [
+                  "cookbook/en/novita",
+                  "cookbook/en/groq",
+                  "cookbook/en/together",
+                  "cookbook/en/fireworks"
+                ]
+              },
+              {
+                "group": "Custom Plugins",
+                "pages": ["cookbook/en/custom-plugin-install"]
+              },
+              {
+                "group": "Custom Context Playbooks",
+                "pages": ["cookbook/en/guide-handbook-guardrails"]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "language": "zh",
+        "tabs": [
+          {
+            "tab": "如何使用",
+            "icon": "gamepad-modern",
             "groups": [
               {
                 "group": "快速开始",
@@ -213,75 +303,11 @@
                 ]
               }
             ]
-          }
-        ]
-      },
-      {
-        "tab": "How to deploy",
-        "icon": "rocket-launch",
-        "languages": [
-          {
-            "language": "en",
-            "pages": [
-              {
-                "group": "Concepts",
-                "pages": ["how_to_deploy/en/kodus_architecture"]
-              },
-              {
-                "group": "Local Quickstarts",
-                "pages": [
-                  "how_to_deploy/en/local_quickstart/orchestrator",
-                  "how_to_deploy/en/local_quickstart/web"
-                ]
-              },
-              {
-                "group": "Deploy with Docker",
-                "pages": [
-                  "how_to_deploy/en/deploy_kodus/generic_vm",
-                  "how_to_deploy/en/deploy_kodus/mcp_manager",
-                  "how_to_deploy/en/deploy_kodus/reverse_proxy",
-                  "how_to_deploy/en/deploy_kodus/troubleshooting",
-                  "how_to_deploy/en/deploy_kodus/updating"
-                ]
-              },
-              {
-                "group": "Git providers configuration",
-                "pages": [
-                  {
-                    "group": "Github",
-                    "icon": "github",
-                    "pages": [
-                      "how_to_deploy/en/platforms/github/github_webhook"
-                    ]
-                  },
-                  {
-                    "group": "Gitlab",
-                    "icon": "gitlab",
-                    "pages": [
-                      "how_to_deploy/en/platforms/gitlab/gitlab_webhook"
-                    ]
-                  },
-                  {
-                    "group": "Bitbucket",
-                    "icon": "bitbucket",
-                    "pages": [
-                      "how_to_deploy/en/platforms/bitbucket/bitbucket_webhook"
-                    ]
-                  },
-                  {
-                    "group": "Azure DevOps",
-                    "icon": "microsoft",
-                    "pages": [
-                      "how_to_deploy/en/platforms/azure_devops/azdevops_webhook"
-                    ]
-                  }
-                ]
-              }
-            ]
           },
           {
-            "language": "zh",
-            "pages": [
+            "tab": "如何部署",
+            "icon": "rocket-launch",
+            "groups": [
               {
                 "group": "概念",
                 "pages": ["how_to_deploy/zh/kodus_architecture"]
@@ -294,17 +320,13 @@
                 ]
               },
               {
-                "group": "部署 Kodus",
+                "group": "使用 Docker 部署",
                 "pages": [
-                  {
-                    "group": "自定义部署",
-                    "icon": "server",
-                    "pages": [
-                      "how_to_deploy/zh/deploy_kodus/generic_vm",
-                      "how_to_deploy/zh/deploy_kodus/google_gcp"
-                    ]
-                  },
-                  "how_to_deploy/zh/deploy_kodus/troubleshooting"
+                  "how_to_deploy/zh/deploy_kodus/generic_vm",
+                  "how_to_deploy/zh/deploy_kodus/mcp_manager",
+                  "how_to_deploy/zh/deploy_kodus/reverse_proxy",
+                  "how_to_deploy/zh/deploy_kodus/troubleshooting",
+                  "how_to_deploy/zh/deploy_kodus/updating"
                 ]
               },
               {
@@ -314,6 +336,7 @@
                     "group": "Github",
                     "icon": "github",
                     "pages": [
+                      "how_to_deploy/zh/platforms/github/github_app",
                       "how_to_deploy/zh/platforms/github/github_webhook"
                     ]
                   },
@@ -341,37 +364,10 @@
                 ]
               }
             ]
-          }
-        ]
-      },
-      {
-        "tab": "Cookbook",
-        "icon": "fire",
-        "languages": [
-          {
-            "language": "en",
-            "pages": [
-              {
-                "group": "Selfhosted + Open Source LLM Providers",
-                "pages": [
-                  "cookbook/en/novita",
-                  "cookbook/en/groq",
-                  "cookbook/en/together",
-                  "cookbook/en/fireworks"
-                ]
-              },
-              {
-                "group": "Custom Plugins",
-                "pages": ["cookbook/en/custom-plugin-install"]
-              },
-              {
-                "group": "Custom Context Playbooks",
-                "pages": ["cookbook/en/guide-handbook-guardrails"]
-              }
-            ]
           },
           {
-            "language": "zh",
+            "tab": "食谱",
+            "icon": "fire",
             "pages": [
               {
                 "group": "自托管 + 开源 LLM 提供商",
