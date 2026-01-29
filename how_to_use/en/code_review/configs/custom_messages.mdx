@@ -32,11 +32,16 @@ This creates a complete timeline: **Initial Message → Suggestions → Final Me
 Use the **Message behavior** dropdown to decide when Kody should post your custom
 start and end messages:
 
+- **Important:** Messages are only sent when a review actually runs.  
+  If your review cadence is **Manual**, messages are posted only when someone runs `@kody start-review`.
+
 - **Every push**: Kody posts the start message when the pull request opens and
-  repeats the start/end pair after every new push that triggers a review.
+  repeats the start/end pair after every new push **that triggers a review**.
+  This happens automatically only when cadence is **Automatic** or **Auto-pause**.
 - **Only when opened**: Kody sends the start and end messages only once, right
-  after the PR is opened. Future pushes just add review suggestions plus the
-  usual reaction so authors know the review reran.
+  after the first review run. If cadence is **Manual**, the first review run is
+  when you call `@kody start-review`. Future pushes just add review suggestions
+  plus the usual reaction so authors know the review reran.
 - **Off**: Custom messages are disabled. Kody still runs the review and posts
   suggestions, but no start or end messages are sent.
 
@@ -45,6 +50,10 @@ templates you have filled in. If you only customize the start message, only that
 message is sent; same for the end message. This keeps the familiar timeline of
 **Initial Message → Suggestions → Final Message** whenever the behavior allows
 messages to be posted.
+
+**Example (Manual cadence)**  
+PR opened → no message yet  
+`@kody start-review` → start message → suggestions → end message
 
 ## Dynamic Context
 
