@@ -5,6 +5,10 @@ icon: webhook
 
 Kodus usually creates the webhook automatically. If that didn't happen, follow these steps to set it up manually:
 
+<Note>
+  Webhook URLs must reach the Webhooks service (port 3332). Using the API domain only works if your reverse proxy routes `/.../webhook` paths to the webhooks service.
+</Note>
+
 1. Head over to your GitHub repository
 2. Click on "Settings"
 3. Find "Webhooks" in the left sidebar

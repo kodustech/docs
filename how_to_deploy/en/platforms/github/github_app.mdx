@@ -3,10 +3,9 @@ title: Creating a GitHub App
 icon: github
 ---
 
-If you want to run Kody with a github app, you need to create a GitHub App. This app enables Kody to interact with your repositories, manage pull requests, and receive webhooks.
+If you want to run Kody with a GitHub App, you need to create one. This app enables Kody to interact with your repositories, manage pull requests, and receive webhooks.
 
-<Note>If you want to enable "Sign in with GitHub" for platform users, that's a separate OAuth App process and doesn't interfere with the GitHub App permissions. 
-This guide focuses on the functional integration.</Note>
+<Note>If you want to enable "Sign in with GitHub" for platform users, that's a separate OAuth App process and doesn't interfere with the GitHub App permissions. This guide focuses on the functional integration. See <a href="/how_to_deploy/en/platforms/github/github_oauth">GitHub OAuth App</a>.</Note>
 
 ## Prerequisites
 
@@ -14,12 +13,15 @@ Have your application domains ready:
 
 - **WEB_DOMAIN**: Your Frontend URL (e.g., `https://app.yourdomain.com` or `http://localhost:3000`)
 - **API_DOMAIN**: Your Backend/API URL (e.g., `https://api.yourdomain.com` or `http://localhost:3000` for monorepo/proxy setups)
+- **WEBHOOK_DOMAIN** (optional): Public domain for webhooks (e.g., `https://kodus-webhooks.yourdomain.com`). If you route `/.../webhook` on the API domain, you can use `API_DOMAIN`.
 
 ## Step 1: Create the GitHub App
 
 1. On GitHub, go to **Settings** > **Developer Settings** > **GitHub Apps**
 2. Click **New GitHub App**
 3. Fill in the basic information (Name, Homepage URL) according to your preference
+
+<img src="https://success.skyhighsecurity.com/@api/deki/files/66490/Click_newGithubApp.png?revision=1" alt="GitHub Apps settings page highlighting the New GitHub App button" />
 
 ## Step 2: Configure Callback and Setup URLs
 
@@ -45,9 +47,13 @@ This step is critical to ensure installation and redirection work properly. Fill
 
 The webhook notifies Kodus about events in your pull requests.
 
+<Note>
+  Webhooks are handled by a separate service (port 3332). If you use the API domain here, ensure your reverse proxy routes `/github/webhook` to the webhooks service. Otherwise use a dedicated webhooks domain.
+</Note>
+
 - **Webhook URL**:
   ```
-  API_DOMAIN/github/webhook
+  WEBHOOK_DOMAIN/github/webhook
   ```
 
 - Make sure the **Active** option is checked
@@ -89,6 +95,15 @@ Add to your `.env`:
 API_GITHUB_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY----- ..."
 ```
 
+### Installation URL
+
+Open your GitHub App and click **Install App**. Copy the URL from the browser address bar (it looks like `https://github.com/apps/<app-slug>/installations/new`).
+
+Add to your `.env`:
+```
+WEB_GITHUB_INSTALL_URL="https://github.com/apps/your-app/installations/new"
+```
+
 ## Summary of Environment Variables
 
 At the end, your configuration file should contain:
@@ -97,6 +112,7 @@ At the end, your configuration file should contain:
 API_GITHUB_APP_ID=123456
 API_GITHUB_CLIENT_SECRET=example_secret_123
 API_GITHUB_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY----- ..."
+WEB_GITHUB_INSTALL_URL="https://github.com/apps/your-app/installations/new"
 ```
 
 Click **Save Changes** on GitHub and restart your Kodus application to apply the changes.

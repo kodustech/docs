@@ -44,7 +44,7 @@ Fireworks AI 是生成式 AI 最快的推理平台，旨在在几秒钟内构建
 
 ## 如何使用
 
-<Snippet file="deploy-basic-setup.mdx" />
+<Snippet file="deploy-basic-setup-zh.mdx" />
 
 ### 在环境文件中配置 Fireworks AI
 
@@ -77,6 +77,10 @@ API_GITHUB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/github/webh
 # 或 API_GITLAB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/gitlab/webhook"
 # 或 GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/bitbucket/webhook"
 ```
+
+<Note>
+  Webhook URL 必须指向 Webhooks 服务（端口 3332）。您可以使用独立的 webhook 域名，或在反向代理中将 `/.../webhook` 转发到 3332 端口。
+</Note>
 
 <Info>
   **固定模式非常适合 Fireworks AI**，因为它提供兼容 OpenAI 的 API，具有极快的推理速度，并可访问尖端的开源模型，设置时间为零。

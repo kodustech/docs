@@ -197,7 +197,8 @@ If you need to test integrations with external services (like Git webhooks):
 yarn dev:health-check
 ```
 
-This comprehensive healtha*: Kodus API, PostgreSQL, MongoDB
+This comprehensive health check validates:
+- ✅ **Services**: Kodus API, PostgreSQL, MongoDB
 - 🔌 **Port availability**: API (3001), PostgreSQL (5432), MongoDB (27017)
 - 🗄️ **Database setup**: Migrations and seed data
 - 🌐 **API endpoints**: Health endpoints and basic connectivity
@@ -207,7 +208,7 @@ This comprehensive healtha*: Kodus API, PostgreSQL, MongoDB
 
 1. **Check API health**: Visit `http://localhost:3001/health` in your browser
 2. **Verify database connections**: Check the logs for successful database connections
-3. **Test webhook endpoints**: Your Git provider webhooks should point to `http://localhost:3001/[provider]/webhook`
+3. **Test webhook endpoints**: Your Git provider webhooks should point to `http://localhost:3332/[provider]/webhook` (or to your API domain if a reverse proxy routes `/.../webhook` to the webhooks service)
 
 
 ### Setup Script Issues

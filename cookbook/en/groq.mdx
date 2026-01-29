@@ -78,6 +78,10 @@ API_GITHUB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/github/webh
 # or GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/bitbucket/webhook"
 ```
 
+<Note>
+  Webhook URLs must reach the Webhooks service (port 3332). Use a dedicated webhooks domain or route `/.../webhook` to port 3332 in your reverse proxy.
+</Note>
+
 <Info>
   **Fixed Mode is ideal for Groq** because it provides OpenAI-compatible APIs with ultra-fast inference. This gives you the best performance with simple configuration.
 </Info>

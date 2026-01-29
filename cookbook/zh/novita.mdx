@@ -39,7 +39,7 @@ Novita 是一个面向 AI 的无服务器基础设施平台，旨在以低延迟
 
 
 
-<Snippet file="deploy-basic-setup.mdx" />
+<Snippet file="deploy-basic-setup-zh.mdx" />
 
 ### 在环境文件中配置 Novita
 
@@ -72,6 +72,10 @@ API_GITHUB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/github/webh
 # 或 API_GITLAB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/gitlab/webhook"
 # 或 GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/bitbucket/webhook"
 ```
+
+<Note>
+  Webhook URL 必须指向 Webhooks 服务（端口 3332）。您可以使用独立的 webhook 域名，或在反向代理中将 `/.../webhook` 转发到 3332 端口。
+</Note>
 
 <Info>
   **固定模式非常适合 Novita**，因为它提供兼容 OpenAI 的 API，并且只需要一个 API 密钥。这大大简化了您的设置。

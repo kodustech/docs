@@ -44,7 +44,7 @@ Groq Cloud 提供快速的 LLM 推理和兼容 OpenAI 的 API。专为速度和�
 
 ## 如何使用
 
-<Snippet file="deploy-basic-setup.mdx" />
+<Snippet file="deploy-basic-setup-zh.mdx" />
 
 ### 在环境文件中配置 Groq
 
@@ -77,6 +77,10 @@ API_GITHUB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/github/webh
 # 或 API_GITLAB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/gitlab/webhook"
 # 或 GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/bitbucket/webhook"
 ```
+
+<Note>
+  Webhook URL 必须指向 Webhooks 服务（端口 3332）。您可以使用独立的 webhook 域名，或在反向代理中将 `/.../webhook` 转发到 3332 端口。
+</Note>
 
 <Info>
   **固定模式非常适合 Groq**，因为它提供兼容 OpenAI 的 API 和超快速推理。这为您提供了最佳性能和简单配置。
