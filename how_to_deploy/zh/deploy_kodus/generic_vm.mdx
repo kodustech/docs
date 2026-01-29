@@ -4,7 +4,7 @@ description: "在通用虚拟机上部署 Kodus。"
 icon: "plug"
 ---
 
-<Snippet file="deploy-basic-setup.mdx" />
+<Snippet file="deploy-basic-setup-zh.mdx" />
 
 ## 环境变量配置
 
@@ -79,25 +79,30 @@ API_RABBITMQ_ENABLED=true                    # RabbitMQ 是必需的
 
 选择并配置您首选的 Git 提供商。您可以设置一个或多个提供商；对于基本的基于令牌的身份验证，您只需要 webhook URL。
 
+<Info>
+  Webhook 由独立服务处理（端口 3332）。Webhook URL 必须指向该服务。您可以使用独立的 webhook 域名，或继续使用 API 域名并在反向代理中将 `/.../webhook` 路径转发到 webhook 服务。
+  如果您使用 GitHub 或 GitLab OAuth，请参见 <a href="/how_to_deploy/zh/platforms/github/github_oauth">GitHub OAuth App</a> 或 <a href="/how_to_deploy/zh/platforms/gitlab/gitlab_oauth">GitLab OAuth App</a>。如需 GitHub App 设置，请参见 <a href="/how_to_deploy/zh/platforms/github/github_app">GitHub App</a>。
+</Info>
+
 <Tabs>
   <Tab title="Github">
     ```env
     # 基于令牌的身份验证所需
-    API_GITHUB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/github/webhook"          # GitHub webhook URL（使用您的 API 域名更新）
+    API_GITHUB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/github/webhook"          # Webhook URL（使用 webhook 域名，或在代理转发到 Webhooks 服务时使用 API 域名）
     ```
 
   </Tab>
   <Tab title="GitLab">
     ```env
     # 基于令牌的身份验证所需
-    API_GITLAB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/gitlab/webhook"          # GitLab webhook URL（使用您的 API 域名更新）
+    API_GITLAB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/gitlab/webhook"          # Webhook URL（使用 webhook 域名，或在代理转发到 Webhooks 服务时使用 API 域名）
     ```
 
   </Tab>
   <Tab title="Bitbucket">
     ```env
     # 基于令牌的身份验证所需
-    GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/bitbucket/webhook"    # Bitbucket webhook URL（使用您的 API 域名更新）
+    GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/bitbucket/webhook"    # Webhook URL（使用 webhook 域名，或在代理转发到 Webhooks 服务时使用 API 域名）
     ```
 
   </Tab>
@@ -105,7 +110,7 @@ API_RABBITMQ_ENABLED=true                    # RabbitMQ 是必需的
   <Tab title="Azure DevOps">
     ```env
     # 基于令牌的身份验证所需
-    GLOBAL_AZURE_REPOS_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/azure-repos/webhook"    # Azure DevOps webhook URL（使用您的 API 域名更新）
+    GLOBAL_AZURE_REPOS_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/azure-repos/webhook"    # Webhook URL（使用 webhook 域名，或在代理转发到 Webhooks 服务时使用 API 域名）
     ```
 
   </Tab>

@@ -5,6 +5,10 @@ icon: webhook
 
 Kody usually creates the webhook automatically. If that didn't happen, follow these steps to set it up manually:
 
+<Note>
+  Webhook URLs must reach the Webhooks service (port 3332). Using the API domain only works if your reverse proxy routes `/.../webhook` paths to the webhooks service.
+</Note>
+
 1. Navigate to your Azure DevOps project.
 2. Click on "Project settings" in the bottom-left corner.
 3. Under the "General" section, select "Service hooks".

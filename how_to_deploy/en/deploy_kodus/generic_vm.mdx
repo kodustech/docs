@@ -84,25 +84,30 @@ API_RABBITMQ_ENABLED=true                    # RabbitMQ is required
 Choose and configure your preferred Git provider. You can set one or more
 providers; for basic token-based authentication, you only need the webhook URL.
 
+<Info>
+  Webhooks are handled by a separate service (port 3332). Your webhook URLs must reach that service. You can use a dedicated webhooks domain, or keep the API domain and route `/.../webhook` paths to the webhooks service in your reverse proxy.
+  Using GitHub or GitLab OAuth? See <a href="/how_to_deploy/en/platforms/github/github_oauth">GitHub OAuth App</a> or <a href="/how_to_deploy/en/platforms/gitlab/gitlab_oauth">GitLab OAuth App</a>. For GitHub App setup, see <a href="/how_to_deploy/en/platforms/github/github_app">GitHub App</a>.
+</Info>
+
 <Tabs>
   <Tab title="Github">
     ```env
     # Required for token-based authentication
-    API_GITHUB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/github/webhook"          # GitHub webhook URL (update with your API domain)
+    API_GITHUB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/github/webhook"          # Webhook URL (use webhooks domain, or API domain if proxied to webhooks service)
     ```
 
   </Tab>
   <Tab title="GitLab">
     ```env
     # Required for token-based authentication
-    API_GITLAB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/gitlab/webhook"          # GitLab webhook URL (update with your API domain)
+    API_GITLAB_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/gitlab/webhook"          # Webhook URL (use webhooks domain, or API domain if proxied to webhooks service)
     ```
 
   </Tab>
   <Tab title="Bitbucket">
     ```env
     # Required for token-based authentication
-    GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/bitbucket/webhook"    # Bitbucket webhook URL (update with your API domain)
+    GLOBAL_BITBUCKET_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/bitbucket/webhook"    # Webhook URL (use webhooks domain, or API domain if proxied to webhooks service)
     ```
 
   </Tab>
@@ -110,7 +115,7 @@ providers; for basic token-based authentication, you only need the webhook URL.
   <Tab title="Azure DevOps">
     ```env
     # Required for token-based authentication
-    GLOBAL_AZURE_REPOS_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/azure-repos/webhook"    # Azure DevOps webhook URL (update with your API domain)
+    GLOBAL_AZURE_REPOS_CODE_MANAGEMENT_WEBHOOK="https://kodus-api.yourdomain.com/azure-repos/webhook"    # Webhook URL (use webhooks domain, or API domain if proxied to webhooks service)
     ```
 
   </Tab>

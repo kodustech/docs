@@ -151,6 +151,7 @@
                     "icon": "github",
                     "pages": [
                       "how_to_deploy/en/platforms/github/github_app",
+                      "how_to_deploy/en/platforms/github/github_oauth",
                       "how_to_deploy/en/platforms/github/github_webhook"
                     ]
                   },
@@ -158,6 +159,7 @@
                     "group": "Gitlab",
                     "icon": "gitlab",
                     "pages": [
+                      "how_to_deploy/en/platforms/gitlab/gitlab_oauth",
                       "how_to_deploy/en/platforms/gitlab/gitlab_webhook"
                     ]
                   },
@@ -337,6 +339,7 @@
                     "icon": "github",
                     "pages": [
                       "how_to_deploy/zh/platforms/github/github_app",
+                      "how_to_deploy/zh/platforms/github/github_oauth",
                       "how_to_deploy/zh/platforms/github/github_webhook"
                     ]
                   },
@@ -344,6 +347,7 @@
                     "group": "Gitlab",
                     "icon": "gitlab",
                     "pages": [
+                      "how_to_deploy/zh/platforms/gitlab/gitlab_oauth",
                       "how_to_deploy/zh/platforms/gitlab/gitlab_webhook"
                     ]
                   },

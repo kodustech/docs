@@ -206,7 +206,7 @@ yarn dev:health-check
 
 1. **检查 API 健康**：在浏览器中访问 `http://localhost:3001/health`
 2. **验证数据库连接**：检查日志以查看成功的数据库连接
-3. **测试 webhook 端点**：您的 Git 提供商 webhook 应指向 `http://localhost:3001/[provider]/webhook`
+3. **测试 webhook 端点**：您的 Git 提供商 webhook 应指向 `http://localhost:3332/[provider]/webhook`（或在反向代理将 `/.../webhook` 转发到 Webhooks 服务时使用 API 域名）
 
 
 ### 设置脚本问题

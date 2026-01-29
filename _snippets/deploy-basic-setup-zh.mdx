@@ -1,4 +1,4 @@
-## System Requirements
+## 系统要求
 
 <AccordionGroup>
   <Accordion title="Recommended Hardware">
@@ -22,13 +22,10 @@
 </AccordionGroup>
 
 <Note>
-  **Internet access is required if you plan to connect to cloud-based Git
-  services (GitHub, GitLab, Bitbucket) or cloud LLM providers (OpenAI, Anthropic,
-  etc.).** For self-hosted Git tools and on-prem LLMs within your network,
-  external internet access is optional.
+  **如果您计划连接云端 Git 服务（GitHub、GitLab、Bitbucket）或云端 LLM 提供商（OpenAI、Anthropic 等），则需要互联网访问。** 对于内网自托管的 Git 工具和本地/自托管 LLM，外网访问是可选的。
 </Note>
 
-## Domain Name Setup (Optional)
+## 域名设置（可选）
 
 If you're planning to integrate Kodus with cloud-based Git providers (GitHub, GitLab, or Bitbucket), you'll need public-facing URLs for both the Kodus Web App and its API. This allows your server to receive webhooks for proper Code Review functionality and ensures correct application behavior.
 
@@ -36,9 +33,9 @@ We recommend setting up two subdomains:
 - One for the Web Application, e.g., `kodus-web.yourdomain.com`.
 - One for the API, e.g., `kodus-api.yourdomain.com`.
 
-Webhooks are handled by a separate service (port 3332). You can either:
-- Use a dedicated webhooks subdomain, e.g., `kodus-webhooks.yourdomain.com`, or
-- Keep using the API domain and route `/github/webhook`, `/gitlab/webhook`, etc. to the webhooks service in your reverse proxy.
+Webhook 由独立服务处理（端口 3332）。您可以选择：
+- 使用独立的 webhook 子域名，例如 `kodus-webhooks.yourdomain.com`，或
+- 继续使用 API 域名，并在反向代理中将 `/github/webhook`、`/gitlab/webhook` 等路径转发到 webhook 服务。
 
 Both subdomains should have DNS A records pointing to your server's IP address. Later in this guide, we will configure a reverse proxy (Nginx) to route requests to these subdomains to the correct internal services. This setup is essential for full functionality, including webhooks and authentication.
 
@@ -69,7 +66,7 @@ Both subdomains should have DNS A records pointing to your server's IP address. 
     nano .env
     ```
 
-    See [Environment Variables Configuration](/how_to_deploy/en/deploy_kodus/generic_vm#environment-variables-configuration) for detailed instructions.  
+    详细说明请参见 [环境变量配置](/how_to_deploy/zh/deploy_kodus/generic_vm)。  
   </Step>
 
   <Step title="Run the installer">
@@ -92,8 +89,7 @@ Both subdomains should have DNS A records pointing to your server's IP address. 
 3. **Select repositories** for analysis - Choose which code repositories Kody will review
 
 <Info>
-  For detailed steps on the initial configuration process, refer to our [Getting
-  Started Guide](/how_to_use/en/quickstart).
+  详细步骤请参见 [快速开始指南](/how_to_use/zh/quickstart)。
 </Info>
   </Step>
 </Steps>
