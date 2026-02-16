@@ -1,7 +1,7 @@
 ---
-title: "运行 Kodus API"
-description: "在本地计算机上运行 Kodus API 的快速入门指南。"
-icon: "server"
+title: "本地快速开始"
+description: "在本地计算机上运行 Kodus — API、Worker、Webhooks、Web UI 和所有依赖项，一条命令全部启动。"
+icon: "laptop"
 ---
 
 <Note>
@@ -24,7 +24,7 @@ icon: "server"
       ```bash
       git clone https://github.com/kodustech/kodus-ai.git
       cd kodus-ai
-      yarn dev:first-run
+      yarn setup
       ```
 
       此脚本将自动：
@@ -57,6 +57,8 @@ icon: "server"
       yarn seed
       yarn tunnel  # 为外部服务创建公共端点
       ```
+
+      一切运行后，在浏览器中打开 **http://localhost:3000**。
   </Tab>
   <Tab title="手动设置">
       如果您更喜欢手动配置所有内容：
@@ -115,22 +117,29 @@ icon: "server"
       docker network create shared-network || true
       ```
 
-      ### 7. 启动开发环境和隧道
+      ### 7. 启动开发环境
 
       使用 Docker 启动服务：
 
       ```bash
       yarn docker:start
-      yarn tunnel
       ```
 
       此命令启动：
 
       - Kodus API
+      - Worker（异步任务）
+      - Webhooks 服务
+      - Kodus Web 应用程序
       - PostgreSQL 数据库
       - MongoDB 数据库
+      - RabbitMQ
       - 所需的网络配置
-      - 为外部服务创建公共端点
+
+      如需为外部服务创建公共端点：
+      ```bash
+      yarn tunnel
+      ```
 
       ### 8. 首次设置
 
@@ -148,11 +157,13 @@ icon: "server"
       yarn seed
       ```
 
-      #### 8. 服务端点
+      ### 9. 服务端点
 
       访问服务：
 
+      - Web UI：`http://localhost:3000`
       - API：`http://localhost:3001`
+      - RabbitMQ 管理界面：`http://localhost:15672`
       - 调试端口：`9229`
 
   </Tab>
@@ -166,7 +177,7 @@ icon: "server"
 1. **启动服务**：`yarn docker:start`
 2. **运行迁移**：`yarn migrate:dev`
 3. **加载种子数据**：`yarn seed`
-4. **创建隧道**：`yarn tunnel`（创建公共端点）
+4. **打开应用**：访问 `http://localhost:3000`
 5. **健康检查**：`yarn dev:health-check`
 
 ### 带外部集成的开发
@@ -196,22 +207,24 @@ yarn dev:health-check
 ```
 
 此综合健康检查验证：
-- 🐳 **容器状态**：Kodus API、PostgreSQL、MongoDB
-- 🔌 **端口可用性**：API（3001）、PostgreSQL（5432）、MongoDB（27017）
+- ✅ **服务**：Kodus API、Worker、Webhooks、Web、PostgreSQL、MongoDB、RabbitMQ
+- 🔌 **端口可用性**：Web（3000）、API（3001）、PostgreSQL（5432）、MongoDB（27017）、RabbitMQ（5672/15672）
 - 🗄️ **数据库设置**：迁移和种子数据
 - 🌐 **API 端点**：健康端点和基本连接
 
 
 ### 手动验证
 
-1. **检查 API 健康**：在浏览器中访问 `http://localhost:3001/health`
-2. **验证数据库连接**：检查日志以查看成功的数据库连接
-3. **测试 webhook 端点**：您的 Git 提供商 webhook 应指向 `http://localhost:3332/[provider]/webhook`（或在反向代理将 `/.../webhook` 转发到 Webhooks 服务时使用 API 域名）
+1. **检查 Web UI**：在浏览器中访问 `http://localhost:3000`
+2. **检查 API 健康**：在浏览器中访问 `http://localhost:3001/health`
+3. **检查 RabbitMQ**：访问 `http://localhost:15672`（默认凭据：`guest`/`guest`）
+4. **验证数据库连接**：检查日志以查看成功的数据库连接
+5. **测试 webhook 端点**：您的 Git 提供商 webhook 应指向 `http://localhost:3332/[provider]/webhook`（或在反向代理将 `/.../webhook` 转发到 Webhooks 服务时使用 API 域名）
 
 
 ### 设置脚本问题
 
-如果自动设置脚本（`yarn dev:first-run`）失败：
+如果自动设置脚本（`yarn setup`）失败：
 
 **缺少依赖项：**
 ```bash
@@ -240,7 +253,7 @@ docker network rm kodus-backend-services shared-network
 ### 常见问题
 
 **端口冲突：**
-- 确保端口 3001（API）、5432（PostgreSQL）和 27017（MongoDB）可用
+- 确保端口 3000（Web）、3001（API）、5432（PostgreSQL）、27017（MongoDB）和 5672/15672（RabbitMQ）可用
 - 在启动 Kodus 之前停止使用这些端口的其他服务
 
 **环境变量未加载：**

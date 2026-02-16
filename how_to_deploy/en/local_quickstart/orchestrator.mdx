@@ -1,7 +1,7 @@
 ---
-title: "Running Kodus API"
-description: "Quickstart guide to get Kodus API running on your local machine."
-icon: "server"
+title: "Local Quickstart"
+description: "Get Kodus running on your local machine — API, Worker, Webhooks, Web UI, and all dependencies in one command."
+icon: "laptop"
 ---
 
 <Note>
@@ -15,7 +15,7 @@ icon: "server"
 - Node.js (LTS version)
 - Docker
 - Yarn or NPM
-- LLM API Keys 
+- LLM API Keys
 
 ## Running the project
 
@@ -26,12 +26,12 @@ icon: "server"
       ```bash
       git clone https://github.com/kodustech/kodus-ai.git
       cd kodus-ai
-      yarn dev:first-run
+      yarn setup
       ```
 
       This script will automatically:
       - ✅ Check all required dependencies (Node.js, Yarn, Docker, OpenSSL)
-      - ✅ Install project dependencies  
+      - ✅ Install project dependencies
       - ✅ Create and configure the `.env` file
       - ✅ Generate all required security keys automatically
       - ✅ Set up Docker networks
@@ -44,14 +44,14 @@ icon: "server"
     <Snippet file="llm-api-keys.mdx" />
 
       ### Next steps
-      
+
       **Basic setup:**
       ```bash
       yarn docker:start
       yarn migrate:dev
       yarn seed
       ```
-      
+
       **With external integrations (webhooks, etc.):**
       ```bash
       yarn docker:start
@@ -59,6 +59,8 @@ icon: "server"
       yarn seed
       yarn tunnel  # Creates public endpoint for external services
       ```
+
+      Once everything is running, open **http://localhost:3000** in your browser.
   </Tab>
   <Tab title="Manual Setup">
       If you prefer to configure everything manually:
@@ -117,22 +119,29 @@ Select one mode and fill your .env before starting the services.
       docker network create shared-network || true
       ```
 
-      ### 7. Starting the development environment and tunnel
+      ### 7. Starting the development environment
 
       Launch the services using Docker:
 
       ```bash
       yarn docker:start
-      yarn tunnel
       ```
 
       This command starts:
 
       - Kodus API
+      - Worker (async jobs)
+      - Webhooks service
+      - Kodus Web Application
       - PostgreSQL database
       - MongoDB database
+      - RabbitMQ
       - Required network configurations
-      - Creates public endpoint for external services
+
+      To also create a public endpoint for external services:
+      ```bash
+      yarn tunnel
+      ```
 
       ### 8. First-time setup
 
@@ -150,11 +159,13 @@ Select one mode and fill your .env before starting the services.
       yarn seed
       ```
 
-      #### 8. Service endpoints
+      ### 9. Service endpoints
 
-      Access the service at:
+      Access the services at:
 
+      - Web UI: `http://localhost:3000`
       - API: `http://localhost:3001`
+      - RabbitMQ Management: `http://localhost:15672`
       - Debug Port: `9229`
 
   </Tab>
@@ -168,7 +179,7 @@ Select one mode and fill your .env before starting the services.
 1. **Start services**: `yarn docker:start`
 2. **Run migrations**: `yarn migrate:dev`
 3. **Load seed data**: `yarn seed`
-4. **Create tunnel**: `yarn tunnel` (creates public endpoint)
+4. **Open the app**: Visit `http://localhost:3000`
 5. **Health check**: `yarn dev:health-check`
 
 ### Development with External Integrations
@@ -198,22 +209,24 @@ yarn dev:health-check
 ```
 
 This comprehensive health check validates:
-- ✅ **Services**: Kodus API, PostgreSQL, MongoDB
-- 🔌 **Port availability**: API (3001), PostgreSQL (5432), MongoDB (27017)
+- ✅ **Services**: Kodus API, Worker, Webhooks, Web, PostgreSQL, MongoDB, RabbitMQ
+- 🔌 **Port availability**: Web (3000), API (3001), PostgreSQL (5432), MongoDB (27017), RabbitMQ (5672/15672)
 - 🗄️ **Database setup**: Migrations and seed data
 - 🌐 **API endpoints**: Health endpoints and basic connectivity
 
 
 ### Manual Verification
 
-1. **Check API health**: Visit `http://localhost:3001/health` in your browser
-2. **Verify database connections**: Check the logs for successful database connections
-3. **Test webhook endpoints**: Your Git provider webhooks should point to `http://localhost:3332/[provider]/webhook` (or to your API domain if a reverse proxy routes `/.../webhook` to the webhooks service)
+1. **Check Web UI**: Visit `http://localhost:3000` in your browser
+2. **Check API health**: Visit `http://localhost:3001/health`
+3. **Check RabbitMQ**: Visit `http://localhost:15672` (default credentials: `guest`/`guest`)
+4. **Verify database connections**: Check the logs for successful database connections
+5. **Test webhook endpoints**: Your Git provider webhooks should point to `http://localhost:3332/[provider]/webhook` (or to your API domain if a reverse proxy routes `/.../webhook` to the webhooks service)
 
 
 ### Setup Script Issues
 
-If the automated setup script (`yarn dev:first-run`) fails:
+If the automated setup script (`yarn setup`) fails:
 
 **Missing dependencies:**
 ```bash
@@ -242,7 +255,7 @@ docker network rm kodus-backend-services shared-network
 ### Common Issues
 
 **Port conflicts:**
-- Ensure ports 3001 (API), 5432 (PostgreSQL), and 27017 (MongoDB) are available
+- Ensure ports 3000 (Web), 3001 (API), 5432 (PostgreSQL), 27017 (MongoDB), and 5672/15672 (RabbitMQ) are available
 - Stop other services using these ports before starting Kodus
 
 **Environment variables not loading:**

@@ -127,10 +127,9 @@
                 "pages": ["how_to_deploy/en/kodus_architecture"]
               },
               {
-                "group": "Local Quickstarts",
+                "group": "Local Quickstart",
                 "pages": [
-                  "how_to_deploy/en/local_quickstart/orchestrator",
-                  "how_to_deploy/en/local_quickstart/web"
+                  "how_to_deploy/en/local_quickstart/orchestrator"
                 ]
               },
               {
@@ -317,8 +316,7 @@
               {
                 "group": "本地快速开始",
                 "pages": [
-                  "how_to_deploy/zh/local_quickstart/orchestrator",
-                  "how_to_deploy/zh/local_quickstart/web"
+                  "how_to_deploy/zh/local_quickstart/orchestrator"
                 ]
               },
               {
