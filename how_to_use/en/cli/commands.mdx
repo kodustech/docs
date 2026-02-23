@@ -1,0 +1,296 @@
+---
+title: "Command Reference"
+description: "Complete reference for all Kodus CLI commands, flags, and options."
+---
+
+## Global Flags
+
+These flags are available on all commands:
+
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--format <fmt>` | `-f` | `terminal` | Output format: `terminal`, `json`, `markdown` |
+| `--output <file>` | `-o` | — | Save output to a file |
+| `--verbose` | `-v` | `false` | Verbose output |
+| `--quiet` | `-q` | `false` | Quiet mode (errors only) |
+
+---
+
+## `kodus review`
+
+Analyzes modified files for code quality issues, bugs, security vulnerabilities, and style violations.
+
+### Usage
+
+```bash
+kodus review                          # Review working tree changes (interactive)
+kodus review [files...]               # Review specific files
+kodus review --staged                 # Review staged files only
+kodus review --branch main            # Compare against a branch
+kodus review --commit abc123          # Analyze a specific commit
+kodus review --fix                    # Auto-apply all fixable issues
+kodus review --prompt-only            # Output optimized for AI agents
+```
+
+### Flags
+
+| Flag | Short | Description |
+|------|-------|-------------|
+| `--staged` | `-s` | Analyze only staged files |
+| `--commit <sha>` | `-c` | Analyze diff from a specific commit |
+| `--branch <name>` | `-b` | Compare current branch against specified branch |
+| `--rules-only` | — | Review using only configured rules (no general suggestions) |
+| `--fast` | — | Fast mode: quicker analysis with lighter checks |
+| `--interactive` | `-i` | Interactive mode: navigate and apply fixes |
+| `--fix` | — | Automatically apply all fixable issues |
+| `--prompt-only` | — | Output optimized for AI agents |
+| `--fail-on <severity>` | — | Exit with code 1 if issues meet or exceed severity |
+| `--context <file>` | — | Custom context file to include in review |
+
+### Review Modes
+
+<Tabs>
+  <Tab title="Interactive (Default)">
+    Navigate files with issue counts, preview suggested fixes, and apply them one by one.
+
+    ```bash
+    kodus review
+    ```
+  </Tab>
+  <Tab title="Auto-fix">
+    Applies all fixable issues at once with a confirmation prompt.
+
+    ```bash
+    kodus review --fix
+    ```
+  </Tab>
+  <Tab title="AI Agent">
+    Minimal, structured output designed for Claude Code, Cursor, or Windsurf. Enables autonomous review-fix loops.
+
+    ```bash
+    kodus review --prompt-only
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## `kodus pr suggestions`
+
+Fetch AI-powered suggestions for open pull requests.
+
+### Usage
+
+```bash
+kodus pr suggestions --pr-url https://github.com/org/repo/pull/42
+kodus pr suggestions --pr-number 42 --repo-id <id>
+kodus pr suggestions --pr-number 42 --repo-id <id> --severity error,warning
+kodus pr suggestions --pr-number 42 --repo-id <id> --format json
+```
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `--pr-url <url>` | Pull request URL |
+| `--pr-number <number>` | Pull request number (requires `--repo-id`) |
+| `--repo-id <id>` | Repository ID for the pull request |
+| `--severity <list>` | Comma-separated severities to include |
+| `--category <list>` | Comma-separated categories to include |
+
+---
+
+## `kodus auth`
+
+Manage authentication with the Kodus API.
+
+### `auth login`
+
+```bash
+kodus auth login                              # Interactive login
+kodus auth login -e user@mail.com -p password # Non-interactive
+```
+
+| Flag | Short | Description |
+|------|-------|-------------|
+| `--email <email>` | `-e` | Account email |
+| `--password <password>` | `-p` | Account password |
+
+### `auth logout`
+
+```bash
+kodus auth logout
+```
+
+Removes local authentication (login and team key).
+
+### `auth status`
+
+```bash
+kodus auth status
+```
+
+Shows authentication mode, email, token validity, organizations, trial status, and usage limits.
+
+### `auth team-key`
+
+```bash
+kodus auth team-key --key kodus_xxxxx
+```
+
+Authenticate using a shared team API key. Can also be set via the `KODUS_TEAM_KEY` environment variable.
+
+### `auth team-status`
+
+```bash
+kodus auth team-status
+```
+
+Shows team authentication details (organization and team name).
+
+### `auth token`
+
+```bash
+kodus auth token
+```
+
+Generates a CI/CD token for use in automated pipelines. Use with the `KODUS_TOKEN` environment variable.
+
+---
+
+## `kodus hook`
+
+Manage pre-push Git hooks for automatic code review before pushing.
+
+### `hook install`
+
+```bash
+kodus hook install                    # Default: fail-on critical, fast mode enabled
+kodus hook install --fail-on error    # Block pushes on error severity
+kodus hook install --no-fast          # Disable fast mode
+kodus hook install --force            # Overwrite existing hook
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--fail-on <severity>` | `critical` | Minimum severity to block push |
+| `--fast` / `--no-fast` | `true` | Enable/disable fast mode |
+| `--force` | — | Overwrite existing hook without prompting |
+
+### `hook uninstall`
+
+```bash
+kodus hook uninstall
+```
+
+Removes the pre-push hook installed by Kodus.
+
+### `hook status`
+
+```bash
+kodus hook status
+```
+
+Shows hook status, fail-on severity, fast mode setting, and path.
+
+### Skipping the Hook
+
+```bash
+KODUS_SKIP_HOOK=1 git push
+```
+
+---
+
+## `kodus decisions`
+
+Capture and persist AI agent decisions into your repository for future reference. Decisions are stored as structured markdown in `.kody/`.
+
+### `decisions enable`
+
+```bash
+kodus decisions enable                                    # All agents
+kodus decisions enable --agents claude,cursor            # Specific agents
+kodus decisions enable --agents codex --codex-config ~/.codex/config.toml
+kodus decisions enable --force                           # Overwrite existing config
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--agents <agents>` | `claude,cursor,codex` | Comma-separated agent list |
+| `--codex-config <path>` | `~/.codex/config.toml` | Path to Codex config |
+| `--force` | — | Overwrite existing `modules.yml` |
+
+### `decisions disable`
+
+```bash
+kodus decisions disable
+```
+
+Removes all decision hooks. Preserved data in `.kody/` is not deleted.
+
+### `decisions status`
+
+```bash
+kodus decisions status
+```
+
+Shows PR memory, sessions, last SHA, agent, and module config.
+
+### `decisions show`
+
+```bash
+kodus decisions show                  # Current branch PR memory
+kodus decisions show auth             # Module decisions for 'auth'
+kodus decisions show feat/new-api     # PR decisions for a specific branch
+```
+
+### `decisions promote`
+
+```bash
+kodus decisions promote                                   # Current branch, all modules
+kodus decisions promote --branch feat/auth                # Specific branch
+kodus decisions promote --branch feat/auth --modules auth,users
+```
+
+| Flag | Description |
+|------|-------------|
+| `--branch <name>` | Branch name (default: current branch) |
+| `--modules <ids>` | Comma-separated module IDs (default: all matched) |
+
+Promotes PR-level decisions to long-term module memory.
+
+---
+
+## `kodus upgrade`
+
+Opens the Kodus pricing/upgrade page in your browser.
+
+```bash
+kodus upgrade
+```
+
+---
+
+## Severity Levels
+
+Issues are categorized by severity, from most to least critical:
+
+| Level | Description |
+|-------|-------------|
+| `critical` | Major security or stability issues requiring immediate attention |
+| `error` | Significant bugs or problems |
+| `warning` | Potential issues worth addressing |
+| `info` | Suggestions and best practices |
+
+## Issue Categories
+
+| Category | Description |
+|----------|-------------|
+| `security_vulnerability` | Security-related issues |
+| `bug` | Potential bugs |
+| `performance` | Performance optimization opportunities |
+| `code_quality` | Code quality improvements |
+| `best_practices` | Best practice violations |
+| `complexity` | Code complexity issues |
+| `maintainability` | Maintainability concerns |
+| `style` | Code style issues |

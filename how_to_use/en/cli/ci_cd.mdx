@@ -1,0 +1,121 @@
+---
+title: "AI Agents"
+description: "Integrate the Kodus CLI with AI coding agents for autonomous review-fix loops."
+---
+
+## AI Agent Integration
+
+The CLI provides optimized output for AI coding agents, enabling autonomous review-fix loops.
+
+### Supported Agents
+
+- **Claude Code** — via `--prompt-only` output
+- **Cursor** — via `--prompt-only` output
+- **Windsurf** — via `--prompt-only` output
+
+### The Review-Fix Loop
+
+The `--prompt-only` flag outputs minimal, structured analysis that AI agents can consume directly. This enables a powerful workflow:
+
+<Steps>
+  <Step title="Agent Runs Review">
+    ```bash
+    kodus review --prompt-only
+    ```
+
+    The CLI returns structured issues with file paths, line numbers, and suggested fixes.
+  </Step>
+  <Step title="Agent Applies Fixes">
+    The AI agent reads the output and applies the suggested fixes to the codebase.
+  </Step>
+  <Step title="Agent Re-runs Review">
+    ```bash
+    kodus review --prompt-only
+    ```
+
+    The loop continues until the review comes back clean.
+  </Step>
+  <Step title="Agent Commits & Pushes">
+    Once all issues are resolved, the agent commits and pushes the clean code.
+  </Step>
+</Steps>
+
+### Team Key Authentication for Agents
+
+For AI agents, use a team key so no individual login is needed:
+
+```bash
+export KODUS_TEAM_KEY=kodus_xxxxx
+kodus review --prompt-only
+```
+
+This key can be shared across the team and configured with device limits from the dashboard.
+
+---
+
+## Decision Memory
+
+Capture and persist the reasoning behind AI agent decisions directly in your repository.
+
+### How It Works
+
+When enabled, Kodus hooks into your AI agent's turn-complete events and captures decisions as structured markdown files in `.kody/`.
+
+```
+.kody/
+├── pr/by-sha/<head-sha>.md    # PR-level decisions (versioned with code)
+├── memory/<module-id>.md      # Module-level decisions (long-term)
+└── modules.yml                # Module configuration
+```
+
+### Setup
+
+```bash
+# Enable for all supported agents
+kodus decisions enable
+
+# Enable for specific agents
+kodus decisions enable --agents claude,cursor
+
+# Check status
+kodus decisions status
+```
+
+### Workflow
+
+<Steps>
+  <Step title="Enable Hooks">
+    ```bash
+    kodus decisions enable
+    ```
+
+    This installs hooks for Claude Code, Cursor, and/or Codex.
+  </Step>
+  <Step title="Work Normally">
+    As you (or your AI agent) work on code, decisions are automatically captured on each turn-complete event.
+  </Step>
+  <Step title="Review Decisions">
+    ```bash
+    kodus decisions show
+    ```
+
+    View all decisions captured for the current branch.
+  </Step>
+  <Step title="Promote to Long-term Memory">
+    ```bash
+    kodus decisions promote
+    ```
+
+    Move important decisions from PR-level to module-level memory so they persist beyond the branch.
+  </Step>
+</Steps>
+
+### Context Files
+
+The CLI reads project context from these files if they exist in your repository:
+
+| File | Description |
+|------|-------------|
+| `.kodus.md` | Kodus-specific configuration and guidelines |
+| `claude.md` | Claude-specific guidelines |
+| `.cursorrules` | Cursor IDE rules |

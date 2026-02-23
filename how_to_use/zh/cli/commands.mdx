@@ -1,0 +1,296 @@
+---
+title: "命令参考"
+description: "Kodus CLI 所有命令、标志和选项的完整参考。"
+---
+
+## 全局标志
+
+以下标志适用于所有命令：
+
+| 标志 | 简写 | 默认值 | 描述 |
+|------|------|--------|------|
+| `--format <fmt>` | `-f` | `terminal` | 输出格式：`terminal`、`json`、`markdown` |
+| `--output <file>` | `-o` | — | 保存输出到文件 |
+| `--verbose` | `-v` | `false` | 详细输出 |
+| `--quiet` | `-q` | `false` | 安静模式（仅错误） |
+
+---
+
+## `kodus review`
+
+分析修改的文件，查找代码质量问题、Bug、安全漏洞和风格违规。
+
+### 用法
+
+```bash
+kodus review                          # 审查工作目录变更（交互式）
+kodus review [files...]               # 审查特定文件
+kodus review --staged                 # 仅审查暂存文件
+kodus review --branch main            # 与指定分支对比
+kodus review --commit abc123          # 分析特定提交
+kodus review --fix                    # 自动应用所有可修复问题
+kodus review --prompt-only            # 为 AI 代理优化的输出
+```
+
+### 标志
+
+| 标志 | 简写 | 描述 |
+|------|------|------|
+| `--staged` | `-s` | 仅分析暂存文件 |
+| `--commit <sha>` | `-c` | 分析特定提交的差异 |
+| `--branch <name>` | `-b` | 与指定分支对比 |
+| `--rules-only` | — | 仅使用配置的规则审查（不生成通用建议） |
+| `--fast` | — | 快速模式：使用更轻量的检查进行更快分析 |
+| `--interactive` | `-i` | 交互模式：浏览并应用修复 |
+| `--fix` | — | 自动应用所有可修复的问题 |
+| `--prompt-only` | — | 为 AI 代理优化的输出 |
+| `--fail-on <severity>` | — | 如果问题达到或超过指定严重级别则退出码为 1 |
+| `--context <file>` | — | 包含在审查中的自定义上下文文件 |
+
+### 审查模式
+
+<Tabs>
+  <Tab title="交互式（默认）">
+    浏览文件和问题数量，预览建议修复，逐一应用。
+
+    ```bash
+    kodus review
+    ```
+  </Tab>
+  <Tab title="自动修复">
+    一次性应用所有可修复的问题，带确认提示。
+
+    ```bash
+    kodus review --fix
+    ```
+  </Tab>
+  <Tab title="AI 代理">
+    为 Claude Code、Cursor 或 Windsurf 设计的精简结构化输出。支持自主审查-修复循环。
+
+    ```bash
+    kodus review --prompt-only
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## `kodus pr suggestions`
+
+获取开放 Pull Request 的 AI 建议。
+
+### 用法
+
+```bash
+kodus pr suggestions --pr-url https://github.com/org/repo/pull/42
+kodus pr suggestions --pr-number 42 --repo-id <id>
+kodus pr suggestions --pr-number 42 --repo-id <id> --severity error,warning
+kodus pr suggestions --pr-number 42 --repo-id <id> --format json
+```
+
+### 标志
+
+| 标志 | 描述 |
+|------|------|
+| `--pr-url <url>` | Pull Request URL |
+| `--pr-number <number>` | Pull Request 编号（需要 `--repo-id`） |
+| `--repo-id <id>` | 仓库 ID |
+| `--severity <list>` | 以逗号分隔的严重级别列表 |
+| `--category <list>` | 以逗号分隔的类别列表 |
+
+---
+
+## `kodus auth`
+
+管理 Kodus API 的认证。
+
+### `auth login`
+
+```bash
+kodus auth login                              # 交互式登录
+kodus auth login -e user@mail.com -p password # 非交互式
+```
+
+| 标志 | 简写 | 描述 |
+|------|------|------|
+| `--email <email>` | `-e` | 账户邮箱 |
+| `--password <password>` | `-p` | 账户密码 |
+
+### `auth logout`
+
+```bash
+kodus auth logout
+```
+
+移除本地认证（登录和团队密钥）。
+
+### `auth status`
+
+```bash
+kodus auth status
+```
+
+显示认证模式、邮箱、令牌有效性、组织、试用状态和使用限制。
+
+### `auth team-key`
+
+```bash
+kodus auth team-key --key kodus_xxxxx
+```
+
+使用共享的团队 API 密钥进行认证。也可以通过 `KODUS_TEAM_KEY` 环境变量设置。
+
+### `auth team-status`
+
+```bash
+kodus auth team-status
+```
+
+显示团队认证详情（组织和团队名称）。
+
+### `auth token`
+
+```bash
+kodus auth token
+```
+
+生成用于自动化流水线的 CI/CD 令牌。配合 `KODUS_TOKEN` 环境变量使用。
+
+---
+
+## `kodus hook`
+
+管理 pre-push Git 钩子，在推送前自动进行代码审查。
+
+### `hook install`
+
+```bash
+kodus hook install                    # 默认：fail-on critical，快速模式启用
+kodus hook install --fail-on error    # 在 error 严重级别时阻止推送
+kodus hook install --no-fast          # 禁用快速模式
+kodus hook install --force            # 覆盖现有钩子
+```
+
+| 标志 | 默认值 | 描述 |
+|------|--------|------|
+| `--fail-on <severity>` | `critical` | 阻止推送的最低严重级别 |
+| `--fast` / `--no-fast` | `true` | 启用/禁用快速模式 |
+| `--force` | — | 无提示覆盖现有钩子 |
+
+### `hook uninstall`
+
+```bash
+kodus hook uninstall
+```
+
+移除 Kodus 安装的 pre-push 钩子。
+
+### `hook status`
+
+```bash
+kodus hook status
+```
+
+显示钩子状态、fail-on 严重级别、快速模式设置和路径。
+
+### 跳过钩子
+
+```bash
+KODUS_SKIP_HOOK=1 git push
+```
+
+---
+
+## `kodus decisions`
+
+捕获并持久化 AI 代理的决策到代码仓库中，供未来参考。决策以结构化 Markdown 文件存储在 `.kody/` 目录中。
+
+### `decisions enable`
+
+```bash
+kodus decisions enable                                    # 所有代理
+kodus decisions enable --agents claude,cursor            # 特定代理
+kodus decisions enable --agents codex --codex-config ~/.codex/config.toml
+kodus decisions enable --force                           # 覆盖现有配置
+```
+
+| 标志 | 默认值 | 描述 |
+|------|--------|------|
+| `--agents <agents>` | `claude,cursor,codex` | 以逗号分隔的代理列表 |
+| `--codex-config <path>` | `~/.codex/config.toml` | Codex 配置路径 |
+| `--force` | — | 覆盖现有 `modules.yml` |
+
+### `decisions disable`
+
+```bash
+kodus decisions disable
+```
+
+移除所有决策钩子。`.kody/` 中的已保存数据不会被删除。
+
+### `decisions status`
+
+```bash
+kodus decisions status
+```
+
+显示 PR 记忆、会话、最新 SHA、代理和模块配置。
+
+### `decisions show`
+
+```bash
+kodus decisions show                  # 当前分支的 PR 记忆
+kodus decisions show auth             # 'auth' 模块的决策
+kodus decisions show feat/new-api     # 特定分支的 PR 决策
+```
+
+### `decisions promote`
+
+```bash
+kodus decisions promote                                   # 当前分支，所有模块
+kodus decisions promote --branch feat/auth                # 特定分支
+kodus decisions promote --branch feat/auth --modules auth,users
+```
+
+| 标志 | 描述 |
+|------|------|
+| `--branch <name>` | 分支名称（默认：当前分支） |
+| `--modules <ids>` | 以逗号分隔的模块 ID（默认：所有匹配的模块） |
+
+将 PR 级别的决策提升为长期模块记忆。
+
+---
+
+## `kodus upgrade`
+
+在浏览器中打开 Kodus 定价/升级页面。
+
+```bash
+kodus upgrade
+```
+
+---
+
+## 严重级别
+
+问题按严重程度分类，从最高到最低：
+
+| 级别 | 描述 |
+|------|------|
+| `critical` | 需要立即关注的重大安全或稳定性问题 |
+| `error` | 重要的 Bug 或问题 |
+| `warning` | 值得关注的潜在问题 |
+| `info` | 建议和最佳实践 |
+
+## 问题类别
+
+| 类别 | 描述 |
+|------|------|
+| `security_vulnerability` | 安全相关问题 |
+| `bug` | 潜在 Bug |
+| `performance` | 性能优化机会 |
+| `code_quality` | 代码质量改进 |
+| `best_practices` | 最佳实践违规 |
+| `complexity` | 代码复杂度问题 |
+| `maintainability` | 可维护性问题 |
+| `style` | 代码风格问题 |

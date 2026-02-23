@@ -74,6 +74,15 @@
                 ]
               },
               {
+                "group": "CLI",
+                "tag": "beta",
+                "pages": [
+                  "how_to_use/en/cli/overview",
+                  "how_to_use/en/cli/commands",
+                  "how_to_use/en/cli/ci_cd"
+                ]
+              },
+              {
                 "group": "Troubleshooting",
                 "pages": ["how_to_use/en/code_review/troubleshooting"]
               },
@@ -258,6 +267,15 @@
                   "how_to_use/zh/code_review/plugins",
                   "how_to_use/zh/code_review/business_logic_validation",
                   "how_to_use/zh/code_review/learning/kody_learning"
+                ]
+              },
+              {
+                "group": "CLI",
+                "tag": "beta",
+                "pages": [
+                  "how_to_use/zh/cli/overview",
+                  "how_to_use/zh/cli/commands",
+                  "how_to_use/zh/cli/ci_cd"
                 ]
               },
               {
