@@ -1,0 +1,121 @@
+---
+title: "AI 代理"
+description: "将 Kodus CLI 与 AI 编码代理集成，实现自主审查-修复循环。"
+---
+
+## AI 代理集成
+
+CLI 为 AI 编码代理提供优化的输出，支持自主审查-修复循环。
+
+### 支持的代理
+
+- **Claude Code** — 通过 `--prompt-only` 输出
+- **Cursor** — 通过 `--prompt-only` 输出
+- **Windsurf** — 通过 `--prompt-only` 输出
+
+### 审查-修复循环
+
+`--prompt-only` 标志输出精简的结构化分析，AI 代理可以直接使用。这实现了强大的工作流：
+
+<Steps>
+  <Step title="代理运行审查">
+    ```bash
+    kodus review --prompt-only
+    ```
+
+    CLI 返回结构化问题，包含文件路径、行号和建议修复。
+  </Step>
+  <Step title="代理应用修复">
+    AI 代理读取输出并将建议的修复应用到代码库。
+  </Step>
+  <Step title="代理重新运行审查">
+    ```bash
+    kodus review --prompt-only
+    ```
+
+    循环继续，直到审查结果干净。
+  </Step>
+  <Step title="代理提交并推送">
+    所有问题解决后，代理提交并推送干净的代码。
+  </Step>
+</Steps>
+
+### 代理的团队密钥认证
+
+对于 AI 代理，使用团队密钥，无需个人登录：
+
+```bash
+export KODUS_TEAM_KEY=kodus_xxxxx
+kodus review --prompt-only
+```
+
+该密钥可在团队间共享，并可从仪表板配置设备限制。
+
+---
+
+## 决策记忆
+
+在代码仓库中直接捕获和持久化 AI 代理决策背后的推理过程。
+
+### 工作原理
+
+启用后，Kodus 会挂钩到 AI 代理的任务完成事件，并将决策作为结构化 Markdown 文件捕获到 `.kody/` 目录中。
+
+```
+.kody/
+├── pr/by-sha/<head-sha>.md    # PR 级别决策（随代码版本化）
+├── memory/<module-id>.md      # 模块级别决策（长期记忆）
+└── modules.yml                # 模块配置
+```
+
+### 设置
+
+```bash
+# 为所有支持的代理启用
+kodus decisions enable
+
+# 为特定代理启用
+kodus decisions enable --agents claude,cursor
+
+# 检查状态
+kodus decisions status
+```
+
+### 工作流
+
+<Steps>
+  <Step title="启用钩子">
+    ```bash
+    kodus decisions enable
+    ```
+
+    这会为 Claude Code、Cursor 和/或 Codex 安装钩子。
+  </Step>
+  <Step title="正常工作">
+    当您（或您的 AI 代理）编写代码时，决策会在每次任务完成事件时自动捕获。
+  </Step>
+  <Step title="审查决策">
+    ```bash
+    kodus decisions show
+    ```
+
+    查看当前分支捕获的所有决策。
+  </Step>
+  <Step title="提升为长期记忆">
+    ```bash
+    kodus decisions promote
+    ```
+
+    将重要决策从 PR 级别移动到模块级别记忆，使其在分支之外持久存在。
+  </Step>
+</Steps>
+
+### 上下文文件
+
+如果代码仓库中存在以下文件，CLI 会读取项目上下文：
+
+| 文件 | 描述 |
+|------|------|
+| `.kodus.md` | Kodus 特定配置和指南 |
+| `claude.md` | Claude 特定指南 |
+| `.cursorrules` | Cursor IDE 规则 |

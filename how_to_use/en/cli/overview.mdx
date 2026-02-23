@@ -1,0 +1,145 @@
+---
+title: "Kodus CLI"
+description: "AI-powered code review from your terminal."
+---
+
+The Kodus CLI reviews your code changes directly from the terminal — catching bugs, security issues, and style violations before they reach a pull request.
+
+## Getting Started
+
+<Steps>
+  <Step title="Install">
+    <Tabs>
+      <Tab title="Skill Installer (Recommended)">
+        Installs the CLI and deploys the review skill to all detected AI agents (Claude Code, Cursor, Windsurf):
+
+        ```bash
+        curl -fsSL https://review-skill.com/install | bash
+        ```
+      </Tab>
+      <Tab title="npm">
+        ```bash
+        npm install -g @kodus/cli
+        ```
+      </Tab>
+      <Tab title="npx (No Install)">
+        ```bash
+        npx @kodus/cli review
+        ```
+      </Tab>
+      <Tab title="curl">
+        ```bash
+        curl -fsSL https://raw.githubusercontent.com/kodustech/cli/main/install.sh | bash
+        ```
+      </Tab>
+    </Tabs>
+
+    <Note>Requires Node.js >= 18.0.0.</Note>
+  </Step>
+
+  <Step title="Authenticate">
+    You can start without an account — just run `kodus review`. For full access, pick one:
+
+    <Tabs>
+      <Tab title="Personal Login">
+        ```bash
+        kodus auth login
+        ```
+      </Tab>
+      <Tab title="Team Key (Recommended for Teams)">
+        No individual signup needed. Generate a key at <a href="https://app.kodus.io/organization/cli-keys" target="_blank">app.kodus.io/organization/cli-keys</a> and click **Generate Key**.
+
+        You'll get the key and a ready-to-share command to distribute to your team:
+
+        ```bash
+        curl -fsSL https://review-skill.com/install | bash -s -- --team-key kodus_xxxxx
+        ```
+
+        Or configure it manually:
+
+        ```bash
+        kodus auth team-key --key kodus_xxxxx
+        ```
+
+        <Warning>Save the key when it's shown — it won't be displayed again.</Warning>
+      </Tab>
+    </Tabs>
+
+    <Info>
+      **Self-hosted?** Point the CLI to your own API:
+      ```bash
+      export KODUS_API_URL=https://kodus-api.yourcompany.com
+      ```
+      HTTPS required (except localhost).
+    </Info>
+  </Step>
+
+  <Step title="Run Your First Review">
+    ```bash
+    kodus review
+    ```
+
+    That's it. The CLI will analyze your working tree changes and show issues interactively. You can also:
+
+    ```bash
+    kodus review --staged       # Only staged files
+    kodus review --branch main  # Compare against a branch
+    kodus review --fix          # Auto-apply all fixes
+    ```
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Interactive Review" icon="terminal">
+    Browse files, preview fixes, and apply them one by one from your terminal.
+  </Card>
+  <Card title="Auto-fix" icon="wand-magic-sparkles">
+    Apply all fixable issues at once with `--fix`.
+  </Card>
+  <Card title="AI Agent Integration" icon="robot">
+    Use `--prompt-only` to feed structured output to Claude Code, Cursor, or Windsurf for automated fix loops.
+  </Card>
+  <Card title="Pre-push Hooks" icon="shield-check">
+    Block pushes with issues above a severity threshold.
+  </Card>
+  <Card title="Decision Memory" icon="brain">
+    Capture AI agent decisions as structured files in your repo.
+  </Card>
+  <Card title="PR Suggestions" icon="code-pull-request">
+    Fetch Kody's suggestions for open pull requests directly from the terminal.
+  </Card>
+</CardGroup>
+
+## Limits
+
+| | Trial (No Account) | Authenticated |
+|---|---|---|
+| Reviews per day | 5 | Based on your plan |
+| Files per review | 10 | 100 |
+| Lines per file | 500 | — |
+| Max diff size per file | 500 KB | 500 KB |
+| Max content size per file | 2 MB | 2 MB |
+
+Trial limits reset daily. Run `kodus auth status` to check your current usage.
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `KODUS_API_URL` | API endpoint (default: `https://api.kodus.io`) |
+| `KODUS_TEAM_KEY` | Team key for shared access and AI agents |
+| `KODUS_VERBOSE` | Set to `true` for verbose output |
+| `KODUS_SKIP_HOOK` | Set to `1` to skip the pre-push hook |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Command Reference" icon="book" href="commands">
+    All commands, flags, and options.
+  </Card>
+  <Card title="AI Agents" icon="robot" href="ci_cd">
+    Set up autonomous review-fix loops with coding agents.
+  </Card>
+</CardGroup>

@@ -1,0 +1,145 @@
+---
+title: "Kodus CLI"
+description: "终端中的 AI 代码审查工具。"
+---
+
+Kodus CLI 直接在终端中审查您的代码变更 — 在代码进入 Pull Request 之前捕获 Bug、安全问题和风格违规。
+
+## 快速开始
+
+<Steps>
+  <Step title="安装">
+    <Tabs>
+      <Tab title="技能安装器（推荐）">
+        安装 CLI 并将审查技能部署到所有检测到的 AI 代理（Claude Code、Cursor、Windsurf）：
+
+        ```bash
+        curl -fsSL https://review-skill.com/install | bash
+        ```
+      </Tab>
+      <Tab title="npm">
+        ```bash
+        npm install -g @kodus/cli
+        ```
+      </Tab>
+      <Tab title="npx（无需安装）">
+        ```bash
+        npx @kodus/cli review
+        ```
+      </Tab>
+      <Tab title="curl">
+        ```bash
+        curl -fsSL https://raw.githubusercontent.com/kodustech/cli/main/install.sh | bash
+        ```
+      </Tab>
+    </Tabs>
+
+    <Note>需要 Node.js >= 18.0.0。</Note>
+  </Step>
+
+  <Step title="认证">
+    无需账户即可开始 — 直接运行 `kodus review`。如需完整访问，选择一种方式：
+
+    <Tabs>
+      <Tab title="个人登录">
+        ```bash
+        kodus auth login
+        ```
+      </Tab>
+      <Tab title="团队密钥（推荐团队使用）">
+        无需个人注册。在 <a href="https://app.kodus.io/organization/cli-keys" target="_blank">app.kodus.io/organization/cli-keys</a> 点击 **Generate Key** 生成密钥。
+
+        您会获得密钥和一个可分享给团队的命令：
+
+        ```bash
+        curl -fsSL https://review-skill.com/install | bash -s -- --team-key kodus_xxxxx
+        ```
+
+        或手动配置：
+
+        ```bash
+        kodus auth team-key --key kodus_xxxxx
+        ```
+
+        <Warning>请在显示时保存密钥 — 之后将无法再次查看。</Warning>
+      </Tab>
+    </Tabs>
+
+    <Info>
+      **自托管？** 将 CLI 指向您自己的 API：
+      ```bash
+      export KODUS_API_URL=https://kodus-api.yourcompany.com
+      ```
+      需要 HTTPS（localhost 除外）。
+    </Info>
+  </Step>
+
+  <Step title="运行第一次审查">
+    ```bash
+    kodus review
+    ```
+
+    就这样。CLI 会分析您的工作目录变更并交互式显示问题。您还可以：
+
+    ```bash
+    kodus review --staged       # 仅暂存文件
+    kodus review --branch main  # 与分支对比
+    kodus review --fix          # 自动应用所有修复
+    ```
+  </Step>
+</Steps>
+
+## 功能概览
+
+<CardGroup cols={2}>
+  <Card title="交互式审查" icon="terminal">
+    浏览文件、预览修复建议，逐一应用。
+  </Card>
+  <Card title="自动修复" icon="wand-magic-sparkles">
+    使用 `--fix` 一键应用所有可修复的问题。
+  </Card>
+  <Card title="AI 代理集成" icon="robot">
+    使用 `--prompt-only` 为 Claude Code、Cursor 或 Windsurf 提供结构化输出，实现自动修复循环。
+  </Card>
+  <Card title="Pre-push 钩子" icon="shield-check">
+    阻止包含超过严重级别阈值问题的推送。
+  </Card>
+  <Card title="决策记忆" icon="brain">
+    将 AI 代理的决策以结构化文件保存在代码仓库中。
+  </Card>
+  <Card title="PR 建议" icon="code-pull-request">
+    直接从终端获取 Kody 对开放 Pull Request 的建议。
+  </Card>
+</CardGroup>
+
+## 限制
+
+| | 试用（无需账户） | 已认证 |
+|---|---|---|
+| 每日审查次数 | 5 | 根据您的计划 |
+| 每次审查文件数 | 10 | 100 |
+| 每文件行数 | 500 | — |
+| 每文件最大 diff 大小 | 500 KB | 500 KB |
+| 每文件最大内容大小 | 2 MB | 2 MB |
+
+试用限制每天重置。运行 `kodus auth status` 查看当前使用情况。
+
+## 环境变量
+
+| 变量 | 描述 |
+|------|------|
+| `KODUS_API_URL` | API 端点（默认：`https://api.kodus.io`） |
+| `KODUS_TEAM_KEY` | 团队共享访问和 AI 代理的团队密钥 |
+| `KODUS_VERBOSE` | 设置为 `true` 以启用详细输出 |
+| `KODUS_SKIP_HOOK` | 设置为 `1` 以跳过 pre-push 钩子 |
+
+## 下一步
+
+<CardGroup cols={2}>
+  <Card title="命令参考" icon="book" href="commands">
+    所有命令、标志和选项。
+  </Card>
+  <Card title="AI 代理" icon="robot" href="ci_cd">
+    与编码代理设置自主审查-修复循环。
+  </Card>
+</CardGroup>
