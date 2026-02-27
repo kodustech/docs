@@ -145,6 +145,49 @@ API_MCP_MANAGER_PG_DB_SCHEMA=mcp-manager
 API_MCP_MANAGER_ENCRYPTION_SECRET=
 ```
 
+### AST 代码审查配置
+
+<Info>
+  仅在您想启用基于 AST 的代码审查时需要。
+</Info>
+
+AST 服务在代码进入审查流程前对其进行解析、裁剪和处理，从而提升审查质量并降低 token 消耗。它已包含在安装包中，作为独立容器运行。
+
+```env
+API_ENABLE_CODE_REVIEW_AST=false  # 设为 true 以启用基于 AST 的代码审查
+API_SERVICE_AST_URL=              # AST 服务的内部 URL
+```
+
+### 外部服务配置（可选）
+
+这些服务是可选的，但能显著提升 Kodus 的代码审查质量。每个服务都需要您创建账号并生成 API 密钥。
+
+<AccordionGroup>
+  <Accordion title="E2B — 代码执行沙箱">
+    E2B 提供安全的沙箱环境，Kodus 用它在审查过程中运行和验证代码。
+
+    1. 在 [e2b.dev](https://e2b.dev) 创建账号
+    2. 在您的控制台中生成 API 密钥
+    3. 添加到您的 `.env`：
+
+    ```env
+    API_E2B_KEY=your-e2b-api-key
+    ```
+  </Accordion>
+
+  <Accordion title="MorphLLM — 代码编辑模型">
+    MorphLLM 是专为快速、精准代码编辑设计的模型。Kodus 用它更精确地应用审查建议。
+
+    1. 在 [morphllm.com](https://morphllm.com) 创建账号
+    2. 在您的控制台中生成 API 密钥
+    3. 添加到您的 `.env`：
+
+    ```env
+    API_MORPHLLM_API_KEY=your-morphllm-api-key
+    ```
+  </Accordion>
+</AccordionGroup>
+
 <Columns cols={2}>
   <Card
     title="需要帮助？"
