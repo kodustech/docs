@@ -152,6 +152,49 @@ API_MCP_MANAGER_PG_DB_SCHEMA=mcp-manager
 API_MCP_MANAGER_ENCRYPTION_SECRET=
 ```
 
+### AST Code Review Configuration
+
+<Info>
+  Only needed if you want to enable AST-powered code review.
+</Info>
+
+The AST service parses, trims, and manipulates code files before they reach the review pipeline. This improves review quality and reduces token consumption. It is included in the installer and runs as a separate container.
+
+```env
+API_ENABLE_CODE_REVIEW_AST=false  # Set to true to enable AST-powered code review
+API_SERVICE_AST_URL=              # Internal URL of the AST service
+```
+
+### External Services Configuration (Optional)
+
+These services are optional but significantly improve Kodus's code review quality. Each requires you to create an account and generate an API key.
+
+<AccordionGroup>
+  <Accordion title="E2B — Code Execution Sandbox">
+    E2B provides a secure sandbox that Kodus uses to run and validate code during reviews.
+
+    1. Create an account at [e2b.dev](https://e2b.dev)
+    2. Generate an API key in your dashboard
+    3. Add it to your `.env`:
+
+    ```env
+    API_E2B_KEY=your-e2b-api-key
+    ```
+  </Accordion>
+
+  <Accordion title="MorphLLM — Code Editing Model">
+    MorphLLM is a specialized model for fast, accurate code editing. Kodus uses it to apply review suggestions more precisely.
+
+    1. Create an account at [morphllm.com](https://morphllm.com)
+    2. Generate an API key in your dashboard
+    3. Add it to your `.env`:
+
+    ```env
+    API_MORPHLLM_API_KEY=your-morphllm-api-key
+    ```
+  </Accordion>
+</AccordionGroup>
+
 <Columns cols={2}>
   <Card
     title="Need help?"
