@@ -34,6 +34,7 @@ reviewOptions:
   potential_issues: true
   documentation_and_comments: true
   performance_and_optimization: true
+  business_logic: true
 suggestionControl:
   groupingMode: full
   limitationType: pr
@@ -43,6 +44,7 @@ ignoredTitleKeywords: []
 automatedReviewActive: true
 pullRequestApprovalActive: false
 isRequestChangesActive: false
+llmGeneratedMemoriesRequireApproval: false
 ```
 </Accordion>
 
@@ -110,3 +112,4 @@ Kody requests changes when finding critical issues.
 - Code Style: Consistent formatting and standards
 - Documentation: Clear comments and API docs
 - Kody Rules: Custom rule enforcement
+- Business Logic: Validates PR implementation against task requirements and acceptance criteria

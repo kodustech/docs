@@ -190,18 +190,77 @@
             ]
           },
           {
+            "tab": "Knowledge Base",
+            "icon": "book-open",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": ["knowledge_base/en/introduction"]
+              },
+              {
+                "group": "Code Review",
+                "pages": [
+                  "knowledge_base/en/how-to-enforce-coding-standards-in-pull-requests",
+                  "knowledge_base/en/how-to-automate-code-review",
+                  "knowledge_base/en/how-to-create-custom-code-review-rules",
+                  "knowledge_base/en/how-to-reduce-code-review-noise",
+                  "knowledge_base/en/difference-between-review-rules-and-memories",
+                  "knowledge_base/en/how-to-teach-ai-your-team-conventions"
+                ]
+              },
+              {
+                "group": "Business Logic Validation",
+                "pages": [
+                  "knowledge_base/en/how-to-validate-pr-against-jira-ticket",
+                  "knowledge_base/en/how-to-validate-pr-against-linear-issue",
+                  "knowledge_base/en/how-to-check-code-against-google-docs",
+                  "knowledge_base/en/how-to-validate-business-rules-before-merging"
+                ]
+              },
+              {
+                "group": "Rules & Automation",
+                "pages": [
+                  "knowledge_base/en/how-to-import-rules-from-ide-tools",
+                  "knowledge_base/en/how-to-generate-rules-automatically",
+                  "knowledge_base/en/how-to-share-standards-across-repositories",
+                  "knowledge_base/en/how-to-review-prs-with-project-context"
+                ]
+              },
+              {
+                "group": "Setup & Integrations",
+                "pages": [
+                  "knowledge_base/en/how-to-set-up-ai-code-review-on-github",
+                  "knowledge_base/en/how-to-set-up-ai-code-review-on-gitlab",
+                  "knowledge_base/en/how-to-set-up-ai-code-review-on-azure-devops",
+                  "knowledge_base/en/how-to-connect-jira-to-code-review",
+                  "knowledge_base/en/how-to-connect-linear-to-code-review",
+                  "knowledge_base/en/can-i-use-my-own-llm-provider",
+                  "knowledge_base/en/how-to-self-host-ai-code-review"
+                ]
+              },
+              {
+                "group": "Troubleshooting",
+                "pages": [
+                  "knowledge_base/en/why-is-ai-code-review-not-triggering",
+                  "knowledge_base/en/how-to-fix-webhook-issues",
+                  "knowledge_base/en/why-are-code-reviews-paused"
+                ]
+              },
+              {
+                "group": "LLM Providers",
+                "pages": [
+                  "knowledge_base/en/how-to-use-novita-with-kodus",
+                  "knowledge_base/en/how-to-use-groq-with-kodus",
+                  "knowledge_base/en/how-to-use-together-ai-with-kodus",
+                  "knowledge_base/en/how-to-use-fireworks-with-kodus"
+                ]
+              }
+            ]
+          },
+          {
             "tab": "Cookbook",
             "icon": "fire",
             "pages": [
-              {
-                "group": "Selfhosted + Open Source LLM Providers",
-                "pages": [
-                  "cookbook/en/novita",
-                  "cookbook/en/groq",
-                  "cookbook/en/together",
-                  "cookbook/en/fireworks"
-                ]
-              },
               {
                 "group": "Custom Plugins",
                 "pages": ["cookbook/en/custom-plugin-install"]
@@ -209,6 +268,16 @@
               {
                 "group": "Custom Context Playbooks",
                 "pages": ["cookbook/en/guide-handbook-guardrails"]
+              },
+              {
+                "group": "Recipes",
+                "pages": [
+                  "cookbook/en/kodus-for-monorepos",
+                  "cookbook/en/security-first-review-pipeline",
+                  "cookbook/en/kodus-sprint-workflow",
+                  "cookbook/en/team-onboarding",
+                  "cookbook/en/compliance-review-pipeline"
+                ]
               }
             ]
           }
@@ -386,18 +455,77 @@
             ]
           },
           {
+            "tab": "知识库",
+            "icon": "book-open",
+            "groups": [
+              {
+                "group": "概述",
+                "pages": ["knowledge_base/zh/introduction"]
+              },
+              {
+                "group": "代码审查",
+                "pages": [
+                  "knowledge_base/zh/how-to-enforce-coding-standards-in-pull-requests",
+                  "knowledge_base/zh/how-to-automate-code-review",
+                  "knowledge_base/zh/how-to-create-custom-code-review-rules",
+                  "knowledge_base/zh/how-to-reduce-code-review-noise",
+                  "knowledge_base/zh/difference-between-review-rules-and-memories",
+                  "knowledge_base/zh/how-to-teach-ai-your-team-conventions"
+                ]
+              },
+              {
+                "group": "业务逻辑验证",
+                "pages": [
+                  "knowledge_base/zh/how-to-validate-pr-against-jira-ticket",
+                  "knowledge_base/zh/how-to-validate-pr-against-linear-issue",
+                  "knowledge_base/zh/how-to-check-code-against-google-docs",
+                  "knowledge_base/zh/how-to-validate-business-rules-before-merging"
+                ]
+              },
+              {
+                "group": "规则与自动化",
+                "pages": [
+                  "knowledge_base/zh/how-to-import-rules-from-ide-tools",
+                  "knowledge_base/zh/how-to-generate-rules-automatically",
+                  "knowledge_base/zh/how-to-share-standards-across-repositories",
+                  "knowledge_base/zh/how-to-review-prs-with-project-context"
+                ]
+              },
+              {
+                "group": "设置与集成",
+                "pages": [
+                  "knowledge_base/zh/how-to-set-up-ai-code-review-on-github",
+                  "knowledge_base/zh/how-to-set-up-ai-code-review-on-gitlab",
+                  "knowledge_base/zh/how-to-set-up-ai-code-review-on-azure-devops",
+                  "knowledge_base/zh/how-to-connect-jira-to-code-review",
+                  "knowledge_base/zh/how-to-connect-linear-to-code-review",
+                  "knowledge_base/zh/can-i-use-my-own-llm-provider",
+                  "knowledge_base/zh/how-to-self-host-ai-code-review"
+                ]
+              },
+              {
+                "group": "故障排除",
+                "pages": [
+                  "knowledge_base/zh/why-is-ai-code-review-not-triggering",
+                  "knowledge_base/zh/how-to-fix-webhook-issues",
+                  "knowledge_base/zh/why-are-code-reviews-paused"
+                ]
+              },
+              {
+                "group": "LLM 提供商",
+                "pages": [
+                  "knowledge_base/zh/how-to-use-novita-with-kodus",
+                  "knowledge_base/zh/how-to-use-groq-with-kodus",
+                  "knowledge_base/zh/how-to-use-together-ai-with-kodus",
+                  "knowledge_base/zh/how-to-use-fireworks-with-kodus"
+                ]
+              }
+            ]
+          },
+          {
             "tab": "食谱",
             "icon": "fire",
             "pages": [
-              {
-                "group": "自托管 + 开源 LLM 提供商",
-                "pages": [
-                  "cookbook/zh/novita",
-                  "cookbook/zh/groq",
-                  "cookbook/zh/together",
-                  "cookbook/zh/fireworks"
-                ]
-              },
               {
                 "group": "自定义插件",
                 "pages": ["cookbook/zh/custom-plugin-install"]
@@ -405,6 +533,16 @@
               {
                 "group": "自定义上下文剧本",
                 "pages": ["cookbook/zh/guide-handbook-guardrails"]
+              },
+              {
+                "group": "实用方案",
+                "pages": [
+                  "cookbook/zh/kodus-for-monorepos",
+                  "cookbook/zh/security-first-review-pipeline",
+                  "cookbook/zh/kodus-sprint-workflow",
+                  "cookbook/zh/team-onboarding",
+                  "cookbook/zh/compliance-review-pipeline"
+                ]
               }
             ]
           }

@@ -15,13 +15,34 @@ description: "Kody Rules are customizable guidelines your team sets up to automa
   allowfullscreen
 ></iframe>
 
-## How to use Kody Rules
+## Two Types of Kody Rules
 
-You can use Kody Rules in two ways:
+Kody Rules are organized into two categories, managed through a tabbed interface in your settings:
+
+<Tabs>
+  <Tab title="Review Rules">
+    Traditional code review rules that run during the dedicated code review stage. They analyze file diffs and PR metadata to enforce coding standards.
+
+    - Applied at **File-Level** or **Pull Request-Level**
+    - Support variables, file references, and MCP functions
+    - Triggered during automated code reviews
+  </Tab>
+
+  <Tab title="Memories">
+    Persistent contextual instructions that are injected across all prompts and conversations. Memories allow Kody to learn and retain your team's coding conventions, preferences, and architectural decisions.
+
+    - Injected as **high-priority context** in code reviews, cross-file analysis, and conversations
+    - Created via **conversation with Kody** or **manually in the UI**
+    - Scoped to **directory**, **repository**, or **organization** level
+    - Support approval workflows for AI-generated memories
+  </Tab>
+</Tabs>
+
+## Review Rules
 
 ### Create Custom Rules
 
-Define rules based on your team's exact needs. Kody Rules can be applied at two different levels: **[File-Level](#file-level-rules)** and **[Pull Request-Level](#pull-request-level-rules)**. Both levels support variables, file references, and MCP functions to build powerful, context-aware rules.
+Define rules based on your team's exact needs. Review Rules can be applied at two different levels: **[File-Level](#file-level-rules)** and **[Pull Request-Level](#pull-request-level-rules)**. Both levels support variables, file references, and MCP functions to build powerful, context-aware rules.
 
 #### Variables, File References & MCP Functions
 
@@ -33,7 +54,7 @@ Variables represent the context data available during rule execution. Understand
 
 - **File-Level**:
   - `fileDiff` - The specific changes made to the individual file being analyzed
-  
+
 - **PR-Level**:
   - `pr_title` - The title of the Pull Request
   - `pr_description` - The description/body of the Pull Request
@@ -55,7 +76,7 @@ Reference files directly in your rule instructions to compare code, validate pat
 - **`@file:path/to/file.ts`** - Reference files in the same repository where you're editing the rule
   - Use when referencing templates, examples, or configuration files within your current repository
   - Example: `@file:src/services/userService.ts`
-  
+
 - **`@repo:org/project`** - Reference files in another repository or when configuring rules outside a repo context
   - Use when enforcing consistency across multiple repositories or referencing shared standards
   - Example: `@repo:team/api-standards`
@@ -227,6 +248,104 @@ Leverage proven best practices instantly:
 
 - Security: "Disallow use of insecure MD5 hashing."
 - Maintainability: "Limit React components to less than 150 lines."
+
+## Memories
+
+Memories are persistent contextual instructions that Kody learns from your team's conversations and coding practices. Unlike Review Rules that run during code review, Memories are injected across all prompts and conversations to provide continuous, high-priority context.
+
+### How Memories Work
+
+- **Injected everywhere**: Memories are included in code review analysis (cross-file, safeguards, PR-level rules) and in conversational interactions
+- **High-priority context**: Memories are treated as high-priority guidance by the AI, ensuring your team's conventions are consistently applied
+- **Intelligent deduplication**: When a new memory is created, Kody uses an LLM-based resolution mechanism to determine whether to create it, skip it (if duplicate), or update an existing memory
+
+### Creating Memories
+
+There are two ways to create memories:
+
+#### Via Conversation
+
+The most natural way to create memories is through conversation with Kody in your PR comments. Kody detects both explicit and implicit intents to save conventions:
+
+**Explicit** — directly asking Kody to remember:
+
+```
+@kody remember: API payload keys are camelCase, database columns are snake_case.
+```
+
+```
+@kody please remember: in the domain layer, entities must never have nullable properties by default.
+```
+
+**Implicit** — stating a preference or convention that Kody captures:
+
+```
+@kody in this repo we avoid Lodash and prefer native JS array methods for readability and bundle size.
+```
+
+```
+@kody for existence checks in Postgres we prefer EXISTS over COUNT(*) and over broad LEFT JOIN patterns for performance.
+```
+
+```
+@kody we're migrating from AWS SDK v2 to v3; treat any new v2 import as blocker.
+```
+
+<Info>
+  Kody will NOT create memories for transient instructions (e.g., "fix this now"), debugging chatter, questions, vague statements, or requests explicitly scoped to a single task or PR.
+</Info>
+
+When a memory is created or updated, Kody responds with a confirmation and provides a **direct link** to view the memory in the UI.
+
+#### Via the UI
+
+You can also create memories manually:
+
+1. Go to **Code Review Settings** → **Repository** → **Kody Rules**
+2. Switch to the **Memories** tab
+3. Click **Add Memory** to create a new entry
+4. Fill in the memory content and scope
+
+### Memory Scopes
+
+Each memory has a scope that determines where it applies:
+
+| Scope | Description | Example |
+|-------|-------------|---------|
+| **Directory** | Applies to files matching a glob pattern within the repository | `src/components/ui`, `src/**/*.ts` |
+| **Repository** | Applies across the entire repository | All files in the repo |
+| **Organization** | Applies across all repositories in the organization | All repos in the org |
+
+### LLM-Generated Memories Approval
+
+By default, AI-generated memories are automatically activated. You can require manual approval before they take effect:
+
+1. Go to **Code Review Settings** → **Repository** → **Kody Rules** → **Memories** tab
+2. Enable **LLM-generated memories approval**
+
+When enabled:
+- AI-generated memories enter a **pending state** and are not active until approved
+- A notification badge appears showing pending memories count
+- Click **Pending Memories** to review, approve, discard, or convert pending items
+- Both new memory creations and updates to existing memories go through the approval flow
+
+You can also set this in `kodus-config.yml`:
+
+```yaml
+llmGeneratedMemoriesRequireApproval: true
+```
+
+### Pending Memories Review
+
+The Pending Memories modal shows two categories:
+
+- **New Memories**: AI-generated memories waiting for approval
+- **Memory Updates**: Proposed changes to existing memories
+
+For each pending item, you can:
+- **Apply**: Activate the memory or apply the update
+- **Discard**: Reject the memory or update
+- **Convert to Review Rule**: Transform a memory into a standard Review Rule
 
 ## Next Steps
 
