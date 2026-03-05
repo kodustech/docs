@@ -1,0 +1,55 @@
+---
+title: "What is the difference between Review Rules and Memories"
+description: "Understand when to use Review Rules vs Memories in Kody for the best code review results."
+---
+
+Kodus has two types of Kody Rules, and knowing when to use each one makes your code reviews more effective.
+
+## Review Rules
+
+Review Rules are **traditional code review checks** that run during the dedicated code review stage. They analyze file diffs or the entire PR against your defined criteria.
+
+**Best for:**
+- Architecture boundaries ("domain layer must not import infrastructure")
+- Code patterns ("avoid `==` in loop conditions")
+- PR requirements ("every service file must have a test")
+- Structural validation using variables like `fileDiff`, `pr_files_diff`
+
+**How they work:**
+- Applied at file-level or PR-level scope
+- Run only during code review
+- Support file references (`@file`, `@repo`) and MCP functions
+- Produce suggestions with severity levels
+
+## Memories
+
+Memories are **persistent contextual instructions** injected across all interactions — code reviews, conversations, and AI suggestions. They represent your team's conventions and preferences.
+
+**Best for:**
+- Team conventions ("we use camelCase for API keys, snake_case for DB columns")
+- Technology preferences ("avoid Lodash, prefer native JS methods")
+- Migration guidance ("treat any AWS SDK v2 import as a blocker")
+- Architectural principles ("we follow hexagonal architecture strictly")
+
+**How they work:**
+- Injected as high-priority context in all prompts
+- Created via conversation (`@kody remember: ...`) or manually in the UI
+- Scoped to directory, repository, or organization level
+- Kody auto-deduplicates and resolves conflicts between memories
+
+## When to use which
+
+| Scenario | Use |
+|----------|-----|
+| Check if a test file exists for every service | Review Rule |
+| "We never use Lodash in this repo" | Memory |
+| PR description must follow a template | Review Rule |
+| "API payloads use camelCase" | Memory |
+| Flag imports that violate architecture layers | Review Rule |
+| "We're migrating from SDK v2 to v3" | Memory |
+
+## Can I convert between them?
+
+Yes. In the Pending Memories modal, you can **convert a memory into a Review Rule** if you decide it needs more structured enforcement with file paths and severity levels.
+
+For details, see [Kody Rules](/how_to_use/en/code_review/configs/kody_rules).

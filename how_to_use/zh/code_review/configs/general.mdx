@@ -34,6 +34,7 @@ reviewOptions:
   potential_issues: true
   documentation_and_comments: true
   performance_and_optimization: true
+  business_logic: true
 suggestionControl:
   groupingMode: full
   limitationType: pr
@@ -43,6 +44,7 @@ ignoredTitleKeywords: []
 automatedReviewActive: true
 pullRequestApprovalActive: false
 isRequestChangesActive: false
+llmGeneratedMemoriesRequireApproval: false
 ```
 </Accordion>
 
@@ -110,3 +112,4 @@ Kody 如何处理后续提交的审查:
 - 代码风格:一致的格式和标准
 - 文档:清晰的注释和 API 文档
 - Kody 规则:自定义规则执行
+- 业务逻辑:验证 PR 实现是否符合任务需求和验收标准
