@@ -79,7 +79,8 @@
                 "pages": [
                   "how_to_use/en/cli/overview",
                   "how_to_use/en/cli/commands",
-                  "how_to_use/en/cli/ci_cd"
+                  "how_to_use/en/cli/ci_cd",
+                  "how_to_use/en/cli/self_hosted"
                 ]
               },
               {
@@ -344,7 +345,8 @@
                 "pages": [
                   "how_to_use/zh/cli/overview",
                   "how_to_use/zh/cli/commands",
-                  "how_to_use/zh/cli/ci_cd"
+                  "how_to_use/zh/cli/ci_cd",
+                  "how_to_use/zh/cli/self_hosted"
                 ]
               },
               {
