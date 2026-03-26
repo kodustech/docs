@@ -1,0 +1,153 @@
+---
+title: "Centralized Config"
+description: "Centralize code review configuration as code, sync automatically after merges, and manage rollout through UI or CLI."
+---
+
+Centralized Config lets teams centralize all review configuration in a single repository and manage it in a code-friendly flow, without needing to log in to the web UI for every settings change.
+
+Use this when you want consistent behavior for:
+
+- review enablement
+- severity thresholds
+- base branch patterns
+- ignored paths and title rules
+
+## How It Works
+
+1. Choose a source repository for centralized settings.
+2. Enable centralized config.
+3. Initialize the first sync in one of two modes:
+
+- `pr` mode: Kodus creates an initialization PR with your current settings.
+- `manual` mode: Kodus skips PR creation so your team can download configs and open the PR yourselves.
+
+4. After setup, centralized updates are synchronized automatically every time a PR is merged.
+
+## UI Workflow
+
+From Settings > Code Review > General:
+
+1. Open Centralized Config.
+2. Enable centralized config.
+3. Select the source repository.
+4. Pick Initial Sync Method:
+   - Automatic (Create PR now)
+   - Manual (Sync later)
+5. Save and confirm status.
+
+## Web UI Behavior When Enabled
+
+When centralized config is enabled, repository settings become read-only in the web UI.
+
+The only settings users can still manage in the web UI are:
+
+- Kody Rules
+- PR Messages
+
+## Sync Modes
+
+<Tabs>
+  <Tab title="PR (default)">
+    Creates the initialization pull request automatically with your current
+    effective settings.
+  </Tab>
+  <Tab title="Manual">
+    Skips PR creation during initialization. Use download to export files, then
+    open and merge the PR yourselves.
+  </Tab>
+</Tabs>
+
+## Download Configuration Bundle
+
+You can download a ZIP bundle containing generated config files used for centralized setup and bootstrap.
+
+Use this when:
+
+- auditing generated configuration
+- sharing setup artifacts with another team
+- keeping a local backup for rollout
+
+## Disable Centralized Config
+
+Disabling centralized config clears the selected source repository and returns repositories to non-centralized behavior.
+
+Use this only when you intentionally want to stop centralized propagation.
+
+## CLI Dedicated Section
+
+Use these commands to manage centralized config from terminal workflows and CI scripts.
+
+### Requirements
+
+- Team key authentication
+- At least one selected repository in Kodus
+
+Authenticate with:
+
+```bash
+kodus auth team-key --key <your-key>
+```
+
+### Check Status
+
+```bash
+kodus config centralized status
+```
+
+### Initialize Centralized Config
+
+```bash
+kodus config centralized init [owner/repo] --sync-option <pr|manual>
+```
+
+Notes:
+
+- `--sync-option` defaults to `pr`.
+- If repository is omitted in an interactive terminal, CLI prompts selection.
+- In non-interactive environments, repository must be provided.
+
+Examples:
+
+```bash
+kodus config centralized init kodustech/platform-config --sync-option pr
+kodus config centralized init kodustech/platform-config --sync-option manual
+```
+
+### Run Sync
+
+```bash
+kodus config centralized sync
+```
+
+### Disable Centralized Config
+
+```bash
+kodus config centralized disable
+```
+
+### Download Config ZIP
+
+```bash
+kodus config centralized download --out ./centralized-config.zip
+```
+
+Notes:
+
+- `--out` is required.
+- Output is a ZIP bundle containing generated config files.
+
+### JSON Output
+
+All centralized commands support structured output with `--json`.
+
+```bash
+kodus config centralized status --json
+kodus config centralized init kodustech/platform-config --sync-option pr --json
+kodus config centralized sync --json
+kodus config centralized disable --json
+kodus config centralized download --out ./centralized-config.zip --json
+```
+
+## Related Docs
+
+- CLI command reference: [/how_to_use/en/cli/commands](/how_to_use/en/cli/commands)

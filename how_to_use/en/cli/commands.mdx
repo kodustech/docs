@@ -7,12 +7,12 @@ description: "Complete reference for all Kodus CLI commands, flags, and options.
 
 These flags are available on all commands:
 
-| Flag | Short | Default | Description |
-|------|-------|---------|-------------|
-| `--format <fmt>` | `-f` | `terminal` | Output format: `terminal`, `json`, `markdown` |
-| `--output <file>` | `-o` | — | Save output to a file |
-| `--verbose` | `-v` | `false` | Verbose output |
-| `--quiet` | `-q` | `false` | Quiet mode (errors only) |
+| Flag              | Short | Default    | Description                                   |
+| ----------------- | ----- | ---------- | --------------------------------------------- |
+| `--format <fmt>`  | `-f`  | `terminal` | Output format: `terminal`, `json`, `markdown` |
+| `--output <file>` | `-o`  | —          | Save output to a file                         |
+| `--verbose`       | `-v`  | `false`    | Verbose output                                |
+| `--quiet`         | `-q`  | `false`    | Quiet mode (errors only)                      |
 
 ---
 
@@ -34,18 +34,18 @@ kodus review --prompt-only            # Output optimized for AI agents
 
 ### Flags
 
-| Flag | Short | Description |
-|------|-------|-------------|
-| `--staged` | `-s` | Analyze only staged files |
-| `--commit <sha>` | `-c` | Analyze diff from a specific commit |
-| `--branch <name>` | `-b` | Compare current branch against specified branch |
-| `--rules-only` | — | Review using only configured rules (no general suggestions) |
-| `--fast` | — | Fast mode: quicker analysis with lighter checks |
-| `--interactive` | `-i` | Interactive mode: navigate and apply fixes |
-| `--fix` | — | Automatically apply all fixable issues |
-| `--prompt-only` | — | Output optimized for AI agents |
-| `--fail-on <severity>` | — | Exit with code 1 if issues meet or exceed severity |
-| `--context <file>` | — | Custom context file to include in review |
+| Flag                   | Short | Description                                                 |
+| ---------------------- | ----- | ----------------------------------------------------------- |
+| `--staged`             | `-s`  | Analyze only staged files                                   |
+| `--commit <sha>`       | `-c`  | Analyze diff from a specific commit                         |
+| `--branch <name>`      | `-b`  | Compare current branch against specified branch             |
+| `--rules-only`         | —     | Review using only configured rules (no general suggestions) |
+| `--fast`               | —     | Fast mode: quicker analysis with lighter checks             |
+| `--interactive`        | `-i`  | Interactive mode: navigate and apply fixes                  |
+| `--fix`                | —     | Automatically apply all fixable issues                      |
+| `--prompt-only`        | —     | Output optimized for AI agents                              |
+| `--fail-on <severity>` | —     | Exit with code 1 if issues meet or exceed severity          |
+| `--context <file>`     | —     | Custom context file to include in review                    |
 
 ### Review Modes
 
@@ -56,6 +56,7 @@ kodus review --prompt-only            # Output optimized for AI agents
     ```bash
     kodus review
     ```
+
   </Tab>
   <Tab title="Auto-fix">
     Applies all fixable issues at once with a confirmation prompt.
@@ -63,6 +64,7 @@ kodus review --prompt-only            # Output optimized for AI agents
     ```bash
     kodus review --fix
     ```
+
   </Tab>
   <Tab title="AI Agent">
     Minimal, structured output designed for Claude Code, Cursor, or Windsurf. Enables autonomous review-fix loops.
@@ -70,6 +72,7 @@ kodus review --prompt-only            # Output optimized for AI agents
     ```bash
     kodus review --prompt-only
     ```
+
   </Tab>
 </Tabs>
 
@@ -90,13 +93,13 @@ kodus pr suggestions --pr-number 42 --repo-id <id> --format json
 
 ### Flags
 
-| Flag | Description |
-|------|-------------|
-| `--pr-url <url>` | Pull request URL |
+| Flag                   | Description                                |
+| ---------------------- | ------------------------------------------ |
+| `--pr-url <url>`       | Pull request URL                           |
 | `--pr-number <number>` | Pull request number (requires `--repo-id`) |
-| `--repo-id <id>` | Repository ID for the pull request |
-| `--severity <list>` | Comma-separated severities to include |
-| `--category <list>` | Comma-separated categories to include |
+| `--repo-id <id>`       | Repository ID for the pull request         |
+| `--severity <list>`    | Comma-separated severities to include      |
+| `--category <list>`    | Comma-separated categories to include      |
 
 ---
 
@@ -111,10 +114,10 @@ kodus auth login                              # Interactive login
 kodus auth login -e user@mail.com -p password # Non-interactive
 ```
 
-| Flag | Short | Description |
-|------|-------|-------------|
-| `--email <email>` | `-e` | Account email |
-| `--password <password>` | `-p` | Account password |
+| Flag                    | Short | Description      |
+| ----------------------- | ----- | ---------------- |
+| `--email <email>`       | `-e`  | Account email    |
+| `--password <password>` | `-p`  | Account password |
 
 ### `auth logout`
 
@@ -171,11 +174,11 @@ kodus hook install --no-fast          # Disable fast mode
 kodus hook install --force            # Overwrite existing hook
 ```
 
-| Flag | Default | Description |
-|------|---------|-------------|
-| `--fail-on <severity>` | `critical` | Minimum severity to block push |
-| `--fast` / `--no-fast` | `true` | Enable/disable fast mode |
-| `--force` | — | Overwrite existing hook without prompting |
+| Flag                   | Default    | Description                               |
+| ---------------------- | ---------- | ----------------------------------------- |
+| `--fail-on <severity>` | `critical` | Minimum severity to block push            |
+| `--fast` / `--no-fast` | `true`     | Enable/disable fast mode                  |
+| `--force`              | —          | Overwrite existing hook without prompting |
 
 ### `hook uninstall`
 
@@ -214,11 +217,11 @@ kodus decisions enable --agents codex --codex-config ~/.codex/config.toml
 kodus decisions enable --force                           # Overwrite existing config
 ```
 
-| Flag | Default | Description |
-|------|---------|-------------|
-| `--agents <agents>` | `claude,cursor,codex` | Comma-separated agent list |
-| `--codex-config <path>` | `~/.codex/config.toml` | Path to Codex config |
-| `--force` | — | Overwrite existing `modules.yml` |
+| Flag                    | Default                | Description                      |
+| ----------------------- | ---------------------- | -------------------------------- |
+| `--agents <agents>`     | `claude,cursor,codex`  | Comma-separated agent list       |
+| `--codex-config <path>` | `~/.codex/config.toml` | Path to Codex config             |
+| `--force`               | —                      | Overwrite existing `modules.yml` |
 
 ### `decisions disable`
 
@@ -252,12 +255,48 @@ kodus decisions promote --branch feat/auth                # Specific branch
 kodus decisions promote --branch feat/auth --modules auth,users
 ```
 
-| Flag | Description |
-|------|-------------|
-| `--branch <name>` | Branch name (default: current branch) |
+| Flag              | Description                                       |
+| ----------------- | ------------------------------------------------- |
+| `--branch <name>` | Branch name (default: current branch)             |
 | `--modules <ids>` | Comma-separated module IDs (default: all matched) |
 
 Promotes PR-level decisions to long-term module memory.
+
+---
+
+## `kodus config centralized`
+
+Manage centralized configuration from the CLI.
+
+### Usage
+
+```bash
+kodus config centralized status
+kodus config centralized init [owner/repo] --sync-option <pr|manual>
+kodus config centralized sync
+kodus config centralized disable
+kodus config centralized download --out ./centralized-config.zip
+```
+
+### Subcommands
+
+| Subcommand              | Description                                                                   |
+| ----------------------- | ----------------------------------------------------------------------------- |
+| `status`                | Show whether centralized config is enabled and the selected source repository |
+| `init [repository]`     | Enable centralized config for a selected repository                           |
+| `sync`                  | Run centralized config sync on demand                                         |
+| `disable`               | Disable centralized config and clear selected repository                      |
+| `download --out <path>` | Download centralized config ZIP bundle                                        |
+
+### Flags
+
+| Flag                           | Applies To                  | Description                       |
+| ------------------------------ | --------------------------- | --------------------------------- |
+| `--sync-option <pr \| manual>` | `init`                      | Sync strategy. Default is `pr`    |
+| `--out <path>`                 | `download`                  | Required output path for ZIP file |
+| `--json`                       | all centralized subcommands | Output structured JSON            |
+
+For a complete walkthrough, see: [/how_to_use/en/code_review/configs/centralized_config#cli-dedicated-section](/how_to_use/en/code_review/configs/centralized_config#cli-dedicated-section)
 
 ---
 
@@ -275,22 +314,22 @@ kodus upgrade
 
 Issues are categorized by severity, from most to least critical:
 
-| Level | Description |
-|-------|-------------|
+| Level      | Description                                                      |
+| ---------- | ---------------------------------------------------------------- |
 | `critical` | Major security or stability issues requiring immediate attention |
-| `error` | Significant bugs or problems |
-| `warning` | Potential issues worth addressing |
-| `info` | Suggestions and best practices |
+| `error`    | Significant bugs or problems                                     |
+| `warning`  | Potential issues worth addressing                                |
+| `info`     | Suggestions and best practices                                   |
 
 ## Issue Categories
 
-| Category | Description |
-|----------|-------------|
-| `security_vulnerability` | Security-related issues |
-| `bug` | Potential bugs |
-| `performance` | Performance optimization opportunities |
-| `code_quality` | Code quality improvements |
-| `best_practices` | Best practice violations |
-| `complexity` | Code complexity issues |
-| `maintainability` | Maintainability concerns |
-| `style` | Code style issues |
+| Category                 | Description                            |
+| ------------------------ | -------------------------------------- |
+| `security_vulnerability` | Security-related issues                |
+| `bug`                    | Potential bugs                         |
+| `performance`            | Performance optimization opportunities |
+| `code_quality`           | Code quality improvements              |
+| `best_practices`         | Best practice violations               |
+| `complexity`             | Code complexity issues                 |
+| `maintainability`        | Maintainability concerns               |
+| `style`                  | Code style issues                      |
