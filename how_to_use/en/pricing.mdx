@@ -62,19 +62,39 @@ Our pricing is per developer who actively creates pull requests in your team. Th
 - **Pay per active developer:** only developers who contribute PRs count toward your seat.
 - **Adjustable at any time:** change the number of active developers through your account settings. No minimums, no annual lock-in on seat count.
 
+## BYOK is the default across all plans
+
+Kodus does **not** sell LLM tokens by default. Community, Teams, and Enterprise all run on **Bring Your Own Key** (BYOK): you connect your own provider account — OpenAI, Anthropic, Gemini, or any OpenAI-compatible provider — and tokens are billed directly by that provider on their dashboard. Kodus never marks up tokens.
+
+The price difference between plans is **what Kodus charges on top of your token spend**, not the token model itself:
+
+| Plan | What you pay Kodus | How tokens are billed |
+| ---- | ------------------ | --------------------- |
+| **Community** | $0 | You pay your LLM provider directly (BYOK) |
+| **Teams** | $10/active dev/month | You pay your LLM provider directly (BYOK) |
+| **Enterprise** | Custom (contract) | BYOK, **or** let Kodus manage tokens via **Kodus AI Tokens API key** and receive a single invoice |
+
+See the [BYOK overview](/how_to_use/en/byok) for the supported providers and setup flow. Everything below is about the **Kodus-side fee**.
+
 ## Teams Pricing
 
-The Teams plan uses BYOK pricing.
+### $10 per active developer per month
 
-### BYOK — $10/dev/month + token costs
+The Teams subscription is **$10 per active developer per month**, in addition to whatever you pay your LLM provider for tokens. No Kodus markup on tokens.
 
-Bring Your Own Key (BYOK) gives you maximum flexibility and control:
+What the $10/dev/month covers:
 
-- **You manage your own API keys** from any supported LLM provider (OpenAI, Anthropic, Gemini, and OpenAI-compatible providers).
-- **Choose the best model** — whether that's the most advanced or the most cost-effective.
-- **Full transparency** — you see exactly what you're spending on tokens, directly on your provider's dashboard. Kodus doesn't mark up tokens.
-- **No Kodus-side token limits** — you use as much as your provider's limits allow.
-- **Ideal for teams that want to optimize cost** or use cutting-edge models as they ship.
+- **Cloud hosting** — fully managed by Kodus, with automatic updates and maintenance.
+- **Priority queue for Kody Agents** — Teams traffic is reviewed before free-tier traffic.
+- **Kodus Cockpit** — engineering metrics and reporting.
+- **Unlimited Kody Rules and plugins/MCPs** (no 10-rule / 3-plugin caps).
+- **Email + Discord support**.
+
+What the token cost covers:
+
+- Every API call Kodus makes to your chosen LLM provider during a review.
+- Billed directly by the provider; you can switch providers at any time.
+- You choose the model — cost-effective (e.g. Gemini Flash, GPT-5-mini) or frontier (Claude 4.5 Sonnet, GPT-5).
 
 ### Billing cadence
 
@@ -85,12 +105,12 @@ Bring Your Own Key (BYOK) gives you maximum flexibility and control:
 
 ## Enterprise Pricing
 
-Enterprise is custom-priced and signed via contract. You can pick either token model:
+Enterprise is custom-priced and signed via contract. You pick the token model that fits your ops:
 
-- **BYOK** — you bring your own LLM keys, same as Teams. Kodus bills only the per-seat fee.
-- **Kodus AI Tokens API key** — Kodus supplies a managed API key and bills tokens along with the seat fee. Good for teams that want a single vendor and a single invoice.
+- **BYOK** — same as Community and Teams, you bring your own LLM keys. Kodus bills only the per-seat fee.
+- **Kodus AI Tokens API key** — Kodus supplies a managed API key and bills tokens along with the seat fee. Good for teams that want a single vendor, a single invoice, and no direct relationship with the LLM provider.
 
-Other Enterprise-only features include SSO / SAML, RBAC with audit logs and analytics, dedicated instance option, custom SLAs, up to 5 hours/month of dedicated support, and a private Discord channel. SOC 2 compliance is in progress.
+Enterprise-only features include SSO / SAML, RBAC with audit logs and analytics, dedicated instance option, custom SLAs, up to **5 hours/month** of dedicated support, and a private Discord channel. SOC 2 compliance is in progress.
 
 [Contact sales](https://kodus.io/pricing) for a quote tailored to your organization.
 
