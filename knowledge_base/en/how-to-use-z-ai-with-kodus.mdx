@@ -1,0 +1,152 @@
+---
+title: "Z.AI (GLM Coding Plan) - Subscription-Based Inference"
+description: "Learn how to connect Z.AI's GLM models — including the GLM Coding Plan subscription — to Kodus."
+icon: "bolt"
+---
+
+## How Z.AI works
+
+Z.AI (developed by Zhipu AI) serves the GLM family of models. It's one of the few major providers offering a **flat-rate subscription** for API access: the **GLM Coding Plan** bundles model usage at a fixed monthly price, with rate limits applied over 5-hour and weekly windows instead of per-token billing.
+
+For higher-volume or variable workloads, Z.AI also offers pay-per-token access to the same models on its standard API.
+
+Both paths expose OpenAI-compatible and Anthropic-compatible endpoints, so Kodus can talk to them without any adapter changes.
+
+## Plans at a glance
+
+<Info>
+  Pricing and quotas change regularly. Always confirm current numbers at [z.ai/subscribe](https://z.ai/subscribe) and [docs.z.ai](https://docs.z.ai/devpack/overview) before choosing a tier.
+</Info>
+
+### GLM Coding Plan (subscription)
+
+| Tier | Price (monthly equivalent) | Approximate API-value equivalent |
+| ---- | -------------------------- | -------------------------------- |
+| **Lite** | ~$18/mo (billed quarterly) | ~15× the monthly fee |
+| **Pro**  | ~$30/mo (billed quarterly) | ~20× the monthly fee |
+| **Max**  | ~$80/mo (billed quarterly) | ~30× the monthly fee |
+
+- Quotas reset on a rolling **5-hour** window and a **weekly** window — this is the ceiling to plan around, not a monthly cap.
+- Coverage includes GLM-5.1, GLM-5-Turbo, GLM-5, GLM-4.5, and GLM-4.5-Air.
+- Dedicated endpoint: `https://api.z.ai/api/coding/paas/v4` (OpenAI-compatible) or `https://api.z.ai/api/anthropic` (Anthropic-compatible).
+
+### Pay-per-token API
+
+| Model | Pricing (1M input / output tokens) | Context Window |
+| ----- | ---------------------------------- | -------------- |
+| **GLM-5.1** `recommended` | $0.95 / $3.15 | ~200k tokens |
+| **GLM-5**      | $0.72 / $2.30 | ~131k tokens |
+| **GLM-4.5**    | $0.60 / $2.20 | ~128k tokens |
+| **GLM-4.5-Air** | lower tier, optimized for routing | ~128k tokens |
+
+Standard endpoint: `https://api.z.ai/api/paas/v4` (OpenAI-compatible).
+
+## Creating an API Key
+
+<Warning>A Z.AI account is required to create an API key.</Warning>
+
+1. Go to [z.ai](https://z.ai) and create an account (or sign in).
+2. If you want the subscription, purchase a **GLM Coding Plan** tier at [z.ai/subscribe](https://z.ai/subscribe). Without this, your key bills pay-per-token.
+3. Open the **API Keys** section in the console.
+4. Click **Create API Key**, give it a descriptive name (e.g. `kodus-prod`), and copy the key — you will not be able to see it again.
+
+<Note>
+  The same API key works against both the Coding Plan endpoint and the pay-per-token endpoint. Kodus will bill against whichever endpoint URL you configure.
+</Note>
+
+## Configure Z.AI in Kodus
+
+The primary flow is BYOK on Kodus Cloud — you paste the Z.AI key into the web UI and you're done. Self-hosted users who prefer fixing the provider at the process level can use environment variables instead.
+
+### Option 1 — BYOK on Kodus Cloud (recommended)
+
+1. In the Kodus web UI, open **Settings → BYOK** and click **Edit** on the **Main** model (or **Fallback**, if you want Z.AI as a backup only).
+2. Toggle the form into **Custom** mode so you can enter a base URL and a free-text model name.
+3. Fill the fields:
+
+   | Field | Value |
+   | --- | --- |
+   | **Provider** | `OpenAI Compatible` |
+   | **API Key** | your Z.AI API key |
+   | **Base URL** | `https://api.z.ai/api/coding/paas/v4` — for GLM Coding Plan subscribers<br />`https://api.z.ai/api/paas/v4` — for pay-per-token accounts |
+   | **Model** | `glm-5.1` (recommended) — or `glm-5`, `glm-5-turbo`, `glm-4.5`, `glm-4.5-air` |
+   | **Max Concurrent Requests** | start at `3–5` on Coding Plan, higher on pay-per-token |
+   | **Max Output Tokens** | leave default unless you hit truncation |
+
+4. Save. Kodus validates the key against the endpoint and surfaces any 401 / 404 immediately.
+5. Open any PR to trigger a review and confirm Z.AI is now serving responses — the BYOK status badge in Settings turns green on the first successful call.
+
+<Tip>
+  On the **Coding Plan**, the 5-hour / weekly quota is the main constraint. Keep `Max Concurrent Requests` low enough that a single large PR doesn't blow the window — 3 is a safe starting point, then raise until you see 429s.
+</Tip>
+
+<Note>
+  You can configure Z.AI as your **Main** model and keep an OpenAI or Anthropic key as **Fallback** so that reviews keep running when your Coding Plan window is exhausted. Kodus fails over automatically.
+</Note>
+
+### Option 2 — Self-hosted (environment variables)
+
+If you run Kodus in Fixed Mode (single global provider, no per-org BYOK), configure Z.AI in the `.env` of your API + worker containers:
+
+```env
+# Z.AI configuration (Fixed Mode)
+API_LLM_PROVIDER_MODEL="glm-5.1"                                  # any GLM model you have access to
+API_OPENAI_FORCE_BASE_URL="https://api.z.ai/api/coding/paas/v4"   # use /api/paas/v4 for pay-per-token
+API_OPEN_AI_API_KEY="your-z-ai-api-key"
+```
+
+<Note>
+  This path is only needed for self-hosted Kodus installs that deliberately disable BYOK. If BYOK is enabled on your self-hosted instance, prefer **Option 1** — the UI-based flow is the same as on Cloud.
+</Note>
+
+Restart the API and worker containers after editing `.env`, then verify the integration:
+
+```bash
+docker-compose logs api worker | grep -iE "z\.ai|glm"
+```
+
+For the full self-hosted setup (domains, security keys, database, webhooks, reverse proxy), follow the [generic VM deployment guide](https://docs.kodus.io/docs/how_to_deploy/en/deploy_kodus/generic_vm) and only swap the LLM block for the one above.
+
+## Choosing between the Coding Plan and pay-per-token
+
+- Pick the **Coding Plan** when you have a predictable team of reviewers and want a flat monthly cost. The 5-hour and weekly quotas translate to roughly 15–30× the subscription fee in equivalent API spend.
+- Pick **pay-per-token** when your traffic is bursty, when you need occasional access to the largest context windows, or when you want cost to scale linearly with PR volume.
+- You can switch endpoints at any time by changing `API_OPENAI_FORCE_BASE_URL` (self-hosted) or the BYOK base URL (cloud) — the API key is the same.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Quota exhausted on the Coding Plan">
+    - Quotas are enforced on a **5-hour rolling window** and a **weekly window**. Hitting one of them returns HTTP 429.
+    - Check remaining quota in the Z.AI console.
+    - Either wait for the next window to reset, upgrade to a higher tier, or temporarily switch the base URL to `https://api.z.ai/api/paas/v4` to use pay-per-token credits for the spike.
+  </Accordion>
+
+  <Accordion title="401 / authentication errors">
+    - Confirm the key is active in the [Z.AI console](https://z.ai).
+    - Make sure there are no trailing spaces or quotes in the `.env` value.
+    - Keys are global across Z.AI endpoints — the same key works for both Coding Plan and pay-per-token.
+  </Accordion>
+
+  <Accordion title="Model not found">
+    - Verify the model name matches one listed in the Z.AI model catalog (e.g. `glm-5.1`, `glm-5-turbo`, `glm-4.5`).
+    - The Coding Plan currently covers only the GLM family — non-GLM model names will be rejected.
+  </Accordion>
+
+  <Accordion title="Connection errors">
+    - Confirm your server can reach `api.z.ai`.
+    - Check the API and worker logs for the exact upstream error.
+    - If you are in a region with restricted outbound traffic, route requests through a reverse proxy your infra allows.
+  </Accordion>
+
+  <Accordion title="Rate limiting on pay-per-token">
+    - The standard API enforces per-account rate limits separate from the Coding Plan quotas.
+    - Lower concurrency by capping `maxConcurrentRequests` on the BYOK config, or spread large code reviews across more time.
+  </Accordion>
+</AccordionGroup>
+
+## Related
+
+- [GLM Coding Plan (pricing)](https://z.ai/subscribe)
+- [Z.AI developer documentation](https://docs.z.ai/devpack/overview)
+- [BYOK overview](/how_to_use/en/byok)
