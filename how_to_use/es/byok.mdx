@@ -1,0 +1,294 @@
+---
+title: "BYOK - Trae Tu Propia Clave"
+description: "Configura tus propias claves de API para máxima flexibilidad y control de costos. Disponible en todos los planes de Kodus."
+---
+
+BYOK (Bring Your Own Key) es la **forma predeterminada en que Kodus usa LLMs en todos los planes** — Community, Teams y Enterprise. Conectas tu propia cuenta de proveedor, eliges cualquier modelo, pagas solo por lo que usas y monitoreas los costos directamente en el panel de tu proveedor. Kodus nunca aplica márgenes sobre los tokens.
+
+<Card
+  title="Cómo se relaciona con los planes"
+  icon="scale-balanced"
+  href="/how_to_use/es/pricing#byok-is-the-default-across-all-plans"
+>
+  BYOK es gratuito en Community, incluido en Teams ($10/desarrollador activo/mes sobre el gasto en tokens), y una de dos opciones en Enterprise (la otra es una clave de API administrada por Kodus).
+</Card>
+
+## Primeros Pasos
+
+<Steps>
+  <Step title="Acceder a la Configuración de BYOK">
+    Navega a la configuración de tu organización en [app.kodus.io/organization/byok](https://app.kodus.io/organization/byok)
+  </Step>
+  
+  <Step title="Configurar el Modelo Principal">
+    Selecciona tu proveedor principal (OpenAI, Google Gemini, Anthropic, etc.) e ingresa tu clave de API con tu modelo preferido
+  </Step>
+  
+  <Step title="Configurar el Modelo de Respaldo (Recomendado)">
+    Configura un modelo secundario como respaldo. Si tu modelo principal tiene problemas o deja de estar disponible, las revisiones cambian automáticamente al modelo de respaldo
+  </Step>
+  
+  <Step title="Probar la Configuración">
+    Kodus validará tanto las claves de API como las selecciones de modelos antes de guardar
+  </Step>
+</Steps>
+
+<Info>
+  **Importante:** Siempre configura un modelo de respaldo para garantizar revisiones de código continuas incluso si tu proveedor principal experimenta interrupciones o límites de velocidad.
+</Info>
+
+<Warning>
+  Mantén tus claves de API seguras y nunca las compartas. Usa claves separadas para Kodus para rastrear mejor el uso y los costos.
+</Warning>
+
+## Proveedores Compatibles
+
+<Tabs>
+  <Tab title="OpenAI">
+    **Ideal para:** Los últimos modelos GPT y rendimiento confiable
+    
+    **Cómo obtener la clave de API:**
+    1. Visita [OpenAI API Keys](https://platform.openai.com/api-keys)
+    2. Crea una nueva clave de API para Kodus
+    3. Agrega información de facturación a tu cuenta de OpenAI
+    
+    
+    <Info>
+      OpenAI ofrece el servicio más confiable con excelente variedad de modelos. Comienza con GPT-5-mini para la mejor relación calidad-precio.
+    </Info>
+  </Tab>
+
+  <Tab title="Google Gemini">
+    **Ideal para:** Precios competitivos con sólidas capacidades de razonamiento
+    
+    **Cómo obtener la clave de API:**
+    1. Ve a [Google AI Studio](https://aistudio.google.com/app/apikey)
+    2. Crea una nueva clave de API
+    3. Habilita la facturación en Google Cloud Console
+    
+    <Info>
+      Google Gemini ofrece excelente valor con precios competitivos y sólido rendimiento en tareas de análisis de código.
+    </Info>
+  </Tab>
+
+  <Tab title="Anthropic Claude">
+    **Ideal para:** Análisis detallado y seguimiento de instrucciones complejas
+    
+    **Cómo obtener la clave de API:**
+    1. Visita [Anthropic Console](https://console.anthropic.com/)
+    2. Crea una cuenta y genera una clave de API
+    3. Agrega créditos a tu cuenta
+    
+    <Info>
+      Claude destaca en la comprensión del contexto y en proporcionar revisiones de código detalladas y reflexivas con excelente seguimiento de instrucciones.
+    </Info>
+  </Tab>
+
+  <Tab title="Novita AI">
+    **Ideal para:** Acceso a los últimos modelos de código abierto a precios competitivos
+    
+    **Cómo obtener la clave de API:**
+    1. Regístrate en [Novita AI](https://novita.ai/)
+    2. Navega a la configuración de API
+    3. Genera tu clave de API
+    
+    <Card
+      title="Guía de Configuración de Novita"
+      icon="rocket"
+      href="/cookbook/es/novita"
+    >
+      Instrucciones detalladas de configuración con capturas de pantalla para la configuración de Novita AI.
+    </Card>
+  </Tab>
+
+  <Tab title="OpenRouter">
+    **Ideal para:** Acceso a múltiples modelos a través de una sola API con precios transparentes
+    
+    **Cómo obtener la clave de API:**
+    1. Crea una cuenta en [OpenRouter](https://openrouter.ai/)
+    2. Agrega créditos a tu cuenta
+    3. Genera la clave de API en la configuración
+    
+    
+    <Info>
+      OpenRouter proporciona acceso a modelos de múltiples proveedores con precios transparentes y sin costos ocultos.
+    </Info>
+  </Tab>
+
+  <Tab title="Proveedores Personalizados">
+    **Ideal para:** Usar proveedores especializados como Fireworks, Together AI, Groq o tus propios endpoints
+    
+    **Cómo configurar:**
+    1. Selecciona "Custom OpenAI-Compatible" en la configuración de Kodus
+    2. Ingresa la URL base de tu proveedor (p. ej., `https://api.fireworks.ai/inference/v1`)
+    3. Agrega tu clave de API del proveedor
+    4. Especifica el nombre del modelo según lo requiera tu proveedor
+    
+    **Proveedores personalizados populares:**
+    - **Fireworks AI:** Inferencia rápida con modelos de código abierto
+    - **Together AI:** Precios competitivos para modelos de código abierto  
+    - **Groq:** Velocidades de inferencia ultrarrápidas
+    - **Deepseek:** Modelos especializados en programación
+
+    
+    <CardGroup cols={2}>
+      <Card title="Guía de Fireworks AI" href="/cookbook/es/fireworks" icon="fire">
+        Guía de configuración para la integración con Fireworks AI
+      </Card>
+      <Card title="Guía de Together AI" href="/cookbook/es/together" icon="handshake">
+        Configura Together AI para revisiones de código
+      </Card>
+    </CardGroup>
+  </Tab>
+</Tabs>
+
+## Modelos Recomendados y Probados
+
+Estos son los modelos que hemos probado extensamente y recomendamos para la revisión de código con Kodus:
+
+<CardGroup cols={2}>
+  <Card title="Gemini 2.5 Pro" icon="crown">
+    **El Más Probado y Recomendado**
+    
+    El último modelo de Google con comprensión de código excepcional, ventana de contexto de 1M+ tokens y la mejor relación calidad-precio.
+    
+    - **Proveedor:** Google
+    - **Ideal para:** Excelencia integral
+  </Card>
+  
+  <Card title="Gemini 2.5 Flash" icon="bolt">
+    **Mejor Valor**
+    
+    Ultrarrápido y económico sin comprometer la calidad. Perfecto para equipos de alto volumen.
+    
+    - **Proveedor:** Google
+    - **Ideal para:** Equipos con presupuesto ajustado
+  </Card>
+  
+  <Card title="Claude 4.5 Sonnet" icon="code">
+    **El Mejor para Código**
+    
+    Capacidades de programación excepcionales con un 77.2% de rendimiento en SWE-Bench. Sobresaliente para comprender bases de código complejas.
+    
+    - **Proveedor:** Anthropic
+    - **Ideal para:** Enfoque en calidad de código
+  </Card>
+  
+  <Card title="Claude 4.1 Opus" icon="star">
+    **Calidad Premium**
+    
+    Modelo de primer nivel para las revisiones de código más exigentes y el análisis arquitectónico complejo.
+    
+    - **Proveedor:** Anthropic
+    - **Ideal para:** Proyectos empresariales
+  </Card>
+  
+  <Card title="GPT-5" icon="sparkles">
+    **Última Innovación**
+    
+    El modelo más reciente de OpenAI con capacidades de vanguardia y precios competitivos.
+    
+    - **Proveedor:** OpenAI
+    - **Ideal para:** Últimas funciones
+  </Card>
+  
+  <Card title="GPT-5-mini" icon="piggy-bank">
+    **Rápido y Confiable**
+    
+    Excelente equilibrio entre velocidad, costo y calidad de OpenAI.
+    
+    - **Proveedor:** OpenAI
+    - **Ideal para:** Confiabilidad con presupuesto ajustado
+  </Card>
+</CardGroup>
+
+<Info>
+  **Nuestra recomendación:** Comienza con **Gemini 2.5 Pro** para la mejor experiencia general. Es nuestro modelo más probado y ofrece excelente calidad a un gran precio.
+</Info>
+
+## Mejores Prácticas
+
+### Seguridad
+
+<CardGroup cols={2}>
+  <Card title="Claves Dedicadas" icon="shield-check">
+    Crea claves de API separadas específicamente para Kodus para rastrear mejor el uso y mejorar la seguridad
+  </Card>
+  <Card title="Rotación Regular" icon="arrows-rotate">
+    Rota tus claves de API periódicamente y actualízalas en la configuración de Kodus
+  </Card>
+  <Card title="Monitorear el Uso" icon="chart-bar">
+    Revisa regularmente tus paneles de proveedores para detectar patrones de uso inusuales
+  </Card>
+  <Card title="Almacenamiento Seguro" icon="lock">
+    Nunca compartas ni confirmes claves de API en repositorios de código
+  </Card>
+</CardGroup>
+
+## Solución de Problemas
+
+<AccordionGroup>
+  <Accordion title="Error de Clave de API Inválida">
+    **Soluciones:**
+    - Verifica que la clave de API esté copiada correctamente sin espacios adicionales
+    - Comprueba que la facturación esté habilitada en la cuenta de tu proveedor
+    - Asegúrate de que la clave de API tenga los permisos necesarios
+    - Intenta generar una nueva clave de API si el problema persiste
+  </Accordion>
+
+  <Accordion title="Error de Modelo No Encontrado">
+    **Soluciones:**
+    - Verifica que el nombre del modelo coincida exactamente con el formato de tu proveedor
+    - Comprueba si el modelo está disponible en tu región
+    - Asegúrate de que tu cuenta tenga acceso al modelo especificado
+    - Intenta con un modelo diferente para verificar si el problema es específico del modelo
+  </Accordion>
+
+  <Accordion title="Problemas de Límite de Velocidad">
+    **Soluciones:**
+    - Comprueba los límites de velocidad de tu proveedor y actualiza si es necesario
+    - Considera cambiar a un proveedor con límites de velocidad más altos
+    - Contacta al soporte de tu proveedor para aumentar los límites
+    - Distribuye el uso entre varias claves de API si está permitido
+  </Accordion>
+
+  <Accordion title="Problemas de Conexión con URL Personalizada">
+    **Soluciones:**
+    - Verifica que el formato de la URL base incluya el protocolo (https://)
+    - Comprueba que el endpoint sea compatible con la API de OpenAI
+    - Prueba la URL directamente con una herramienta como curl o Postman
+    - Asegúrate de que no haya restricciones de firewall que bloqueen la conexión
+  </Accordion>
+
+  <Accordion title="Costos Inesperadamente Altos">
+    **Soluciones:**
+    - Revisa tu uso en el panel del proveedor
+    - Verifica si tienes límites de velocidad configurados correctamente
+    - Considera cambiar a un modelo más económico
+    - Configura alertas de facturación para detectar picos a tiempo
+  </Accordion>
+</AccordionGroup>
+
+## Preguntas Frecuentes
+
+<AccordionGroup>
+  <Accordion title="¿Puedo cambiar de proveedor en cualquier momento?">
+    Sí. Los cambios surten efecto de inmediato para las nuevas revisiones.
+  </Accordion>
+
+  <Accordion title="¿Qué sucede si mi clave de API se queda sin créditos?">
+    Las revisiones cambian automáticamente al modelo de respaldo (si está configurado). Sin un respaldo, las revisiones fallan hasta que agregues créditos. Siempre configura un modelo de respaldo.
+  </Accordion>
+  
+  <Accordion title="¿Cómo funciona el sistema principal/respaldo?">
+    El modelo principal gestiona todas las revisiones de forma predeterminada. Si falla (límites de velocidad, interrupciones, errores), Kodus cambia automáticamente al respaldo. Solo pagas por el modelo que procesa cada revisión.
+  </Accordion>
+  
+  <Accordion title="¿Debo usar el mismo proveedor para el modelo principal y el de respaldo?">
+    No. Usa proveedores diferentes (p. ej., Google como principal, OpenAI como respaldo) para protegerte contra interrupciones específicas de un proveedor.
+  </Accordion>
+
+  <Accordion title="¿Almacenan nuestras claves de API de forma segura?">
+    Sí. Las claves se cifran en reposo y en tránsito. Nunca las registramos ni almacenamos en texto plano.
+  </Accordion>
+</AccordionGroup>

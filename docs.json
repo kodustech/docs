@@ -303,6 +303,290 @@
                 ]
             },
             {
+                "language": "es",
+                "tabs": [
+                    {
+                        "tab": "Cómo usar",
+                        "icon": "gamepad-modern",
+                        "groups": [
+                            {
+                                "group": "Comenzando",
+                                "pages": [
+                                    "how_to_use/es/overview",
+                                    "how_to_use/es/quickstart"
+                                ]
+                            },
+                            {
+                                "group": "Facturación y Licencias",
+                                "pages": [
+                                    "how_to_use/es/pricing",
+                                    "how_to_use/es/byok"
+                                ]
+                            },
+                            {
+                                "group": "Revisión de Código con IA",
+                                "pages": [
+                                    "how_to_use/es/code_review/flow",
+                                    "how_to_use/es/code_review/policy",
+                                    {
+                                        "group": "Configuraciones Avanzadas",
+                                        "pages": [
+                                            "how_to_use/es/code_review/configs/general",
+                                            "how_to_use/es/code_review/configs/centralized_config",
+                                            "how_to_use/es/code_review/configs/inheritance_overrides",
+                                            "how_to_use/es/code_review/configs/directory_level",
+                                            "how_to_use/es/code_review/configs/suggestion_control",
+                                            "how_to_use/es/code_review/configs/pr_summary",
+                                            "how_to_use/es/code_review/configs/custom_messages",
+                                            "how_to_use/es/code_review/configs/custom_prompts"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Reglas de Kody",
+                                        "pages": [
+                                            "how_to_use/es/code_review/configs/kody_rules",
+                                            "how_to_use/es/code_review/configs/rules_inheritance",
+                                            "how_to_use/es/code_review/configs/rules_file_detection",
+                                            "how_to_use/es/code_review/configs/repository_rules",
+                                            "how_to_use/es/code_review/learning/kody_rules_generation"
+                                        ]
+                                    },
+                                    "how_to_use/es/code_review/plugins",
+                                    "how_to_use/es/code_review/business_logic_validation",
+                                    "how_to_use/es/code_review/learning/kody_learning"
+                                ]
+                            },
+                            {
+                                "group": "CLI",
+                                "tag": "beta",
+                                "pages": [
+                                    "how_to_use/es/cli/introduction",
+                                    "how_to_use/es/cli/getting_started",
+                                    "how_to_use/es/cli/concepts",
+                                    "how_to_use/es/cli/commands",
+                                    "how_to_use/es/cli/ai_agents",
+                                    "how_to_use/es/cli/decision_memory",
+                                    "how_to_use/es/cli/self_hosted",
+                                    "how_to_use/es/cli/troubleshooting"
+                                ]
+                            },
+                            {
+                                "group": "Cockpit",
+                                "pages": [
+                                    "how_to_use/es/cockpit/overview",
+                                    {
+                                        "group": "Métricas",
+                                        "pages": [
+                                            "how_to_use/es/cockpit/metrics/deploy_frequency",
+                                            "how_to_use/es/cockpit/metrics/lead_time_for_changes",
+                                            "how_to_use/es/cockpit/metrics/change_failure_rate",
+                                            "how_to_use/es/cockpit/metrics/pr_size",
+                                            "how_to_use/es/cockpit/metrics/kody_suggestions",
+                                            "how_to_use/es/cockpit/metrics/lead_time_breakdown",
+                                            "how_to_use/es/cockpit/metrics/developer_activity",
+                                            "how_to_use/es/cockpit/metrics/prs_by_developer"
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "group": "Kody Issues",
+                                "pages": ["how_to_use/es/issues/overview"]
+                            },
+                            {
+                                "group": "Organización",
+                                "pages": [
+                                    "how_to_use/es/workspace_roles",
+                                    "how_to_use/es/auto_license_assignment",
+                                    "how_to_use/es/security/sso"
+                                ]
+                            },
+                            {
+                                "group": "Seguridad",
+                                "pages": [
+                                    {
+                                        "group": "Tokens",
+                                        "pages": [
+                                            "how_to_use/es/code_review/general_config/github_pat",
+                                            "how_to_use/es/code_review/general_config/gitlab_pat",
+                                            "how_to_use/es/code_review/general_config/bitbucket_pat",
+                                            "how_to_use/es/code_review/general_config/azure_devops_pat"
+                                        ]
+                                    },
+                                    "how_to_use/es/security/data_usage"
+                                ]
+                            },
+                            {
+                                "group": "Solución de Problemas",
+                                "pages": [
+                                    "how_to_use/es/code_review/troubleshooting"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "tab": "Cómo desplegar",
+                        "icon": "rocket-launch",
+                        "groups": [
+                            {
+                                "group": "Conceptos",
+                                "pages": ["how_to_deploy/es/kodus_architecture"]
+                            },
+                            {
+                                "group": "Inicio Rápido Local",
+                                "pages": [
+                                    "how_to_deploy/es/local_quickstart/orchestrator"
+                                ]
+                            },
+                            {
+                                "group": "Despliegue con Docker",
+                                "pages": [
+                                    "how_to_deploy/es/deploy_kodus/generic_vm",
+                                    "how_to_deploy/es/deploy_kodus/mcp_manager",
+                                    "how_to_deploy/es/deploy_kodus/reverse_proxy",
+                                    "how_to_deploy/es/deploy_kodus/troubleshooting",
+                                    "how_to_deploy/es/deploy_kodus/updating"
+                                ]
+                            },
+                            {
+                                "group": "Configuración de Proveedores Git",
+                                "pages": [
+                                    {
+                                        "group": "Github",
+                                        "icon": "github",
+                                        "pages": [
+                                            "how_to_deploy/es/platforms/github/github_app",
+                                            "how_to_deploy/es/platforms/github/github_oauth",
+                                            "how_to_deploy/es/platforms/github/github_webhook"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Gitlab",
+                                        "icon": "gitlab",
+                                        "pages": [
+                                            "how_to_deploy/es/platforms/gitlab/gitlab_oauth",
+                                            "how_to_deploy/es/platforms/gitlab/gitlab_webhook"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Bitbucket",
+                                        "icon": "bitbucket",
+                                        "pages": [
+                                            "how_to_deploy/es/platforms/bitbucket/bitbucket_webhook"
+                                        ]
+                                    },
+                                    {
+                                        "group": "Azure DevOps",
+                                        "icon": "microsoft",
+                                        "pages": [
+                                            "how_to_deploy/es/platforms/azure_devops/azdevops_webhook"
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "tab": "Base de Conocimiento",
+                        "icon": "book-open",
+                        "groups": [
+                            {
+                                "group": "Descripción General",
+                                "pages": ["knowledge_base/es/introduction"]
+                            },
+                            {
+                                "group": "Revisión de Código",
+                                "pages": [
+                                    "knowledge_base/es/how-to-enforce-coding-standards-in-pull-requests",
+                                    "knowledge_base/es/how-to-automate-code-review",
+                                    "knowledge_base/es/how-to-create-custom-code-review-rules",
+                                    "knowledge_base/es/how-to-reduce-code-review-noise",
+                                    "knowledge_base/es/difference-between-review-rules-and-memories",
+                                    "knowledge_base/es/how-to-teach-ai-your-team-conventions"
+                                ]
+                            },
+                            {
+                                "group": "Validación de Lógica de Negocio",
+                                "pages": [
+                                    "knowledge_base/es/how-to-validate-pr-against-jira-ticket",
+                                    "knowledge_base/es/how-to-validate-pr-against-linear-issue",
+                                    "knowledge_base/es/how-to-check-code-against-google-docs",
+                                    "knowledge_base/es/how-to-validate-business-rules-before-merging"
+                                ]
+                            },
+                            {
+                                "group": "Reglas y Automatización",
+                                "pages": [
+                                    "knowledge_base/es/how-to-import-rules-from-ide-tools",
+                                    "knowledge_base/es/how-to-generate-rules-automatically",
+                                    "knowledge_base/es/how-to-share-standards-across-repositories",
+                                    "knowledge_base/es/how-to-review-prs-with-project-context"
+                                ]
+                            },
+                            {
+                                "group": "Configuración e Integraciones",
+                                "pages": [
+                                    "knowledge_base/es/how-to-set-up-ai-code-review-on-github",
+                                    "knowledge_base/es/how-to-set-up-ai-code-review-on-gitlab",
+                                    "knowledge_base/es/how-to-set-up-ai-code-review-on-azure-devops",
+                                    "knowledge_base/es/how-to-connect-jira-to-code-review",
+                                    "knowledge_base/es/how-to-connect-linear-to-code-review",
+                                    "knowledge_base/es/can-i-use-my-own-llm-provider",
+                                    "knowledge_base/es/how-to-self-host-ai-code-review"
+                                ]
+                            },
+                            {
+                                "group": "Solución de Problemas",
+                                "pages": [
+                                    "knowledge_base/es/why-is-ai-code-review-not-triggering",
+                                    "knowledge_base/es/how-to-fix-webhook-issues",
+                                    "knowledge_base/es/why-are-code-reviews-paused"
+                                ]
+                            },
+                            {
+                                "group": "Proveedores de LLM",
+                                "pages": [
+                                    "knowledge_base/es/how-to-use-z-ai-with-kodus",
+                                    "knowledge_base/es/how-to-use-synthetic-with-kodus",
+                                    "knowledge_base/es/how-to-use-chutes-with-kodus",
+                                    "knowledge_base/es/how-to-use-moonshot-with-kodus",
+                                    "knowledge_base/es/how-to-use-novita-with-kodus",
+                                    "knowledge_base/es/how-to-use-groq-with-kodus",
+                                    "knowledge_base/es/how-to-use-together-ai-with-kodus",
+                                    "knowledge_base/es/how-to-use-fireworks-with-kodus"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "tab": "Recetario",
+                        "icon": "fire",
+                        "pages": [
+                            {
+                                "group": "Plugins Personalizados",
+                                "pages": ["cookbook/es/custom-plugin-install"]
+                            },
+                            {
+                                "group": "Guías de Contexto Personalizado",
+                                "pages": [
+                                    "cookbook/es/guide-handbook-guardrails"
+                                ]
+                            },
+                            {
+                                "group": "Recetas",
+                                "pages": [
+                                    "cookbook/es/kodus-for-monorepos",
+                                    "cookbook/es/security-first-review-pipeline",
+                                    "cookbook/es/kodus-sprint-workflow",
+                                    "cookbook/es/team-onboarding",
+                                    "cookbook/es/compliance-review-pipeline"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
                 "language": "zh",
                 "tabs": [
                     {
@@ -642,6 +926,14 @@
         {
             "source": "/how_to_use/zh/cli/ci_cd",
             "destination": "/how_to_use/zh/cli/ai_agents"
+        },
+        {
+            "source": "/how_to_use/es/cli/overview",
+            "destination": "/how_to_use/es/cli/introduction"
+        },
+        {
+            "source": "/how_to_use/es/cli/ci_cd",
+            "destination": "/how_to_use/es/cli/ai_agents"
         }
     ]
 }

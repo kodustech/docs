@@ -1,0 +1,145 @@
+---
+title: "Moonshot (Kimi) - Inferencia Compatible con OpenAI"
+description: "Aprende a conectar los modelos Kimi K2 y K2.5 de Moonshot AI a Kodus mediante la API platform.moonshot.ai."
+icon: "moon"
+---
+
+## Cómo funciona Moonshot
+
+Moonshot AI publica la familia de modelos **Kimi** (Kimi K2, K2 Thinking, K2.5). Kimi es particularmente robusto en comprensión de código de contexto largo y tareas agénticas, y la API es totalmente compatible con OpenAI, por lo que Kodus se comunica con ella usando el adaptador compatible con OpenAI existente.
+
+<Note>
+  Las suscripciones de consumidor de Moonshot (Andante, Moderato, etc.) se aplican al **producto de chat Kimi.ai**, no a la API. El uso de la API se factura por token independientemente de cualquier suscripción de chat que tengas. Esto es diferente de proveedores como Z.AI, donde la suscripción otorga cuota de API directamente.
+</Note>
+
+Moonshot opera dos plataformas paralelas:
+
+- **Internacional** — `platform.moonshot.ai` — URL base `https://api.moonshot.ai/v1`. Facturado en USD. Esta es la opción predeterminada para usuarios fuera de China.
+- **China** — `platform.moonshot.cn` — URL base `https://api.moonshot.cn/v1`. Facturado en CNY. Úsala solo si ya operas dentro de China continental.
+
+## Modelos Recomendados
+
+<Info>
+  Para el catálogo y los precios más actualizados, consulta [platform.moonshot.ai](https://platform.moonshot.ai).
+</Info>
+
+| Modelo | Precio (1M tokens de entrada / salida) | Ventana de contexto | Notas |
+| ------ | --------------------------------------- | ------------------- | ----- |
+| **Kimi K2.5** `recomendado` | $0.60 / $2.50 | ~256k tokens | Última generación, mejores resultados de codificación. |
+| **Kimi K2 Thinking**        | ~$0.60 / $2.50 | ~256k tokens | Variante de razonamiento; usar cuando la revisión necesita análisis más profundo. |
+| **Kimi K2 (0905)**          | nivel de precio inferior | ~128k tokens | Modelo estable de propósito general. |
+
+Los tres son accesibles desde la misma URL base con diferentes nombres de `model`:
+
+- `kimi-k2.5`
+- `kimi-k2-thinking`
+- `kimi-k2-0905`
+- `kimi-k2`
+
+## Crear una clave API
+
+<Warning>Se requiere una cuenta de Moonshot para crear una clave API.</Warning>
+
+1. Ve a [platform.moonshot.ai](https://platform.moonshot.ai) y crea una cuenta (o inicia sesión). Los usuarios dentro de China continental deben usar [platform.moonshot.cn](https://platform.moonshot.cn).
+2. Agrega un método de pago — Moonshot no ofrece una prueba gratuita obligatoria en la plataforma internacional; se puede otorgar un pequeño saldo de crédito cuando agregas facturación por primera vez.
+3. Abre la sección **Claves API** en la consola.
+4. Haz clic en **Crear Clave API**, dale un nombre descriptivo (por ejemplo, `kodus-prod`) y copia la clave de inmediato.
+
+## Configurar Moonshot en Kodus
+
+El flujo principal es BYOK en Kodus Cloud — pegas la clave de Moonshot en la interfaz web y listo. Los usuarios con alojamiento autónomo que prefieren fijar el proveedor a nivel de proceso pueden usar variables de entorno en su lugar.
+
+### Opción 1 — BYOK en Kodus Cloud (recomendado)
+
+1. En la interfaz web de Kodus, abre **Configuración → BYOK** y haz clic en **Editar** en el modelo **Principal** (o **Respaldo**, si quieres Kimi como copia de seguridad).
+2. Cambia el formulario al modo **Personalizado** para poder ingresar una URL base y un nombre de modelo libre.
+3. Completa los campos:
+
+   | Campo | Valor |
+   | ----- | ----- |
+   | **Proveedor** | `OpenAI Compatible` |
+   | **Clave API** | tu clave API de Moonshot |
+   | **URL Base** | `https://api.moonshot.ai/v1` (internacional)<br />`https://api.moonshot.cn/v1` (solo China continental) |
+   | **Modelo** | `kimi-k2.5` (recomendado) — o `kimi-k2-thinking`, `kimi-k2-0905`, `kimi-k2` |
+   | **Máx. de Solicitudes Concurrentes** | `5–10` es un buen punto de partida; Moonshot tiene límites generosos por cuenta |
+   | **Máx. de Tokens de Entrada** | puedes aumentarlo para la ventana de 256k de K2.5; deja el valor predeterminado en caso contrario |
+
+4. Guarda. Kodus valida la clave contra el endpoint y muestra cualquier error 401 / 404 de inmediato.
+5. Abre cualquier PR para activar una revisión y confirmar que Moonshot está respondiendo — el indicador de estado BYOK en Configuración se pone verde en la primera llamada exitosa.
+
+<Tip>
+  El contexto largo de Kimi K2.5 brilla en PRs grandes y en código que abarca muchos archivos. Si tus revisiones son principalmente PRs pequeños, `kimi-k2-0905` es más rápido y económico con esencialmente la misma calidad para esa carga de trabajo.
+</Tip>
+
+<Note>
+  Puedes configurar Moonshot como **Principal** y mantener una clave de OpenAI o Anthropic como **Respaldo** — si Moonshot devuelve 429 o 402, Kodus conmuta automáticamente.
+</Note>
+
+### Opción 2 — Alojamiento autónomo (variables de entorno)
+
+Si ejecutas Kodus en Modo Fijo (proveedor global único, sin BYOK por organización), configura Moonshot en el `.env` de tus contenedores de API + worker:
+
+```env
+# Configuración de Moonshot (Kimi) (Modo Fijo)
+API_LLM_PROVIDER_MODEL="kimi-k2.5"
+API_OPENAI_FORCE_BASE_URL="https://api.moonshot.ai/v1"    # usa .cn para la plataforma de China
+API_OPEN_AI_API_KEY="your-moonshot-api-key"
+```
+
+<Note>
+  Esta opción solo es necesaria para instalaciones de Kodus con alojamiento autónomo que deshabilitan deliberadamente el BYOK. Si el BYOK está habilitado en tu instancia con alojamiento autónomo, prefiere la **Opción 1** — el flujo basado en la interfaz es el mismo que en Cloud.
+</Note>
+
+Reinicia los contenedores de API y worker después de editar `.env`, luego verifica la integración:
+
+```bash
+docker-compose logs api worker | grep -iE "moonshot|kimi"
+```
+
+Para la configuración completa con alojamiento autónomo (dominios, claves de seguridad, base de datos, webhooks, proxy inverso), sigue la [guía de despliegue en VM genérica](https://docs.kodus.io/docs/how_to_deploy/en/deploy_kodus/generic_vm) y solo reemplaza el bloque LLM con el anterior.
+
+## Elegir entre Moonshot y un agregador
+
+También puedes alcanzar Kimi K2.5 a través de OpenRouter, que ya está soportado como proveedor de primera clase en Kodus. El equilibrio:
+
+- **API directa de Moonshot** — menor costo por token, mayor ventana de contexto, límites de tasa nativos. Requiere una cuenta y facturación de Moonshot.
+- **Proxy de OpenRouter** — una única relación de facturación para muchos proveedores, pero con un pequeño margen de enrutamiento y arranques en frío ligeramente más lentos.
+
+Elige Moonshot directo cuando Kimi sea tu modelo principal y quieras el mejor costo y contexto. Elige OpenRouter cuando estés mezclando muchos proveedores y prefieras mantener una sola factura.
+
+## Solución de problemas
+
+<AccordionGroup>
+  <Accordion title="Errores 401 / de autenticación">
+    - Confirma que la clave esté activa en la consola de Moonshot.
+    - Verifica que la URL base coincida con la plataforma en la que se creó la clave — las claves de `platform.moonshot.ai` **no** funcionan contra `api.moonshot.cn` y viceversa.
+    - Asegúrate de que no haya espacios al final ni comillas en el valor del `.env`.
+  </Accordion>
+
+  <Accordion title="Saldo insuficiente">
+    - Moonshot factura por token sin suscripción obligatoria. Si el saldo se agota, las solicitudes devuelven HTTP 402.
+    - Agrega fondos en la sección de facturación de la consola o establece un cap mensual para evitar sorpresas.
+  </Accordion>
+
+  <Accordion title="Modelo no encontrado">
+    - Confirma que el nombre del modelo coincida con el catálogo (`kimi-k2.5`, `kimi-k2-thinking`, `kimi-k2-0905`, `kimi-k2`).
+    - Se lanzan nuevas versiones de modelos regularmente — consulta la [documentación de Kimi](https://platform.kimi.ai/docs) para la lista actual.
+  </Accordion>
+
+  <Accordion title="Primera respuesta lenta">
+    - La primera llamada después de un período de inactividad puede tener un arranque en frío por parte de Moonshot.
+    - Si la latencia importa, prefiere `kimi-k2-0905` sobre la variante thinking para revisiones de código rutinarias.
+  </Accordion>
+
+  <Accordion title="Región / conectividad">
+    - Los usuarios fuera de China siempre deben usar `api.moonshot.ai`; `api.moonshot.cn` puede ser inaccesible o estar limitado por tasa desde fuera de China continental.
+    - Confirma que el HTTPS saliente hacia `api.moonshot.ai` esté permitido desde tu despliegue de Kodus.
+  </Accordion>
+</AccordionGroup>
+
+## Relacionado
+
+- [Plataforma de Moonshot (internacional)](https://platform.moonshot.ai)
+- [Documentación de la API de Kimi](https://platform.kimi.ai/docs)
+- [Kimi K2.5 en OpenRouter](https://openrouter.ai/moonshotai/kimi-k2.5) — si prefieres facturación agregada
+- [Resumen de BYOK](/how_to_use/es/byok)
