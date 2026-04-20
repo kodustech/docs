@@ -36,8 +36,7 @@
                                 "group": "Billing & Licenses",
                                 "pages": [
                                     "how_to_use/en/pricing",
-                                    "how_to_use/en/byok",
-                                    "how_to_use/en/auto_license_assignment"
+                                    "how_to_use/en/byok"
                                 ]
                             },
                             {
@@ -84,12 +83,6 @@
                                 ]
                             },
                             {
-                                "group": "Troubleshooting",
-                                "pages": [
-                                    "how_to_use/en/code_review/troubleshooting"
-                                ]
-                            },
-                            {
                                 "group": "Cockpit",
                                 "pages": [
                                     "how_to_use/en/cockpit/overview",
@@ -113,9 +106,16 @@
                                 "pages": ["how_to_use/en/issues/overview"]
                             },
                             {
-                                "group": "Security",
+                                "group": "Organization",
                                 "pages": [
                                     "how_to_use/en/workspace_roles",
+                                    "how_to_use/en/auto_license_assignment",
+                                    "how_to_use/en/security/sso"
+                                ]
+                            },
+                            {
+                                "group": "Security",
+                                "pages": [
                                     {
                                         "group": "Tokens",
                                         "pages": [
@@ -125,8 +125,13 @@
                                             "how_to_use/en/code_review/general_config/azure_devops_pat"
                                         ]
                                     },
-                                    "how_to_use/en/security/data_usage",
-                                    "how_to_use/en/security/sso"
+                                    "how_to_use/en/security/data_usage"
+                                ]
+                            },
+                            {
+                                "group": "Troubleshooting",
+                                "pages": [
+                                    "how_to_use/en/code_review/troubleshooting"
                                 ]
                             }
                         ]
@@ -311,8 +316,7 @@
                                 "group": "计费与许可证",
                                 "pages": [
                                     "how_to_use/zh/pricing",
-                                    "how_to_use/zh/byok",
-                                    "how_to_use/zh/auto_license_assignment"
+                                    "how_to_use/zh/byok"
                                 ]
                             },
                             {
@@ -359,12 +363,6 @@
                                 ]
                             },
                             {
-                                "group": "故障排除",
-                                "pages": [
-                                    "how_to_use/zh/code_review/troubleshooting"
-                                ]
-                            },
-                            {
                                 "group": "驾驶舱",
                                 "pages": [
                                     "how_to_use/zh/cockpit/overview",
@@ -388,9 +386,16 @@
                                 "pages": ["how_to_use/zh/issues/overview"]
                             },
                             {
-                                "group": "安全",
+                                "group": "组织管理",
                                 "pages": [
                                     "how_to_use/zh/workspace_roles",
+                                    "how_to_use/zh/auto_license_assignment",
+                                    "how_to_use/zh/security/sso"
+                                ]
+                            },
+                            {
+                                "group": "安全",
+                                "pages": [
                                     {
                                         "group": "令牌",
                                         "pages": [
@@ -400,8 +405,13 @@
                                             "how_to_use/zh/code_review/general_config/azure_devops_pat"
                                         ]
                                     },
-                                    "how_to_use/zh/security/data_usage",
-                                    "how_to_use/zh/security/sso"
+                                    "how_to_use/zh/security/data_usage"
+                                ]
+                            },
+                            {
+                                "group": "故障排除",
+                                "pages": [
+                                    "how_to_use/zh/code_review/troubleshooting"
                                 ]
                             }
                         ]
