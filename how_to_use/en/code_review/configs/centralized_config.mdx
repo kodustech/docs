@@ -1,86 +1,196 @@
 ---
 title: "Centralized Config"
-description: "Centralize code review configuration as code, sync automatically after merges, and manage rollout through UI or CLI."
+description: "Manage all code review configuration and Kody Rules as code in a single repository. Changes sync automatically after each merge; rollout is controlled from the UI or the CLI."
 ---
 
-Centralized Config lets teams centralize all review configuration in a single repository and manage it in a code-friendly flow, without needing to log in to the web UI for every settings change.
+Centralized Config lets you keep every code review setting and every Kody Rule in **one repository** instead of editing them per-repo in the web UI. Each change flows through a pull request on that repository, giving you version history, review, and rollback on your review configuration.
 
-Use this when you want consistent behavior for:
+Use it when you want:
 
-- review enablement
-- severity thresholds
-- base branch patterns
-- ignored paths and title rules
+- A single source of truth for review behavior across many repositories.
+- Code-review-as-code: history, PR review, rollback, CI validation.
+- Consistent Kody Rules (review rules and memories) across the whole organization.
+- CLI-driven or CI-driven configuration changes.
 
 ## How It Works
 
-1. Choose a source repository for centralized settings.
-2. Enable centralized config.
-3. Initialize the first sync in one of two modes:
+1. Choose one repository to hold your centralized config.
+2. Enable Centralized Config in the UI and point it at that repository.
+3. Pick an **initial sync mode**:
+   - `pr` — Kodus opens the initialization PR with your current effective settings and rules.
+   - `manual` — Kodus generates the files; your team downloads and opens the PR.
+4. After the first merge, every future merge on the centralized repository automatically propagates changes to Kodus.
 
-- `pr` mode: Kodus creates an initialization PR with your current settings.
-- `manual` mode: Kodus skips PR creation so your team can download configs and open the PR yourselves.
+The centralized repository mirrors Kodus's scope hierarchy (Global → Repository → Directory) through its folder layout.
 
-4. After setup, centralized updates are synchronized automatically every time a PR is merged.
+## Repository Layout
+
+The centralized repository uses folder paths to map files to scopes. The layout covers both review settings (`kodus-config.yml`) and Kody Rules (`.kody-rules/`).
+
+<Note>
+The repository name is arbitrary — pick whatever fits your organization. `kodus-config` is used below as a convention.
+</Note>
+
+```
+kodus-config/
+├── kodus-config.yml                      ← global settings
+├── .kody-rules/
+│   ├── review/                           ← global review rules
+│   │   └── require-tests-for-endpoints.yml
+│   └── memories/                         ← global memories
+│       └── logging-convention.yml
+│
+├── backend-api/                          ← matches a Kodus repo
+│   ├── kodus-config.yml                  ← repository-level overrides
+│   ├── .kody-rules/
+│   │   ├── review/
+│   │   │   └── no-raw-sql.yml
+│   │   └── memories/
+│   │       └── auth-module-layout.yml
+│   │
+│   └── src/auth/                         ← matches a repo subdirectory
+│       ├── kodus-config.yml              ← directory-level overrides
+│       └── .kody-rules/
+│           ├── review/
+│           └── memories/
+│
+└── frontend-web/
+    └── kodus-config.yml
+```
+
+Rules:
+
+- A `kodus-config.yml` at the **root** of the centralized repo applies globally.
+- A top-level folder whose name matches a Kodus repository (e.g. `backend-api/`) scopes files to that repository.
+- A nested path inside a repo folder (e.g. `backend-api/src/auth/`) scopes files to that directory, following the same inheritance model as the web UI.
+- Rules under `.kody-rules/review/` become **review rules**; rules under `.kody-rules/memories/` become **memories**.
+
+Any file missing a matching scope is ignored on sync.
+
+## Config Files
+
+Each `kodus-config.yml` uses the same schema as the per-repo `kodus-config.yml` documented in [General settings](/how_to_use/en/code_review/configs/general). Fields are applied at the level of the folder where the file lives and follow the usual inheritance rules (see [Config Inheritance & Overrides](/how_to_use/en/code_review/configs/inheritance_overrides)).
+
+Minimal example:
+
+```yaml
+version: '1.2'
+reviewOptions:
+  security: true
+  kody_rules: true
+  error_handling: true
+suggestionControl:
+  groupingMode: full
+  limitationType: pr
+  maxSuggestions: 9
+  severityLevelFilter: medium
+ignorePaths:
+  - yarn.lock
+  - package-lock.json
+automatedReviewActive: true
+```
+
+## Kody Rules Files
+
+Each rule is a single YAML file under `.kody-rules/review/` (standard rules) or `.kody-rules/memories/` (memories). The filename is arbitrary — Kodus identifies rules by the `title` field and by the canonical file path stored with the rule.
+
+Example review rule (`.kody-rules/review/require-tests-for-endpoints.yml`):
+
+```yaml
+title: Require tests for new endpoints
+rule: |
+  Every new HTTP endpoint handler must include at least one integration test
+  that exercises the happy path and one common failure mode.
+severity: high
+scope: pull_request
+path: apps/api/**
+examples:
+  - snippet: |
+      // endpoint added with matching *.spec.ts
+    isCorrect: true
+  - snippet: |
+      // endpoint added with no test file touched in the PR
+    isCorrect: false
+inheritance:
+  inheritable: true
+  exclude: []
+  include: []
+```
+
+See [Kody Rules Overview](/how_to_use/en/code_review/configs/kody_rules) for the full field reference and [Rule Inheritance](/how_to_use/en/code_review/configs/rules_inheritance) for how `inheritance.inheritable`, `exclude`, and `include` behave.
 
 ## UI Workflow
 
-From Settings > Code Review > General:
+From **Settings → Code Review → General**:
 
-1. Open Centralized Config.
-2. Enable centralized config.
+1. Open **Centralized Config**.
+2. Enable Centralized Config.
 3. Select the source repository.
-4. Pick Initial Sync Method:
+4. Pick the **Initial Sync Method**:
    - Automatic (Create PR now)
    - Manual (Sync later)
 5. Save and confirm status.
 
 ## Web UI Behavior When Enabled
 
-When centralized config is enabled, repository settings become read-only in the web UI.
+When Centralized Config is enabled, the source of truth for configuration is the centralized repository. The web UI reflects this:
 
-The only settings users can still manage in the web UI are:
+- **Repository, directory and global code review settings** become read-only in the web UI. Edit them by opening a PR on the centralized repository.
+- **Kody Rules and PR Messages** remain editable in the web UI. Saving an edit does not mutate the rule directly — Kodus opens a pull request on the centralized repository with the proposed change. Once the PR is merged, the change becomes active.
 
-- Kody Rules
-- PR Messages
+This preserves the "everything is reviewed and versioned" guarantee while keeping the visual editing experience for rules and messages.
+
+## Sync States
+
+Each rule that comes from Centralized Config tracks its lifecycle through a status:
+
+| Status | Meaning |
+|---|---|
+| `SYNCED` | The rule in Kodus matches the file in the centralized repository. |
+| `PENDING_ADD` | A new rule has been created via UI/CLI and a PR was opened; the file does not exist on the default branch yet. |
+| `PENDING_EDIT` | An edit was proposed via UI/CLI and a PR is open; the existing file has not been updated yet. |
+| `PENDING_DELETE` | A deletion was proposed via UI/CLI and a PR is open; the file still exists on the default branch. |
+
+`PENDING_*` transitions back to `SYNCED` once the corresponding PR is merged.
 
 ## Sync Modes
 
 <Tabs>
   <Tab title="PR (default)">
-    Creates the initialization pull request automatically with your current
-    effective settings.
+    Kodus opens the initialization pull request automatically with your
+    current effective settings and rules.
   </Tab>
   <Tab title="Manual">
-    Skips PR creation during initialization. Use download to export files, then
-    open and merge the PR yourselves.
+    Kodus generates the files but does not open a PR. Use the download bundle
+    to export the files, then open and merge the PR yourselves.
   </Tab>
 </Tabs>
 
 ## Download Configuration Bundle
 
-You can download a ZIP bundle containing generated config files used for centralized setup and bootstrap.
+You can download a ZIP containing the generated `kodus-config.yml` files and `.kody-rules/` tree that reflect your current settings and rules.
 
 Use this when:
 
-- auditing generated configuration
-- sharing setup artifacts with another team
-- keeping a local backup for rollout
+- Auditing generated configuration.
+- Sharing setup artifacts with another team.
+- Keeping a local backup before a rollout.
+- Bootstrapping the centralized repository in `manual` mode.
 
 ## Disable Centralized Config
 
-Disabling centralized config clears the selected source repository and returns repositories to non-centralized behavior.
+Disabling Centralized Config clears the selected source repository and returns all repositories to the standard non-centralized behavior (settings edited in the web UI, optional per-repo `kodus-config.yml`).
 
-Use this only when you intentionally want to stop centralized propagation.
+Rules and settings that were synced in remain in Kodus — they are not deleted on disable.
 
-## CLI Dedicated Section
+## CLI
 
-Use these commands to manage centralized config from terminal workflows and CI scripts.
+Use these commands to manage Centralized Config from terminal workflows and CI scripts.
 
 ### Requirements
 
-- Team key authentication
-- At least one selected repository in Kodus
+- Team key authentication.
+- At least one selected repository in Kodus.
 
 Authenticate with:
 
@@ -103,14 +213,14 @@ kodus config centralized init [owner/repo] --sync-option <pr|manual>
 Notes:
 
 - `--sync-option` defaults to `pr`.
-- If repository is omitted in an interactive terminal, CLI prompts selection.
-- In non-interactive environments, repository must be provided.
+- If the repository is omitted in an interactive terminal, the CLI prompts for selection.
+- In non-interactive environments, the repository must be provided.
 
 Examples:
 
 ```bash
-kodus config centralized init kodustech/platform-config --sync-option pr
-kodus config centralized init kodustech/platform-config --sync-option manual
+kodus config centralized init kodustech/kodus-config --sync-option pr
+kodus config centralized init kodustech/kodus-config --sync-option manual
 ```
 
 ### Run Sync
@@ -134,7 +244,7 @@ kodus config centralized download --out ./centralized-config.zip
 Notes:
 
 - `--out` is required.
-- Output is a ZIP bundle containing generated config files.
+- Output is a ZIP bundle containing the generated config files and `.kody-rules/` tree.
 
 ### JSON Output
 
@@ -142,12 +252,16 @@ All centralized commands support structured output with `--json`.
 
 ```bash
 kodus config centralized status --json
-kodus config centralized init kodustech/platform-config --sync-option pr --json
+kodus config centralized init kodustech/kodus-config --sync-option pr --json
 kodus config centralized sync --json
 kodus config centralized disable --json
 kodus config centralized download --out ./centralized-config.zip --json
 ```
 
-## Related Docs
+## Related
 
-- CLI command reference: [/how_to_use/en/cli/commands](/how_to_use/en/cli/commands)
+- [General Settings](/how_to_use/en/code_review/configs/general)
+- [Config Inheritance & Overrides](/how_to_use/en/code_review/configs/inheritance_overrides)
+- [Kody Rules Overview](/how_to_use/en/code_review/configs/kody_rules)
+- [Rule Inheritance](/how_to_use/en/code_review/configs/rules_inheritance)
+- [CLI command reference](/how_to_use/en/cli/commands)
