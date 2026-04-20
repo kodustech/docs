@@ -1,0 +1,145 @@
+---
+title: "Moonshot(Kimi)- OpenAI 兼容的推理平台"
+description: "了解如何通过 platform.moonshot.ai API 将 Moonshot AI 的 Kimi K2 和 K2.5 模型连接到 Kodus。"
+icon: "moon"
+---
+
+## Moonshot 工作原理
+
+Moonshot AI 发布 **Kimi** 系列模型(Kimi K2、K2 Thinking、K2.5)。Kimi 在长上下文代码理解和 Agent 型任务上表现尤为突出,其 API 完全兼容 OpenAI,因此 Kodus 通过现有的 OpenAI 兼容适配器就能对接它。
+
+<Note>
+  Moonshot 的消费者订阅(Andante、Moderato 等)适用于 **Kimi.ai 聊天产品**,不适用于 API。无论您是否持有聊天订阅,API 使用都按 token 付费。这与 Z.AI 等提供商不同 — 那些提供商的订阅直接授予 API 配额。
+</Note>
+
+Moonshot 运营两个并行平台:
+
+- **国际版** — `platform.moonshot.ai` — 基础 URL `https://api.moonshot.ai/v1`。以美元计费。中国大陆以外的用户默认使用这个。
+- **中国版** — `platform.moonshot.cn` — 基础 URL `https://api.moonshot.cn/v1`。以人民币计费。仅当您已在中国大陆运营时使用。
+
+## 推荐模型
+
+<Info>
+  关于最新的模型目录和价格,请参见 [platform.moonshot.ai](https://platform.moonshot.ai)。
+</Info>
+
+| 模型 | 价格(每 100 万 输入 / 输出 token) | 上下文窗口 | 说明 |
+| ----- | ---------------------------------- | -------------- | ----- |
+| **Kimi K2.5** `推荐` | $0.60 / $2.50 | 约 256k tokens | 最新一代,代码表现最强。 |
+| **Kimi K2 Thinking** | 约 $0.60 / $2.50 | 约 256k tokens | 推理变体;审查需要更深分析时使用。 |
+| **Kimi K2 (0905)**  | 更低价格档位 | 约 128k tokens | 稳定的通用模型。 |
+
+三者均通过同一基础 URL 访问,仅 `model` 名称不同:
+
+- `kimi-k2.5`
+- `kimi-k2-thinking`
+- `kimi-k2-0905`
+- `kimi-k2`
+
+## 创建 API 密钥
+
+<Warning>创建 API 密钥需要 Moonshot 账号。</Warning>
+
+1. 访问 [platform.moonshot.ai](https://platform.moonshot.ai) 并创建账号(或登录)。中国大陆用户请改用 [platform.moonshot.cn](https://platform.moonshot.cn)。
+2. 添加支付方式 — Moonshot 国际平台不提供强制免费试用;首次添加账单时可能会获得少量赠金。
+3. 在控制台打开 **API Keys** 页面。
+4. 点击 **Create API Key**,给它一个描述性的名字(例如 `kodus-prod`),并立即复制密钥。
+
+## 在 Kodus 中配置 Moonshot
+
+主流程是在 Kodus Cloud 上使用 BYOK — 在 Web UI 中粘贴 Moonshot 密钥即可。希望在进程层级固定提供商的自托管用户可以改用环境变量。
+
+### 方式 1 — Kodus Cloud 上的 BYOK(推荐)
+
+1. 在 Kodus Web UI 中打开**设置 → BYOK**,点击 **Main** 模型旁的**编辑**(或 **Fallback**,如果您想把 Kimi 作为备用)。
+2. 将表单切换到 **Custom** 模式,以便输入基础 URL 和自由格式的模型名称。
+3. 填写字段:
+
+   | 字段 | 值 |
+   | --- | --- |
+   | **Provider** | `OpenAI Compatible` |
+   | **API Key** | 您的 Moonshot API 密钥 |
+   | **Base URL** | `https://api.moonshot.ai/v1`(国际版)<br />`https://api.moonshot.cn/v1`(仅限中国大陆) |
+   | **Model** | `kimi-k2.5`(推荐)— 或 `kimi-k2-thinking`、`kimi-k2-0905`、`kimi-k2` |
+   | **Max Concurrent Requests** | `5–10` 是不错的起点;Moonshot 每账户限制较为宽松 |
+   | **Max Input Tokens** | 为 K2.5 的 256k 窗口可以调高;否则保持默认 |
+
+4. 保存。Kodus 会针对该端点验证密钥,任何 401 / 404 会立即显示。
+5. 打开任意 PR 触发审查,确认 Moonshot 正在处理请求 — 首次成功调用后,设置中的 BYOK 状态徽章会变绿。
+
+<Tip>
+  Kimi K2.5 的长上下文在大型 PR 和跨多个文件的代码上优势明显。如果您的审查大多是小 PR,`kimi-k2-0905` 在该工作负载下更快、更便宜,质量基本相当。
+</Tip>
+
+<Note>
+  您可以将 Moonshot 配置为 **Main**,同时保留一个 OpenAI 或 Anthropic 密钥作为 **Fallback** — 如果 Moonshot 返回 429 或 402,Kodus 会自动故障转移。
+</Note>
+
+### 方式 2 — 自托管(环境变量)
+
+如果您以 Fixed Mode 运行 Kodus(单一全局提供商,无按组织 BYOK),在 API + worker 容器的 `.env` 中配置 Moonshot:
+
+```env
+# Moonshot(Kimi)配置(固定模式)
+API_LLM_PROVIDER_MODEL="kimi-k2.5"
+API_OPENAI_FORCE_BASE_URL="https://api.moonshot.ai/v1"    # 中国平台使用 .cn
+API_OPEN_AI_API_KEY="your-moonshot-api-key"
+```
+
+<Note>
+  仅在有意禁用 BYOK 的自托管 Kodus 安装中才需要这条路径。如果您的自托管实例启用了 BYOK,请优先使用**方式 1** — 基于 UI 的流程与 Cloud 上相同。
+</Note>
+
+编辑 `.env` 后重启 API 和 worker 容器,然后验证集成:
+
+```bash
+docker-compose logs api worker | grep -iE "moonshot|kimi"
+```
+
+完整的自托管设置(域名、安全密钥、数据库、webhook、反向代理)请参见[通用 VM 部署指南](https://docs.kodus.io/docs/how_to_deploy/en/deploy_kodus/generic_vm),只需将 LLM 部分替换为上面的配置。
+
+## 在 Moonshot 直连和聚合方案之间选择
+
+您也可以通过 OpenRouter 访问 Kimi K2.5 — OpenRouter 在 Kodus 中是一等公民。权衡:
+
+- **直连 Moonshot API** — 每 token 成本最低、上下文窗口最大、原生速率限制。需要 Moonshot 账号和账单。
+- **OpenRouter 代理** — 多个提供商统一结算,但有少量路由加价,冷启动稍慢。
+
+如果 Kimi 是您的主要模型且希望获得最佳成本和上下文,选择直连 Moonshot。如果您混用多个提供商并希望统一账单,选择 OpenRouter。
+
+## 故障排查
+
+<AccordionGroup>
+  <Accordion title="401 / 身份验证错误">
+    - 在 Moonshot 控制台确认密钥仍然有效。
+    - 验证基础 URL 与创建密钥的平台匹配 — `platform.moonshot.ai` 的密钥**不能**用于 `api.moonshot.cn`,反之亦然。
+    - 确保 `.env` 值中没有尾随空格或引号。
+  </Accordion>
+
+  <Accordion title="余额不足">
+    - Moonshot 按 token 付费,没有强制订阅。余额耗尽时请求返回 HTTP 402。
+    - 在控制台的账单页面充值,或设置月度上限以避免超支。
+  </Accordion>
+
+  <Accordion title="模型未找到">
+    - 确认模型名称与目录匹配(`kimi-k2.5`、`kimi-k2-thinking`、`kimi-k2-0905`、`kimi-k2`)。
+    - 新版本发布频繁 — 请查看 [Kimi 文档](https://platform.kimi.ai/docs) 了解当前列表。
+  </Accordion>
+
+  <Accordion title="首次响应慢">
+    - 一段时间闲置后的首次调用可能在 Moonshot 侧冷启动。
+    - 如果延迟重要,常规代码审查优先使用 `kimi-k2-0905` 而非 thinking 变体。
+  </Accordion>
+
+  <Accordion title="区域 / 连接性">
+    - 中国大陆以外的用户应始终使用 `api.moonshot.ai`;`api.moonshot.cn` 从大陆以外访问可能不通或被限速。
+    - 确认您的 Kodus 部署允许对 `api.moonshot.ai` 的出站 HTTPS。
+  </Accordion>
+</AccordionGroup>
+
+## 相关链接
+
+- [Moonshot 平台(国际版)](https://platform.moonshot.ai)
+- [Kimi API 文档](https://platform.kimi.ai/docs)
+- [OpenRouter 上的 Kimi K2.5](https://openrouter.ai/moonshotai/kimi-k2.5) — 如果您更喜欢聚合结算
+- [BYOK 概述](/how_to_use/zh/byok)

@@ -256,6 +256,10 @@
                             {
                                 "group": "LLM Providers",
                                 "pages": [
+                                    "knowledge_base/en/how-to-use-z-ai-with-kodus",
+                                    "knowledge_base/en/how-to-use-synthetic-with-kodus",
+                                    "knowledge_base/en/how-to-use-chutes-with-kodus",
+                                    "knowledge_base/en/how-to-use-moonshot-with-kodus",
                                     "knowledge_base/en/how-to-use-novita-with-kodus",
                                     "knowledge_base/en/how-to-use-groq-with-kodus",
                                     "knowledge_base/en/how-to-use-together-ai-with-kodus",
@@ -327,6 +331,7 @@
                                         "group": "高级配置",
                                         "pages": [
                                             "how_to_use/zh/code_review/configs/general",
+                                            "how_to_use/zh/code_review/configs/centralized_config",
                                             "how_to_use/zh/code_review/configs/inheritance_overrides",
                                             "how_to_use/zh/code_review/configs/directory_level",
                                             "how_to_use/zh/code_review/configs/suggestion_control",
@@ -529,6 +534,10 @@
                             {
                                 "group": "LLM 提供商",
                                 "pages": [
+                                    "knowledge_base/zh/how-to-use-z-ai-with-kodus",
+                                    "knowledge_base/zh/how-to-use-synthetic-with-kodus",
+                                    "knowledge_base/zh/how-to-use-chutes-with-kodus",
+                                    "knowledge_base/zh/how-to-use-moonshot-with-kodus",
                                     "knowledge_base/zh/how-to-use-novita-with-kodus",
                                     "knowledge_base/zh/how-to-use-groq-with-kodus",
                                     "knowledge_base/zh/how-to-use-together-ai-with-kodus",

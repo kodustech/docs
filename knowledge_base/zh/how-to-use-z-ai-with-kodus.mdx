@@ -1,0 +1,152 @@
+---
+title: "Z.AI(GLM 编程计划)- 基于订阅的推理"
+description: "了解如何将 Z.AI 的 GLM 模型(包括 GLM 编程计划订阅)连接到 Kodus。"
+icon: "bolt"
+---
+
+## Z.AI 工作原理
+
+Z.AI(由智谱 AI 开发)提供 GLM 系列模型。它是少数几家为 API 访问提供**统一订阅费**的主要提供商之一:**GLM 编程计划**以固定月费捆绑模型使用量,并通过 5 小时和每周的时间窗口(而非按 token 计费)来应用速率限制。
+
+对于更大或波动较大的工作负载,Z.AI 也通过标准 API 对同样的模型提供按 token 付费的访问。
+
+两种方式都暴露 OpenAI 兼容和 Anthropic 兼容的端点,因此 Kodus 无需任何适配器修改即可与之对接。
+
+## 方案概览
+
+<Info>
+  价格和配额经常变化。选择套餐前请务必在 [z.ai/subscribe](https://z.ai/subscribe) 和 [docs.z.ai](https://docs.z.ai/devpack/overview) 查看最新数据。
+</Info>
+
+### GLM 编程计划(订阅)
+
+| 套餐 | 价格(等价月费) | 约等于 API 价值 |
+| ---- | ---------------- | ----------------- |
+| **Lite** | 约 $18/月(按季度计费) | 约为月费的 15 倍 |
+| **Pro**  | 约 $30/月(按季度计费) | 约为月费的 20 倍 |
+| **Max**  | 约 $80/月(按季度计费) | 约为月费的 30 倍 |
+
+- 配额按**5 小时**滚动窗口和**每周**窗口重置 — 这是需要规划的上限,而非月度总量。
+- 覆盖模型包括 GLM-5.1、GLM-5-Turbo、GLM-5、GLM-4.5 和 GLM-4.5-Air。
+- 专用端点:`https://api.z.ai/api/coding/paas/v4`(OpenAI 兼容)或 `https://api.z.ai/api/anthropic`(Anthropic 兼容)。
+
+### 按 Token 付费 API
+
+| 模型 | 价格(每 100 万 输入 / 输出 token) | 上下文窗口 |
+| ----- | ---------------------------------- | -------------- |
+| **GLM-5.1** `推荐` | $0.95 / $3.15 | 约 200k tokens |
+| **GLM-5**      | $0.72 / $2.30 | 约 131k tokens |
+| **GLM-4.5**    | $0.60 / $2.20 | 约 128k tokens |
+| **GLM-4.5-Air** | 更低档位,为路由优化 | 约 128k tokens |
+
+标准端点:`https://api.z.ai/api/paas/v4`(OpenAI 兼容)。
+
+## 创建 API 密钥
+
+<Warning>创建 API 密钥需要 Z.AI 账号。</Warning>
+
+1. 访问 [z.ai](https://z.ai) 并创建账号(或登录)。
+2. 如果想使用订阅,在 [z.ai/subscribe](https://z.ai/subscribe) 购买 **GLM 编程计划** 套餐。否则密钥按 token 计费。
+3. 在控制台打开 **API Keys** 页面。
+4. 点击 **Create API Key**,给它一个描述性的名字(例如 `kodus-prod`),并立即复制密钥 — 稍后将无法再次查看。
+
+<Note>
+  同一个 API 密钥同时适用于编程计划端点和按 token 付费端点。Kodus 会根据您配置的端点 URL 计费。
+</Note>
+
+## 在 Kodus 中配置 Z.AI
+
+主流程是在 Kodus Cloud 上使用 BYOK — 在 Web UI 中粘贴 Z.AI 密钥即可。希望在进程层级固定提供商的自托管用户可以改用环境变量。
+
+### 方式 1 — Kodus Cloud 上的 BYOK(推荐)
+
+1. 在 Kodus Web UI 中打开**设置 → BYOK**,点击 **Main** 模型旁的**编辑**(或 **Fallback**,如果您只想把 Z.AI 作为备用)。
+2. 将表单切换到 **Custom** 模式,以便输入基础 URL 和自由格式的模型名称。
+3. 填写字段:
+
+   | 字段 | 值 |
+   | --- | --- |
+   | **Provider** | `OpenAI Compatible` |
+   | **API Key** | 您的 Z.AI API 密钥 |
+   | **Base URL** | `https://api.z.ai/api/coding/paas/v4` — GLM 编程计划订阅者<br />`https://api.z.ai/api/paas/v4` — 按 token 付费账号 |
+   | **Model** | `glm-5.1`(推荐)— 或 `glm-5`、`glm-5-turbo`、`glm-4.5`、`glm-4.5-air` |
+   | **Max Concurrent Requests** | 编程计划从 `3–5` 起步;按 token 付费可以更高 |
+   | **Max Output Tokens** | 除非遇到截断,否则保持默认 |
+
+4. 保存。Kodus 会针对该端点验证密钥,任何 401 / 404 会立即显示。
+5. 打开任意 PR 触发审查,确认 Z.AI 正在处理请求 — 首次成功调用后,设置中的 BYOK 状态徽章会变绿。
+
+<Tip>
+  在**编程计划**上,5 小时 / 每周配额是主要约束。将 `Max Concurrent Requests` 保持在足够低的值,避免单个大型 PR 吃完窗口 — 从 3 开始是安全起点,观察到 429 后再上调。
+</Tip>
+
+<Note>
+  您可以将 Z.AI 配置为 **Main** 模型,同时保留一个 OpenAI 或 Anthropic 密钥作为 **Fallback**,这样当编程计划窗口耗尽时审查仍可继续。Kodus 会自动故障转移。
+</Note>
+
+### 方式 2 — 自托管(环境变量)
+
+如果您以 Fixed Mode 运行 Kodus(单一全局提供商,无按组织 BYOK),在 API + worker 容器的 `.env` 中配置 Z.AI:
+
+```env
+# Z.AI 配置(固定模式)
+API_LLM_PROVIDER_MODEL="glm-5.1"                                  # 您可以访问的任意 GLM 模型
+API_OPENAI_FORCE_BASE_URL="https://api.z.ai/api/coding/paas/v4"   # 按 token 付费使用 /api/paas/v4
+API_OPEN_AI_API_KEY="your-z-ai-api-key"
+```
+
+<Note>
+  仅在有意禁用 BYOK 的自托管 Kodus 安装中才需要这条路径。如果您的自托管实例启用了 BYOK,请优先使用**方式 1** — 基于 UI 的流程与 Cloud 上相同。
+</Note>
+
+编辑 `.env` 后重启 API 和 worker 容器,然后验证集成:
+
+```bash
+docker-compose logs api worker | grep -iE "z\.ai|glm"
+```
+
+完整的自托管设置(域名、安全密钥、数据库、webhook、反向代理)请参见[通用 VM 部署指南](https://docs.kodus.io/docs/how_to_deploy/en/deploy_kodus/generic_vm),只需将 LLM 部分替换为上面的配置。
+
+## 在编程计划和按 Token 付费之间选择
+
+- 当您有稳定的审查团队并希望获得固定月度成本时,选择 **编程计划**。5 小时和每周配额大致相当于订阅费 15–30 倍的 API 价值。
+- 当您的流量波动大、偶尔需要最大上下文窗口,或希望成本随 PR 数量线性增长时,选择**按 token 付费**。
+- 您可以随时通过修改 `API_OPENAI_FORCE_BASE_URL`(自托管)或 BYOK 基础 URL(云端)在两个端点之间切换 — API 密钥是通用的。
+
+## 故障排查
+
+<AccordionGroup>
+  <Accordion title="编程计划配额耗尽">
+    - 配额按**5 小时滚动窗口**和**每周窗口**执行。触发其一会返回 HTTP 429。
+    - 在 Z.AI 控制台查看剩余配额。
+    - 等待下一个窗口重置,或升级到更高套餐,或临时将基础 URL 切换到 `https://api.z.ai/api/paas/v4` 使用按 token 付费来消化高峰。
+  </Accordion>
+
+  <Accordion title="401 / 身份验证错误">
+    - 在 [Z.AI 控制台](https://z.ai) 确认密钥仍然有效。
+    - 确保 `.env` 值中没有尾随空格或引号。
+    - 密钥在 Z.AI 各端点间通用 — 同一个密钥在编程计划和按 token 付费上都可用。
+  </Accordion>
+
+  <Accordion title="模型未找到">
+    - 确认模型名称与 Z.AI 模型目录匹配(如 `glm-5.1`、`glm-5-turbo`、`glm-4.5`)。
+    - 编程计划目前仅覆盖 GLM 系列 — 非 GLM 模型名称会被拒绝。
+  </Accordion>
+
+  <Accordion title="连接错误">
+    - 确认您的服务器可以访问 `api.z.ai`。
+    - 查看 API 和 worker 日志获取具体的上游错误。
+    - 如果您所在地区有出站流量限制,请通过基础设施允许的反向代理路由请求。
+  </Accordion>
+
+  <Accordion title="按 Token 付费的速率限制">
+    - 标准 API 的每账户速率限制与编程计划配额是独立的。
+    - 在 BYOK 配置上降低 `maxConcurrentRequests`,或将大型代码审查分散到更长时间。
+  </Accordion>
+</AccordionGroup>
+
+## 相关链接
+
+- [GLM 编程计划(定价)](https://z.ai/subscribe)
+- [Z.AI 开发者文档](https://docs.z.ai/devpack/overview)
+- [BYOK 概述](/how_to_use/zh/byok)
