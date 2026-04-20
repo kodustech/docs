@@ -1,0 +1,55 @@
+---
+title: "Cuál es la diferencia entre Reglas de Revisión y Memorias"
+description: "Comprende cuándo usar Reglas de Revisión versus Memorias en Kody para obtener los mejores resultados en la revisión de código."
+---
+
+Kodus tiene dos tipos de Kody Rules, y saber cuándo usar cada una hace que tus revisiones de código sean más efectivas.
+
+## Reglas de Revisión
+
+Las Reglas de Revisión son **verificaciones tradicionales de revisión de código** que se ejecutan durante la etapa dedicada de revisión. Analizan los diffs de archivos o el PR completo según tus criterios definidos.
+
+**Ideales para:**
+- Límites de arquitectura ("la capa de dominio no debe importar infraestructura")
+- Patrones de código ("evitar `==` en condiciones de bucle")
+- Requisitos de PR ("cada archivo de servicio debe tener una prueba")
+- Validación estructural usando variables como `fileDiff`, `pr_files_diff`
+
+**Cómo funcionan:**
+- Se aplican a nivel de archivo o de PR
+- Solo se ejecutan durante la revisión de código
+- Admiten referencias a archivos (`@file`, `@repo`) y funciones MCP
+- Producen sugerencias con niveles de severidad
+
+## Memorias
+
+Las Memorias son **instrucciones contextuales persistentes** que se inyectan en todas las interacciones — revisiones de código, conversaciones y sugerencias de IA. Representan las convenciones y preferencias de tu equipo.
+
+**Ideales para:**
+- Convenciones del equipo ("usamos camelCase para las claves de la API, snake_case para las columnas de la BD")
+- Preferencias tecnológicas ("evitar Lodash, preferir métodos nativos de JS")
+- Guía de migración ("tratar cualquier importación de AWS SDK v2 como bloqueante")
+- Principios de arquitectura ("seguimos estrictamente la arquitectura hexagonal")
+
+**Cómo funcionan:**
+- Se inyectan como contexto de alta prioridad en todos los prompts
+- Se crean mediante conversación (`@kody remember: ...`) o manualmente en la interfaz
+- Con alcance a directorio, repositorio u organización
+- Kody deduplica automáticamente y resuelve conflictos entre memorias
+
+## Cuándo usar cada una
+
+| Escenario | Usar |
+|-----------|------|
+| Verificar si existe un archivo de prueba para cada servicio | Regla de Revisión |
+| "Nunca usamos Lodash en este repositorio" | Memoria |
+| La descripción del PR debe seguir una plantilla | Regla de Revisión |
+| "Los payloads de la API usan camelCase" | Memoria |
+| Marcar importaciones que violan las capas de arquitectura | Regla de Revisión |
+| "Estamos migrando del SDK v2 al v3" | Memoria |
+
+## ¿Puedo convertir entre ellas?
+
+Sí. En el modal de Memorias Pendientes, puedes **convertir una memoria en una Regla de Revisión** si decides que necesita una aplicación más estructurada con rutas de archivos y niveles de severidad.
+
+Para más detalles, consulta [Kody Rules](/how_to_use/es/code_review/configs/kody_rules).

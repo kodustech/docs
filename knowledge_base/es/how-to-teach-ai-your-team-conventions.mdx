@@ -1,0 +1,68 @@
+---
+title: "Cómo enseñarle a la IA las convenciones de codificación de tu equipo"
+description: "Usa Memorias para que Kody aprenda tus preferencias de codificación, decisiones de arquitectura y convenciones del equipo a través de una conversación natural."
+---
+
+Cada equipo tiene reglas no escritas — preferencias tecnológicas, convenciones de nomenclatura, decisiones de arquitectura. En lugar de documentarlas todas desde el principio, puedes enseñarle a Kody mediante una conversación natural.
+
+## Cómo funciona
+
+Cuando hablas con Kody en los comentarios de un PR, detecta cuándo estás declarando una convención o preferencia y la guarda automáticamente como una **Memoria**. Las Memorias se aplican luego como contexto de alta prioridad en todas las revisiones de código y conversaciones futuras.
+
+### Enseñanza explícita
+
+Dile directamente a Kody que recuerde algo:
+
+```
+@kody remember: Las claves del payload de la API son camelCase, las columnas de la base de datos son snake_case.
+```
+
+```
+@kody please remember: en la capa de dominio, las entidades nunca deben tener propiedades anulables por defecto.
+```
+
+### Aprendizaje implícito
+
+Expresa una preferencia de forma natural — Kody la capta:
+
+```
+@kody en este repositorio evitamos Lodash y preferimos los métodos nativos de arrays de JS.
+```
+
+```
+@kody estamos migrando de AWS SDK v2 a v3; tratar cualquier nueva importación de v2 como bloqueante.
+```
+
+```
+@kody para verificaciones de existencia en Postgres preferimos EXISTS sobre COUNT(*).
+```
+
+## Qué no guardará Kody
+
+Kody es selectivo respecto a lo que se convierte en memoria:
+
+- Instrucciones temporales ("arregla esto ahora", "omite esto por hoy")
+- Preguntas ("¿cuál es el plazo?")
+- Conversaciones de depuración ("veo un error")
+- Declaraciones vagas sin información accionable
+- Solicitudes con alcance a un solo PR o tarea
+
+## Alcances de memoria
+
+Cada memoria se aplica en un nivel específico:
+
+| Alcance | Ejemplo |
+|---------|---------|
+| **Directorio** | "En `src/components/ui`, usar siempre nuestros tokens del sistema de diseño" |
+| **Repositorio** | "Este repositorio usa arquitectura hexagonal" |
+| **Organización** | "Todos los repositorios usan ESLint flat config" |
+
+## Flujo de aprobación
+
+Si deseas revisar las memorias generadas por IA antes de que entren en vigor, activa la **aprobación de memorias generadas por LLM** en la configuración. Las memorias entrarán en estado pendiente hasta que las apruebes.
+
+## Gestionar memorias
+
+Ve a **Configuración de Revisión de Código** → **Kody Rules** → pestaña **Memorias** para ver, editar o eliminar memorias. También puedes crear memorias manualmente desde la interfaz.
+
+Para más detalles, consulta [Kody Rules — Memorias](/how_to_use/es/code_review/configs/kody_rules#memories).
