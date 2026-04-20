@@ -1,0 +1,149 @@
+---
+title: "Synthetic — オープンソースコーディングモデルの定額サブスクリプション"
+description: "Kimi、DeepSeek、Qwen Coder、GLMなどをバンドルしたSynthetic.newのサブスクリプションベースAPIをKodusに接続する方法を学びます。"
+icon: "infinity"
+---
+
+## Syntheticの動作方法
+
+Syntheticは、専用インフラでオープンソースコーディングLLMを実行し、**OpenAI互換**（およびAnthropic互換）APIを通じて提供するサブスクリプションサービスです。トークンごとの支払いではなく、**定額月額サブスクリプション**を支払い、プラットフォーム上のすべてのモデルをカバーする充実したレート制限バジェットが付きます。
+
+コーディングを多く行う開発者向けに、Claudeの月額$20/$200プランの直接代替として位置づけられています：同じ価格帯、数倍高いレート制限、そしてオープンソースモデルの選択肢があります。
+
+KodusはOpenAI互換エンドポイントを通じてSyntheticに到達するため、アダプターの変更は不要です — BYOKクレデンシャルだけです。
+
+## プランの概要
+
+<Info>
+  価格とレート制限は変更されます。ティアを選択する前に、[synthetic.new/pricing](https://synthetic.new/pricing)で必ず確認してください。
+</Info>
+
+### サブスクリプション（コードレビューに推奨）
+
+| プラン | 価格 | レート制限 |
+| ---- | ----- | ---------- |
+| **月額** | 約$30/月（$1/日） | 5時間ウィンドウあたり約500メッセージ |
+| **エンタープライズ/使用量ベース** | Syntheticに問い合わせ | ペイパートークンオプション |
+
+- すべての標準モデルはサブスクリプションで対象です — `model` フィールドを変更することで任意のモデルを選択できます。
+- レート制限は月単位ではなく、**5時間ローリングウィンドウ**で適用されます — そのウィンドウに収まるよう同時実行数を計画してください。
+- Syntheticはプロンプト/完了データのトレーニングを行わず、14日以内にAPIデータを削除します。
+
+### 推奨モデル
+
+SyntheticはHuggingFaceスタイルのプレフィックス（`hf:org/model`）を使用してモデルを公開しています。コードレビューに強い選択肢：
+
+| モデルID | 備考 |
+| -------- | ----- |
+| `hf:zai-org/GLM-4.6` | GLMファミリー；汎用レビューにバランスの取れた選択肢。 |
+| `hf:moonshotai/Kimi-K2-Instruct` | 長コンテキストKimi K2 — 大きなPRに最適。 |
+| `hf:Qwen/Qwen3-Coder-480B-A35B-Instruct` | 強力な専門コーダー。 |
+| `hf:deepseek-ai/DeepSeek-V3.1` | DeepSeek V3.1；強力なエージェント/コーディング動作。 |
+
+完全なカタログは[dev.synthetic.new/docs/openai/models](https://dev.synthetic.new/docs/openai/models)で確認できます。
+
+## APIキーの作成
+
+<Warning>APIを使用するには、アクティブなサブスクリプションを持つSyntheticアカウントが必要です。</Warning>
+
+1. [synthetic.new](https://synthetic.new)にアクセスしてサインアップまたはログインします。
+2. [synthetic.new/pricing](https://synthetic.new/pricing)でプランにサブスクライブします。
+3. 開発者コンソールを開いてAPIキーを作成します。キーをすぐにコピーします — 完全なキーを再度見ることはできません。
+
+## KodusでSyntheticを設定する
+
+主なフローはKodus CloudでのBYOKです。セルフホストインストールでは、第2のオプションとして環境変数を使用できます。
+
+### オプション1 — Kodus CloudでのBYOK（推奨）
+
+1. Kodusウェブ UIで、**設定 → BYOK**を開き、**メイン**モデル（または**フォールバック**）の**編集**をクリックします。
+2. ベースURLと自由テキストのモデル名を入力できるよう、フォームを**カスタム**モードに切り替えます。
+3. フィールドを入力します：
+
+   | フィールド | 値 |
+   | --- | --- |
+   | **プロバイダー** | `OpenAI Compatible` |
+   | **APIキー** | Synthetic APIキー |
+   | **ベースURL** | `https://api.synthetic.new/openai/v1` |
+   | **モデル** | 例：`hf:zai-org/GLM-4.6`（`hf:` プレフィックスと完全なHuggingFaceパスを使用） |
+   | **最大同時リクエスト数** | 大きなPRの5時間バジェットに収まるよう`3〜5`から始める |
+   | **最大出力トークン** | 切り捨てが発生しない限りデフォルトのまま |
+
+4. 保存します。Kodusはエンドポイントに対して検証し、401 / 404があれば即座に表示されます。
+5. 任意のPRを開いてレビューをトリガーします；設定のBYOKステータスバッジは最初の成功した呼び出しで緑になります。
+
+<Tip>
+  500メッセージ/5時間のバジェットはサブスクリプションごとで、PRごとではありません。継続的なレビューを行うチームには、1つの大きなマルチファイルPRがウィンドウを消費しないよう `最大同時リクエスト数` を十分に低く保つか、複数のサブスクリプションに作業を分散させてください。
+</Tip>
+
+<Note>
+  Syntheticを**メイン**として設定し、OpenAIまたはAnthropicキーを**フォールバック**として保持します — 5時間ウィンドウが一杯になったとき、Kodusは自動的にフェイルオーバーしてレビューが継続されます。
+</Note>
+
+### オプション2 — セルフホスト（環境変数）
+
+固定モード（単一グローバルプロバイダー、BYOKなし）でKodusを実行している場合は、APIとワーカーコンテナの `.env` でSyntheticを設定します：
+
+```env
+# Synthetic設定（固定モード）
+API_LLM_PROVIDER_MODEL="hf:zai-org/GLM-4.6"                    # カタログの任意のモデルID
+API_OPENAI_FORCE_BASE_URL="https://api.synthetic.new/openai/v1"
+API_OPEN_AI_API_KEY="your-synthetic-api-key"
+```
+
+<Note>
+  このパスは意図的にBYOKを無効にしているセルフホストKodusインストールにのみ必要です。セルフホストインスタンスでBYOKが有効な場合は、**オプション1**を優先してください — UIベースのフローはクラウドと同じです。
+</Note>
+
+`.env` を編集後、APIとワーカーコンテナを再起動して確認します：
+
+```bash
+docker-compose logs api worker | grep -iE "synthetic|api\.synthetic"
+```
+
+完全なセルフホストセットアップ（ドメイン、セキュリティキー、データベース、Webhook、リバースプロキシ）については、[汎用VMデプロイガイド](https://docs.kodus.io/docs/how_to_deploy/en/deploy_kodus/generic_vm)に従い、LLMブロックのみ上記のものと置き換えてください。
+
+## Syntheticを選ぶ場合
+
+- **主なモデルがオープンソース**（Kimi、DeepSeek、Qwen Coder、GLM）で、プロバイダーごとのトークン費用を管理する代わりに単一の定額請求を希望する場合。
+- **Claude Max（$200/月）とレビュースループットを比較している場合** — $30/月のSyntheticは、同等のコーディングモデルに対して数倍のレート制限バジェットを提供します。
+- **強力なデータ体制が必要な場合** — Syntheticはトレーニングなしと14日間のプロンプト/完了保持を明示しています。
+
+トラフィックがバースト的な場合、またはペイパートークン（Moonshot、Fireworks、Together、Groq）を選択するか、特にGLMファミリーをティア付きコミットで希望する場合は別のサブスクリプション（Z.AI GLMコーディングプラン）を選択してください。
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="5時間ウィンドウ内での429 Too Many Requests">
+    - サブスクリプションバジェットは1時間や月ごとではなく、**5時間ローリングウィンドウ**ごとです。Syntheticダッシュボードで最近送信したリクエスト数を確認します。
+    - ウィンドウのロールフォワードを待つか、BYOKで `最大同時リクエスト数` を下げるか、プランをアップグレード/追加します。
+    - レート制限中もレビューが継続されるよう `フォールバック` BYOKプロバイダーを設定します。
+  </Accordion>
+
+  <Accordion title="401 / 認証エラー">
+    - Syntheticダッシュボードでキーがアクティブでサブスクリプションが最新であることを確認します。
+    - `.env` の値に末尾のスペースや引用符がないことを確認します。
+  </Accordion>
+
+  <Accordion title="モデルが見つからない">
+    - Syntheticは `hf:org/model` 形式を使用します。`hf:` プレフィックスを省略したり異なる大文字小文字を使用すると404になります。
+    - [dev.synthetic.new/docs/openai/models](https://dev.synthetic.new/docs/openai/models)でクロスチェックします。
+  </Accordion>
+
+  <Accordion title="最初の呼び出しで長いコールドスタート">
+    - 一部の大きなモデルは、非アクティブ期間後に最初に使用されるときにコールドスタートする場合があります。
+    - 最初の呼び出しのレイテンシがKodusのヘルスチェックをブロックしている場合は、PRを開く前に小さなテストリクエストを発行してモデルをウォームアップします。
+  </Accordion>
+
+  <Accordion title="接続エラー">
+    - サーバーが `api.synthetic.new` に到達できることを確認します。
+    - APIとワーカーのログで正確な上流エラーを確認します。
+  </Accordion>
+</AccordionGroup>
+
+## 関連リンク
+
+- [Synthetic価格](https://synthetic.new/pricing)
+- [Synthetic APIドキュメント](https://dev.synthetic.new/docs/api/getting-started)
+- [Syntheticモデルカタログ](https://dev.synthetic.new/docs/openai/models)
+- [BYOKの概要](/how_to_use/ja/byok)

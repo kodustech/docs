@@ -1,0 +1,294 @@
+---
+title: "BYOK - Bring Your Own Key（自分のキーを持ち込む）"
+description: "最大限の柔軟性とコスト管理のために独自のAPIキーを設定します。すべての Kodus プランでご利用いただけます。"
+---
+
+BYOK（Bring Your Own Key）は、**すべてのプランで Kodus が LLM を使用するデフォルトの方法**です — Community、Teams、Enterprise を問わず。自分のプロバイダーアカウントを接続し、任意のモデルを選択し、使用した分だけ支払い、プロバイダーのダッシュボードでコストを直接監視できます。Kodus はトークンに上乗せ料金を請求しません。
+
+<Card
+  title="プランとの対応関係"
+  icon="scale-balanced"
+  href="/how_to_use/ja/pricing#byok-is-the-default-across-all-plans"
+>
+  BYOK は Community では無料、Teams では（トークン費用に加えてアクティブ開発者1人あたり月10ドル）で利用可能、Enterprise では2つのオプションのうちの1つです（もう1つは Kodus が管理する APIキー）。
+</Card>
+
+## はじめに
+
+<Steps>
+  <Step title="BYOK 設定にアクセス">
+    [app.kodus.io/organization/byok](https://app.kodus.io/organization/byok) から組織設定に移動します
+  </Step>
+  
+  <Step title="プライマリモデルの設定">
+    メインプロバイダー（OpenAI、Google Gemini、Anthropic など）を選択し、希望するモデルとともに APIキーを入力します
+  </Step>
+  
+  <Step title="フォールバックモデルの設定（推奨）">
+    バックアップとしてセカンダリモデルをセットアップします。プライマリモデルに問題が発生したり利用できなくなった場合、レビューは自動的にフォールバックに切り替わります
+  </Step>
+  
+  <Step title="設定のテスト">
+    Kodus は保存前に両方の APIキーとモデル選択を検証します
+  </Step>
+</Steps>
+
+<Info>
+  **重要:** プライマリプロバイダーがダウンタイムやレート制限を経験した場合でも、継続的なコードレビューを確保するために、常にフォールバックモデルを設定してください。
+</Info>
+
+<Warning>
+  APIキーを安全に保管し、絶対に共有しないでください。使用状況とコストをより適切に追跡するために、Kodus 専用のキーを使用してください。
+</Warning>
+
+## 対応プロバイダー
+
+<Tabs>
+  <Tab title="OpenAI">
+    **おすすめの用途:** 最新の GPT モデルと安定したパフォーマンス
+    
+    **APIキーの取得方法:**
+    1. [OpenAI API Keys](https://platform.openai.com/api-keys) にアクセス
+    2. Kodus 用の新しい APIキーを作成
+    3. OpenAI アカウントに請求情報を追加
+    
+    
+    <Info>
+      OpenAI は優れたモデルの多様性と最も信頼性の高いサービスを提供しています。最良のコストパフォーマンスには GPT-5-mini から始めましょう。
+    </Info>
+  </Tab>
+
+  <Tab title="Google Gemini">
+    **おすすめの用途:** 強力な推論能力を持つ競争力のある価格設定
+    
+    **APIキーの取得方法:**
+    1. [Google AI Studio](https://aistudio.google.com/app/apikey) に移動
+    2. 新しい APIキーを作成
+    3. Google Cloud Console で請求を有効化
+    
+    <Info>
+      Google Gemini は競争力のある価格設定とコード分析タスクでの優れたパフォーマンスを提供します。
+    </Info>
+  </Tab>
+
+  <Tab title="Anthropic Claude">
+    **おすすめの用途:** 詳細な分析と複雑な指示への対応
+    
+    **APIキーの取得方法:**
+    1. [Anthropic Console](https://console.anthropic.com/) にアクセス
+    2. アカウントを作成し、APIキーを生成
+    3. アカウントにクレジットを追加
+    
+    <Info>
+      Claude はコンテキストの理解と優れた指示対応による詳細で思慮深いコードレビューの提供に優れています。
+    </Info>
+  </Tab>
+
+  <Tab title="Novita AI">
+    **おすすめの用途:** 競争力のある価格で最新のオープンソースモデルにアクセス
+    
+    **APIキーの取得方法:**
+    1. [Novita AI](https://novita.ai/) でサインアップ
+    2. API設定に移動
+    3. APIキーを生成
+    
+    <Card
+      title="Novita セットアップガイド"
+      icon="rocket"
+      href="/cookbook/ja/novita"
+    >
+      Novita AI 設定のスクリーンショット付き詳細セットアップ手順。
+    </Card>
+  </Tab>
+
+  <Tab title="OpenRouter">
+    **おすすめの用途:** 透明な価格設定で1つの API を通じて複数のモデルにアクセス
+    
+    **APIキーの取得方法:**
+    1. [OpenRouter](https://openrouter.ai/) でアカウントを作成
+    2. アカウントにクレジットを追加
+    3. 設定で APIキーを生成
+    
+    
+    <Info>
+      OpenRouter は透明な価格設定と隠れたコストなしで、複数のプロバイダーのモデルへのアクセスを提供します。
+    </Info>
+  </Tab>
+
+  <Tab title="カスタムプロバイダー">
+    **おすすめの用途:** Fireworks、Together AI、Groq などの専門プロバイダーや独自のエンドポイントの使用
+    
+    **設定方法:**
+    1. Kodus 設定で「Custom OpenAI-Compatible」を選択
+    2. プロバイダーのベース URL を入力（例: `https://api.fireworks.ai/inference/v1`）
+    3. プロバイダーの APIキーを追加
+    4. プロバイダーの要件に応じてモデル名を指定
+    
+    **人気のカスタムプロバイダー:**
+    - **Fireworks AI:** オープンソースモデルによる高速推論
+    - **Together AI:** オープンソースモデルの競争力のある価格設定  
+    - **Groq:** 超高速な推論速度
+    - **Deepseek:** 専門的なコーディングモデル
+
+    
+    <CardGroup cols={2}>
+      <Card title="Fireworks AI ガイド" href="/cookbook/ja/fireworks" icon="fire">
+        Fireworks AI 連携のセットアップガイド
+      </Card>
+      <Card title="Together AI ガイド" href="/cookbook/ja/together" icon="handshake">
+        コードレビュー用 Together AI の設定
+      </Card>
+    </CardGroup>
+  </Tab>
+</Tabs>
+
+## 推奨・テスト済みモデル
+
+Kodus でのコードレビューに向けて、広範にテストし推奨するモデルは以下の通りです:
+
+<CardGroup cols={2}>
+  <Card title="Gemini 2.5 Pro" icon="crown">
+    **最もテスト済み・推奨**
+    
+    卓越したコード理解、100万以上のトークンコンテキストウィンドウ、最良のコストパフォーマンス比を持つ Google の最新モデル。
+    
+    - **プロバイダー:** Google
+    - **おすすめの用途:** 総合的な優秀性
+  </Card>
+  
+  <Card title="Gemini 2.5 Flash" icon="bolt">
+    **最良のコストパフォーマンス**
+    
+    品質を妥協せず超高速かつコスト効率的。大量処理チームに最適。
+    
+    - **プロバイダー:** Google
+    - **おすすめの用途:** コスト意識の高いチーム
+  </Card>
+  
+  <Card title="Claude 4.5 Sonnet" icon="code">
+    **コードに最適**
+    
+    SWE-Bench で77.2%のパフォーマンスを持つ卓越したコーディング能力。複雑なコードベースの理解に優れています。
+    
+    - **プロバイダー:** Anthropic
+    - **おすすめの用途:** コード品質重視
+  </Card>
+  
+  <Card title="Claude 4.1 Opus" icon="star">
+    **プレミアム品質**
+    
+    最も要求の高いコードレビューと複雑なアーキテクチャ分析向けのトップティアモデル。
+    
+    - **プロバイダー:** Anthropic
+    - **おすすめの用途:** エンタープライズプロジェクト
+  </Card>
+  
+  <Card title="GPT-5" icon="sparkles">
+    **最新イノベーション**
+    
+    最先端の機能と競争力のある価格設定を持つ OpenAI の最新モデル。
+    
+    - **プロバイダー:** OpenAI
+    - **おすすめの用途:** 最新機能
+  </Card>
+  
+  <Card title="GPT-5-mini" icon="piggy-bank">
+    **高速で信頼性が高い**
+    
+    OpenAI の速度、コスト、品質の優れたバランス。
+    
+    - **プロバイダー:** OpenAI
+    - **おすすめの用途:** 予算内での信頼性
+  </Card>
+</CardGroup>
+
+<Info>
+  **推奨:** 最良の全体的なエクスペリエンスには **Gemini 2.5 Pro** から始めましょう。最もテストが充実したモデルで、優れた品質と優れた価格を提供します。
+</Info>
+
+## ベストプラクティス
+
+### セキュリティ
+
+<CardGroup cols={2}>
+  <Card title="専用キー" icon="shield-check">
+    使用状況の追跡とセキュリティ強化のために、Kodus 専用の APIキーを作成してください
+  </Card>
+  <Card title="定期的なローテーション" icon="arrows-rotate">
+    APIキーを定期的にローテーションし、Kodus の設定で更新してください
+  </Card>
+  <Card title="使用状況の監視" icon="chart-bar">
+    異常な使用パターンがないか、プロバイダーのダッシュボードを定期的に確認してください
+  </Card>
+  <Card title="安全な保管" icon="lock">
+    APIキーをコードリポジトリに共有またはコミットしないでください
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="無効な APIキー エラー">
+    **解決方法:**
+    - APIキーが余分なスペースなしに正しくコピーされているか確認
+    - プロバイダーアカウントで請求が有効になっているか確認
+    - APIキーに必要な権限があるか確認
+    - 問題が解決しない場合は、新しい APIキーの生成を試みてください
+  </Accordion>
+
+  <Accordion title="モデルが見つからないエラー">
+    **解決方法:**
+    - モデル名がプロバイダーの正確なフォーマットと一致しているか確認
+    - モデルがあなたの地域で利用可能かどうかを確認
+    - アカウントに指定されたモデルへのアクセス権があるか確認
+    - 問題がモデル固有かどうかをテストするために別のモデルを試してください
+  </Accordion>
+
+  <Accordion title="レート制限の問題">
+    **解決方法:**
+    - プロバイダーのレート制限を確認し、必要に応じてアップグレード
+    - より高いレート制限を持つプロバイダーへの切り替えを検討
+    - 制限を増やすためにプロバイダーサポートに連絡
+    - 許可されている場合は、複数の APIキーで使用量を分散
+  </Accordion>
+
+  <Accordion title="カスタム URL の接続問題">
+    **解決方法:**
+    - ベース URL のフォーマットにプロトコル（https://）が含まれているか確認
+    - エンドポイントが OpenAI 互換 API をサポートしているか確認
+    - curl や Postman などのツールで URL を直接テスト
+    - 接続をブロックするファイアウォールの制限がないことを確認
+  </Accordion>
+
+  <Accordion title="予期せぬ高コスト">
+    **解決方法:**
+    - プロバイダーダッシュボードで使用状況を確認
+    - レート制限が適切に設定されているか確認
+    - よりコスト効率の良いモデルへの切り替えを検討
+    - 急増を早期に検出するための請求アラートを設定
+  </Accordion>
+</AccordionGroup>
+
+## よくある質問
+
+<AccordionGroup>
+  <Accordion title="いつでもプロバイダーを切り替えられますか?">
+    はい。変更は新しいレビューに対して即座に有効になります。
+  </Accordion>
+
+  <Accordion title="APIキーのクレジットがなくなった場合はどうなりますか?">
+    レビューは自動的にフォールバックモデルに切り替わります（設定されている場合）。フォールバックがない場合、クレジットを追加するまでレビューは失敗します。常にフォールバックモデルを設定してください。
+  </Accordion>
+  
+  <Accordion title="プライマリ/フォールバックシステムはどのように機能しますか?">
+    プライマリはデフォルトですべてのレビューを処理します。プライマリが失敗した場合（レート制限、ダウンタイム、エラー）、Kodus は自動的にフォールバックに切り替わります。各レビューを処理するモデルに対してのみ料金が発生します。
+  </Accordion>
+  
+  <Accordion title="プライマリとフォールバックに同じプロバイダーを使用すべきですか?">
+    いいえ。プロバイダー固有の障害から保護するために、異なるプロバイダーを使用してください（例: Google をプライマリ、OpenAI をフォールバック）。
+  </Accordion>
+
+  <Accordion title="APIキーは安全に保管されますか?">
+    はい。キーは保存時および転送時に暗号化されています。平文でのキーのログ記録や保存は行いません。
+  </Accordion>
+</AccordionGroup>
