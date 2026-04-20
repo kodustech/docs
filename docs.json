@@ -76,10 +76,14 @@
                                 "group": "CLI",
                                 "tag": "beta",
                                 "pages": [
-                                    "how_to_use/en/cli/overview",
+                                    "how_to_use/en/cli/introduction",
+                                    "how_to_use/en/cli/getting_started",
+                                    "how_to_use/en/cli/concepts",
                                     "how_to_use/en/cli/commands",
-                                    "how_to_use/en/cli/ci_cd",
-                                    "how_to_use/en/cli/self_hosted"
+                                    "how_to_use/en/cli/ai_agents",
+                                    "how_to_use/en/cli/decision_memory",
+                                    "how_to_use/en/cli/self_hosted",
+                                    "how_to_use/en/cli/troubleshooting"
                                 ]
                             },
                             {
@@ -356,10 +360,14 @@
                                 "group": "CLI",
                                 "tag": "beta",
                                 "pages": [
-                                    "how_to_use/zh/cli/overview",
+                                    "how_to_use/zh/cli/introduction",
+                                    "how_to_use/zh/cli/getting_started",
+                                    "how_to_use/zh/cli/concepts",
                                     "how_to_use/zh/cli/commands",
-                                    "how_to_use/zh/cli/ci_cd",
-                                    "how_to_use/zh/cli/self_hosted"
+                                    "how_to_use/zh/cli/ai_agents",
+                                    "how_to_use/zh/cli/decision_memory",
+                                    "how_to_use/zh/cli/self_hosted",
+                                    "how_to_use/zh/cli/troubleshooting"
                                 ]
                             },
                             {
@@ -617,5 +625,23 @@
         "posthog": {
             "apiKey": "phc_eXdASBHYhvHzYCLktmceTdRKmF3jMLnrH4iCXXUGjJI"
         }
-    }
+    },
+    "redirects": [
+        {
+            "source": "/how_to_use/en/cli/overview",
+            "destination": "/how_to_use/en/cli/introduction"
+        },
+        {
+            "source": "/how_to_use/zh/cli/overview",
+            "destination": "/how_to_use/zh/cli/introduction"
+        },
+        {
+            "source": "/how_to_use/en/cli/ci_cd",
+            "destination": "/how_to_use/en/cli/ai_agents"
+        },
+        {
+            "source": "/how_to_use/zh/cli/ci_cd",
+            "destination": "/how_to_use/zh/cli/ai_agents"
+        }
+    ]
 }
