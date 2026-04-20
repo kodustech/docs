@@ -33,10 +33,6 @@
                                 ]
                             },
                             {
-                                "group": "Workspace",
-                                "pages": ["how_to_use/en/workspace_roles"]
-                            },
-                            {
                                 "group": "Billing & Licenses",
                                 "pages": [
                                     "how_to_use/en/pricing",
@@ -119,6 +115,7 @@
                             {
                                 "group": "Security",
                                 "pages": [
+                                    "how_to_use/en/workspace_roles",
                                     {
                                         "group": "Tokens",
                                         "pages": [
@@ -311,10 +308,6 @@
                                 ]
                             },
                             {
-                                "group": "工作区",
-                                "pages": ["how_to_use/zh/workspace_roles"]
-                            },
-                            {
                                 "group": "计费与许可证",
                                 "pages": [
                                     "how_to_use/zh/pricing",
@@ -397,6 +390,7 @@
                             {
                                 "group": "安全",
                                 "pages": [
+                                    "how_to_use/zh/workspace_roles",
                                     {
                                         "group": "令牌",
                                         "pages": [
