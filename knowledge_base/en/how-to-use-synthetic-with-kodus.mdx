@@ -56,21 +56,19 @@ The primary flow is BYOK on Kodus Cloud. Self-hosted installs can use environmen
 
 ### Option 1 — BYOK on Kodus Cloud (recommended)
 
-1. In the Kodus web UI, open **Settings → BYOK** and click **Edit** on the **Main** model (or **Fallback**).
-2. Toggle the form into **Custom** mode so you can enter a base URL and a free-text model name.
-3. Fill the fields:
+1. In the Kodus web UI, open **Settings → BYOK** ([app.kodus.io/organization/byok](https://app.kodus.io/organization/byok)).
+2. Synthetic isn't in the curated catalog — click **Configure manually** at the bottom of the model list. Use `?slot=fallback` in the URL if configuring a fallback instead of the main model.
+3. Fill the wizard:
 
    | Field | Value |
    | --- | --- |
    | **Provider** | `OpenAI Compatible` |
-   | **API Key** | your Synthetic API key |
    | **Base URL** | `https://api.synthetic.new/openai/v1` |
    | **Model** | e.g. `hf:zai-org/GLM-4.6` (use the `hf:` prefix and the full HuggingFace path) |
-   | **Max Concurrent Requests** | start at `3–5` to fit the 5-hour budget on bigger PRs |
-   | **Max Output Tokens** | leave default unless you hit truncation |
+   | **API Key** | your Synthetic API key |
+   | **Max Concurrent Requests** | start at `3–5` to fit the 5-hour budget on bigger PRs (under Advanced settings) |
 
-4. Save. Kodus validates against the endpoint and surfaces any 401 / 404 immediately.
-5. Open any PR to trigger a review; the BYOK status badge in Settings turns green on the first successful call.
+4. Click **Test & save**. Kodus probes the endpoint and persists the config on success. 401 means the key is wrong; 404 usually means the base URL or model path is wrong.
 
 <Tip>
   The 500-messages-per-5-hours budget is per subscription, not per PR. For teams doing heavy continuous review, keep `Max Concurrent Requests` low enough that one big multi-file PR doesn't eat the window, or split the work across multiple subscriptions.

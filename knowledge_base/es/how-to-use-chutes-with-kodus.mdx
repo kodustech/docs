@@ -44,33 +44,31 @@ Chutes usa identificadores estilo HuggingFace `org/model`, a veces con un sufijo
 
 Consulta la lista en vivo y los precios actuales en [llm.chutes.ai/v1/models](https://llm.chutes.ai/v1/models).
 
-## Crear una clave API
+## Crear una clave de API
 
 <Warning>Se requiere una cuenta de Chutes con una suscripción activa (o saldo de pago por uso).</Warning>
 
 1. Ve a [chutes.ai](https://chutes.ai) y crea una cuenta.
 2. Suscríbete a un nivel en [chutes.ai/pricing](https://chutes.ai/pricing), o habilita el pago por uso si lo prefieres.
-3. Abre la consola de desarrollador y crea una clave API. Cópiala de inmediato.
+3. Abre la consola de desarrollador y crea una clave de API. Cópiala de inmediato.
 
 ## Configurar Chutes en Kodus
 
 ### Opción 1 — BYOK en Kodus Cloud (recomendado)
 
-1. En la interfaz web de Kodus, abre **Configuración → BYOK** y haz clic en **Editar** en el modelo **Principal** (o **Respaldo**).
-2. Cambia el formulario al modo **Personalizado** para poder ingresar una URL base y un nombre de modelo libre.
-3. Completa los campos:
+1. En la interfaz web de Kodus, abre **Configuración → BYOK** ([app.kodus.io/organization/byok](https://app.kodus.io/organization/byok)).
+2. Chutes no está en el catálogo curado — haz clic en **Configure manually** al final de la lista de modelos. Usa `?slot=fallback` en la URL si estás configurando un respaldo en lugar del modelo principal.
+3. Completa el asistente:
 
    | Campo | Valor |
-   | ----- | ----- |
+   | --- | --- |
    | **Proveedor** | `OpenAI Compatible` |
-   | **Clave API** | tu clave API de Chutes |
-   | **URL Base** | `https://llm.chutes.ai/v1` |
+   | **URL base** | `https://llm.chutes.ai/v1` |
    | **Modelo** | por ejemplo, `deepseek-ai/DeepSeek-V3-0324-TEE` |
-   | **Máx. de Solicitudes Concurrentes** | `3–5` es un inicio seguro; aumenta si no alcanzas el cap |
-   | **Máx. de Tokens de Salida** | deja el valor predeterminado a menos que tengas truncamiento |
+   | **Clave de API** | tu clave de API de Chutes |
+   | **Máx. de solicitudes concurrentes** | `3–5` es un inicio seguro; auméntalo si no alcanzas el cap (en configuración avanzada) |
 
-4. Guarda. Kodus valida la clave contra el endpoint y muestra cualquier error 401 / 404 de inmediato.
-5. Abre un PR para activar una revisión; el indicador de estado BYOK se pone verde en la primera llamada exitosa.
+4. Haz clic en **Test & save**. Kodus verifica el endpoint y persiste la configuración si tiene éxito.
 
 <Tip>
   El cap 5× se calcula a partir de los precios por token. Los modelos frontier costosos consumen el cap más rápido que los pequeños — si quieres maximizar las revisiones por dólar, combina Chutes con un modelo más barato (variantes pequeñas de Llama o Qwen) para PRs rutinarios y reserva los modelos frontier para revisiones complejas mediante una regla de Kody o un perfil BYOK separado.

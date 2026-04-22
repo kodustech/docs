@@ -42,7 +42,7 @@ O Chutes usa identificadores no estilo HuggingFace `org/model`, às vezes com um
 | `Qwen/Qwen3-Coder-480B-A35B-Instruct` | Codificador especializado. |
 | `chutes/MiniMaxAI/MiniMax-M2.1-TEE` | Opção de ponta alternativa. |
 
-Veja a lista completa e preços atuais em [llm.chutes.ai/v1/models](https://llm.chutes.ai/v1/models).
+Veja a lista ao vivo e preços atuais em [llm.chutes.ai/v1/models](https://llm.chutes.ai/v1/models).
 
 ## Criando uma Chave de API
 
@@ -56,21 +56,19 @@ Veja a lista completa e preços atuais em [llm.chutes.ai/v1/models](https://llm.
 
 ### Opção 1 — BYOK no Kodus Cloud (recomendado)
 
-1. Na interface do Kodus, abra **Configurações → BYOK** e clique em **Editar** no modelo **Principal** (ou **Fallback**).
-2. Alterne o formulário para o modo **Personalizado** para poder inserir uma URL base e um nome de modelo.
-3. Preencha os campos:
+1. Na interface do Kodus, abra **Configurações → BYOK** ([app.kodus.io/organization/byok](https://app.kodus.io/organization/byok)).
+2. O Chutes não está no catálogo curado — clique em **Configure manually** no final da lista de modelos. Use `?slot=fallback` na URL se estiver configurando um fallback em vez do modelo principal.
+3. Preencha o assistente:
 
    | Campo | Valor |
    | --- | --- |
-   | **Provedor** | `OpenAI Compatible` |
-   | **Chave de API** | sua chave de API do Chutes |
-   | **URL Base** | `https://llm.chutes.ai/v1` |
-   | **Modelo** | ex.: `deepseek-ai/DeepSeek-V3-0324-TEE` |
-   | **Máx. de Requisições Simultâneas** | `3–5` é um bom ponto de partida; aumente se não atingir o limite |
-   | **Máx. de Tokens de Saída** | mantenha o padrão a menos que haja truncamento |
+   | **Provider** | `OpenAI Compatible` |
+   | **Base URL** | `https://llm.chutes.ai/v1` |
+   | **Model** | ex.: `deepseek-ai/DeepSeek-V3-0324-TEE` |
+   | **API Key** | sua chave de API do Chutes |
+   | **Max Concurrent Requests** | `3–5` é um bom ponto de partida; aumente se não atingir o limite (em Advanced settings) |
 
-4. Salve. O Kodus valida a chave no endpoint e exibe qualquer erro 401 / 404 imediatamente.
-5. Abra um PR para acionar uma revisão; o badge de status BYOK fica verde na primeira chamada bem-sucedida.
+4. Clique em **Test & save**. O Kodus sonda o endpoint e persiste a configuração em caso de sucesso.
 
 <Tip>
   O limite 5× é calculado a partir dos preços por token. Modelos de ponta caros consomem o limite mais rapidamente do que os menores — se você quer maximizar revisões por real gasto, combine o Chutes com um modelo mais barato (Llama, variantes menores do Qwen) para PRs rotineiros e reserve os modelos de ponta para revisões complexas via uma regra do Kody ou perfil BYOK separado.
@@ -82,13 +80,13 @@ Veja a lista completa e preços atuais em [llm.chutes.ai/v1/models](https://llm.
 
 ### Opção 2 — Self-hosted (variáveis de ambiente)
 
-Se você executa o Kodus em Modo Fixo (provedor global único, sem BYOK por organização), configure o Chutes no `.env` dos seus containers de API e worker:
+Se você executa o Kodus em Fixed Mode (provedor global único, sem BYOK por organização), configure o Chutes no `.env` dos seus containers de API e worker:
 
 ```env
-# Configuração Chutes (Modo Fixo)
-API_LLM_PROVIDER_MODEL="deepseek-ai/DeepSeek-V3-0324-TEE"   # qualquer ID de modelo do catálogo
+# Chutes configuration (Fixed Mode)
+API_LLM_PROVIDER_MODEL="deepseek-ai/DeepSeek-V3-0324-TEE"   # any model id from the catalog
 API_OPENAI_FORCE_BASE_URL="https://llm.chutes.ai/v1"
-API_OPEN_AI_API_KEY="sua-chave-de-api-chutes"
+API_OPEN_AI_API_KEY="your-chutes-api-key"
 ```
 
 <Note>
@@ -109,7 +107,7 @@ Para a configuração completa self-hosted (domínios, chaves de segurança, ban
 - **Você se preocupa com computação confidencial** — o Chutes oferece variantes `-TEE` que rodam dentro de ambientes de execução confiável, útil se sua postura de conformidade exigir isso.
 - **Você está em volume baixo a médio** e cabe dentro do limite 5× PAYG de um plano barato.
 
-Escolha o Synthetic se quiser uma assinatura fixa mais simples sem matemática de limite por modelo. Escolha o Z.AI se seu modelo preferido é especificamente a família GLM com compromissos por faixas.
+Escolha o Synthetic se quiser uma assinatura fixa mais simples sem matemática de limite por modelo. Escolha o Z.AI se seu modelo preferido for especificamente a família GLM.
 
 ## Solução de problemas
 
@@ -136,7 +134,7 @@ Escolha o Synthetic se quiser uma assinatura fixa mais simples sem matemática d
 
   <Accordion title="Latência lenta ou inconsistente">
     - O Chutes roda em computação descentralizada, então a latência de cauda é maior do que em nuvens dedicadas.
-    - Para revisões sensíveis à latência, prefira provedores dedicados; reserve o Chutes para trabalhos de revisão noturnos ou em lote, ou configure um provedor rápido como `Principal` e o Chutes como `Fallback`.
+    - Para revisões sensíveis à latência, prefira provedores dedicados; reserve o Chutes para trabalhos de revisão noturnos ou em lote, ou configure um provedor rápido como `Main` e o Chutes como `Fallback`.
   </Accordion>
 
   <Accordion title="Erros de conexão">
