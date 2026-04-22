@@ -140,6 +140,17 @@ When Centralized Config is enabled, the source of truth for configuration is the
 
 This preserves the "everything is reviewed and versioned" guarantee while keeping the visual editing experience for rules and messages.
 
+### UI rules and repo rules coexist
+
+Enabling Centralized Config does **not** wipe rules that were previously created in the web UI, and it does **not** prevent new rules from being created through the UI. Both sources feed the same pool of active rules:
+
+- Rules imported from the centralized repository are persisted with status `SYNCED`.
+- Rules created directly in the web UI live alongside them and stay active.
+- At review time, Kodus loads **every active rule** from the database regardless of origin. A rule that exists only in the UI is applied exactly like a rule that exists only in the repo.
+- Rules in status `PENDING_ADD` (a UI/CLI edit that opened a PR not yet merged) are **excluded** from reviews until the PR is merged and the status transitions to `SYNCED`.
+
+In practice: if you bootstrap the centralized repo by hand and it's missing a rule you already had in the UI, that rule keeps running — it just isn't version-controlled in the repo. To bring it under version control, edit it once in the UI (which opens a PR) or use `init` so Kodus bundles every existing rule into the initialization PR.
+
 ## Sync States
 
 Each rule that comes from Centralized Config tracks its lifecycle through a status:

@@ -140,6 +140,17 @@ Cuando la Configuración Centralizada está habilitada, la fuente de verdad para
 
 Esto preserva la garantía de "todo está revisado y versionado" mientras mantiene la experiencia de edición visual para reglas y mensajes.
 
+### Las reglas de la UI y las reglas del repo coexisten
+
+Habilitar la Configuración Centralizada **no** elimina las reglas creadas previamente en la interfaz web, y **no** impide que se creen nuevas reglas desde la UI. Ambas fuentes alimentan el mismo conjunto de reglas activas:
+
+- Las reglas importadas del repositorio centralizado se persisten con estado `SYNCED`.
+- Las reglas creadas directamente en la interfaz web conviven con ellas y permanecen activas.
+- Al momento de la revisión, Kodus carga **todas las reglas activas** de la base de datos sin importar el origen. Una regla que existe solo en la UI se aplica exactamente igual que una regla que existe solo en el repo.
+- Las reglas con estado `PENDING_ADD` (una edición desde UI/CLI que abrió un PR aún no mergeado) están **excluidas** de las revisiones hasta que el PR sea mergeado y el estado pase a `SYNCED`.
+
+En la práctica: si creas el repositorio centralizado manualmente y le falta una regla que ya tenías en la UI, esa regla sigue funcionando — simplemente no queda versionada en el repo. Para llevarla al versionado, edítala una vez desde la UI (lo que abre un PR) o usa `init` para que Kodus empaquete cada regla existente en el PR de inicialización.
+
 ## Estados de Sincronización
 
 Cada regla que proviene de la Configuración Centralizada rastrea su ciclo de vida mediante un estado:
