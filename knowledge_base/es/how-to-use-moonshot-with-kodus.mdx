@@ -103,9 +103,7 @@ El razonamiento está ACTIVADO por defecto para Kimi K2.6 Coding — la tarjeta 
 
   ```json
   {
-    "openaiCompatible": {
-      "thinking": { "type": "disabled" }
-    }
+    "thinking": { "type": "disabled" }
   }
   ```
 
@@ -113,14 +111,12 @@ El razonamiento está ACTIVADO por defecto para Kimi K2.6 Coding — la tarjeta 
 
   ```json
   {
-    "openaiCompatible": {
-      "thinking": { "type": "enabled", "budget_tokens": 25000 }
-    }
+    "thinking": { "type": "enabled", "budget_tokens": 25000 }
   }
   ```
 
 <Note>
-  Tu JSON debe estar envuelto bajo el namespace `openaiCompatible` porque ese es el proveedor activo. Consulta la [documentación principal de BYOK → Sobrescritura con JSON personalizado](/how_to_use/es/byok#custom-json-override) para las reglas completas de namespace.
+  No necesitas envolver en namespace — Kodus auto-envuelve bajo `openaiCompatible` (el provider activo) antes de enviar. Consulta [main BYOK doc → Custom JSON override](/how_to_use/es/byok#custom-json-override) para más detalles.
 </Note>
 
 ### Ajustar la concurrencia

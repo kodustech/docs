@@ -104,9 +104,7 @@ The curated GLM 5.1 card pre-fills **Thinking: Medium**, which for OpenAI-compat
 
   ```json
   {
-    "openaiCompatible": {
-      "thinking": { "type": "enabled", "budget_tokens": 20000 }
-    }
+    "thinking": { "type": "enabled", "budget_tokens": 20000 }
   }
   ```
 
@@ -114,14 +112,12 @@ The curated GLM 5.1 card pre-fills **Thinking: Medium**, which for OpenAI-compat
 
   ```json
   {
-    "openaiCompatible": {
-      "thinking": { "type": "disabled" }
-    }
+    "thinking": { "type": "disabled" }
   }
   ```
 
 <Note>
-  Your JSON must be wrapped under the `openaiCompatible` namespace because that's the active provider. See the [main BYOK doc → Custom JSON override](/how_to_use/en/byok#custom-json-override) for the full namespace rules.
+  No namespace wrapping needed — Kodus auto-wraps under `openaiCompatible` (the active provider) before sending. See the [main BYOK doc → Custom JSON override](/how_to_use/en/byok#custom-json-override) for details.
 </Note>
 
 ### Tuning concurrency

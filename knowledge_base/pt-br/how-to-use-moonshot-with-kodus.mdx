@@ -103,9 +103,7 @@ Reasoning está ON por padrão para o Kimi K2.6 Coding — o card curado pré-pr
 
   ```json
   {
-    "openaiCompatible": {
-      "thinking": { "type": "disabled" }
-    }
+    "thinking": { "type": "disabled" }
   }
   ```
 
@@ -113,14 +111,12 @@ Reasoning está ON por padrão para o Kimi K2.6 Coding — o card curado pré-pr
 
   ```json
   {
-    "openaiCompatible": {
-      "thinking": { "type": "enabled", "budget_tokens": 25000 }
-    }
+    "thinking": { "type": "enabled", "budget_tokens": 25000 }
   }
   ```
 
 <Note>
-  Seu JSON deve estar envolvido sob o namespace `openaiCompatible` porque esse é o provedor ativo. Veja a [documentação principal de BYOK → Sobrescrita por JSON customizado](/how_to_use/pt-br/byok#custom-json-override) para as regras completas de namespace.
+  Não é necessário envolver em namespace — o Kodus faz o auto-wrap sob `openaiCompatible` (o provider ativo) antes de enviar. Veja [main BYOK doc → Custom JSON override](/how_to_use/pt-br/byok#custom-json-override) para detalhes.
 </Note>
 
 ### Ajustar simultaneidade

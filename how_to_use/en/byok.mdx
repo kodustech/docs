@@ -274,28 +274,16 @@ When you pick Low / Medium / High, Kodus translates the level to each provider's
 
 ### Custom JSON override
 
-Picking **Custom** in the Thinking toggle reveals a JSON textarea. Paste a raw object that Kodus merges into the Vercel AI SDK `providerOptions` when it calls the model. Use this when:
+Picking **Custom** in the Thinking toggle reveals a JSON textarea. Paste the provider options directly — **Kodus auto-wraps them under the active provider's namespace**. You don't need to know the Vercel AI SDK routing rules.
 
-- You need a specific `budget_tokens` value for Claude (instead of the preset effort mapping)
+Use this when:
+
+- You need a specific `budgetTokens` value for Claude (instead of the preset effort mapping)
 - You want to enable/disable thinking on a per-model basis for OpenAI-compatible providers
-- The provider ships a new reasoning field Kodus hasn't mapped yet
-- You want to set reasoning fields the presets don't cover (e.g. `reasoningSummary`)
+- You want fields beyond reasoning — **caching, service tier, safety settings, `user` tagging, etc.** The override is merged into `providerOptions`, so any adapter field passes through
+- The provider ships a new field Kodus hasn't wrapped yet
 
-#### The namespace rule
-
-Vercel AI SDK routes provider-specific options via **namespace keys**. Your JSON must wrap fields under the namespace matching the **active provider** in the BYOK config:
-
-| BYOK provider | Namespace key in your JSON |
-| --- | --- |
-| `anthropic` | `anthropic` |
-| `google_gemini` / `google_vertex` | `google` |
-| `openai` | `openai` |
-| `openrouter` | `openrouter` |
-| `openai_compatible` | `openaiCompatible` |
-
-If you use the wrong namespace, the SDK silently drops the options — the call succeeds but your override is ignored.
-
-#### Examples
+#### Examples (paste directly — no namespace needed)
 
 <Tabs>
   <Tab title="Anthropic">
@@ -303,89 +291,77 @@ If you use the wrong namespace, the SDK silently drops the options — the call 
 
     ```json
     {
-      "anthropic": {
-        "thinking": { "type": "enabled", "budgetTokens": 20000 }
-      }
+      "thinking": { "type": "enabled", "budgetTokens": 20000 }
     }
     ```
 
-    Force adaptive thinking with `high` effort (same as picking "High" preset — shown for reference):
+    Enable prompt caching (non-reasoning example):
 
     ```json
     {
-      "anthropic": {
-        "thinking": { "type": "adaptive" },
-        "outputConfig": { "effort": "high" }
-      }
+      "cacheControl": { "type": "ephemeral" }
     }
     ```
   </Tab>
 
   <Tab title="Google Gemini">
-    Set an explicit thinking budget (Gemini 2.5 families use budgets, Gemini 3+ uses levels):
+    Explicit thinking budget (Gemini 2.5) or level (Gemini 3+):
 
     ```json
     {
-      "google": {
-        "thinkingConfig": { "thinkingBudget": 16000 }
-      }
+      "thinkingConfig": { "thinkingBudget": 16000 }
     }
     ```
 
-    Force thinking level:
+    Adjust safety settings:
 
     ```json
     {
-      "google": {
-        "thinkingConfig": { "thinkingLevel": "high" }
-      }
+      "safetySettings": [
+        { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" }
+      ]
     }
     ```
   </Tab>
 
   <Tab title="OpenAI">
-    Set reasoning effort with a custom summary mode:
+    Reasoning with OpenAI-specific fields:
 
     ```json
     {
-      "openai": {
-        "reasoningEffort": "high",
-        "reasoningSummary": "concise"
-      }
+      "reasoningEffort": "high",
+      "serviceTier": "flex",
+      "store": false,
+      "user": "kodus-review"
     }
     ```
   </Tab>
 
   <Tab title="OpenRouter">
-    Force reasoning effort through the OpenRouter routing layer:
+    Force reasoning + ignore a specific upstream:
 
     ```json
     {
-      "openrouter": {
-        "reasoning": { "effort": "high", "exclude": false }
-      }
+      "reasoning": { "effort": "high" },
+      "ignore": ["deepinfra"]
     }
     ```
   </Tab>
 
   <Tab title="OpenAI-compatible (Kimi, GLM, etc.)">
-    Enable thinking with a Kimi/GLM budget hint:
+    Enable thinking with a budget hint:
 
     ```json
     {
-      "openaiCompatible": {
-        "thinking": { "type": "enabled", "budget_tokens": 25000 }
-      }
+      "thinking": { "type": "enabled", "budget_tokens": 25000 }
     }
     ```
 
-    Explicitly disable thinking (defaults to enabled on these models):
+    Explicitly disable thinking:
 
     ```json
     {
-      "openaiCompatible": {
-        "thinking": { "type": "disabled" }
-      }
+      "thinking": { "type": "disabled" }
     }
     ```
 
@@ -395,12 +371,34 @@ If you use the wrong namespace, the SDK silently drops the options — the call 
   </Tab>
 </Tabs>
 
+#### Going manual with namespaces (power users)
+
+If your JSON already contains a known namespace key at the top level (`anthropic`, `google`, `openai`, `openrouter`, `openaiCompatible`), Kodus leaves it untouched. Useful if you want to mix multiple provider namespaces or be explicit:
+
+```json
+{
+  "openrouter": {
+    "reasoning": { "effort": "high" },
+    "provider": { "order": ["moonshot"], "allow_fallbacks": false }
+  }
+}
+```
+
+Under the hood, these are the namespace mappings Kodus uses:
+
+| BYOK provider | Namespace key |
+| --- | --- |
+| `anthropic` | `anthropic` |
+| `google_gemini` / `google_vertex` | `google` |
+| `openai` | `openai` |
+| `open_router` | `openrouter` |
+| `openai_compatible` / `novita` | `openaiCompatible` |
+
 #### Gotchas
 
-- **Valid JSON only.** Missing commas or trailing commas break the parse and Kodus ignores the override. The form shows a validation error before save.
-- **Wrong namespace = silent no-op.** Pasting `{ "thinking": {...} }` directly (without wrapping under a provider key) does nothing.
-- **Precedence:** the JSON override **fully replaces** what the preset would emit — if you override but miss a field, it's just not sent.
-- **New provider fields:** when Anthropic / Google / OpenAI ship a new reasoning parameter before we update the preset mapper, the JSON override is the escape hatch.
+- **Valid JSON only.** Missing commas or trailing commas break the parse and Kodus ignores the override.
+- **Precedence:** the JSON override **fully replaces** the effort-preset's namespace block — if you override `anthropic.thinking` but forget `anthropic.outputConfig`, that field won't be sent. OpenRouter routing (Pin providers / Allow fallbacks) is the one exception: it deep-merges with your override under `openrouter`.
+- **Unknown provider = no wrap.** If your BYOK provider isn't in the namespace table above, Kodus passes the JSON through as-is. Rare — only applies if you configure a provider Kodus doesn't recognize.
 
 ## Pinning OpenRouter providers
 

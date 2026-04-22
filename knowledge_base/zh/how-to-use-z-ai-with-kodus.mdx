@@ -104,9 +104,7 @@ Z.AI(由智谱 AI 开发)提供 GLM 系列模型。它是少数几家为 API 访
 
   ```json
   {
-    "openaiCompatible": {
-      "thinking": { "type": "enabled", "budget_tokens": 20000 }
-    }
+    "thinking": { "type": "enabled", "budget_tokens": 20000 }
   }
   ```
 
@@ -114,14 +112,12 @@ Z.AI(由智谱 AI 开发)提供 GLM 系列模型。它是少数几家为 API 访
 
   ```json
   {
-    "openaiCompatible": {
-      "thinking": { "type": "disabled" }
-    }
+    "thinking": { "type": "disabled" }
   }
   ```
 
 <Note>
-  您的 JSON 必须包裹在 `openaiCompatible` 命名空间下,因为当前提供商就是它。完整的命名空间规则请见 [主 BYOK 文档 → 自定义 JSON 覆盖](/how_to_use/zh/byok#custom-json-override)。
+  无需命名空间包装 — Kodus 在发送前会在 `openaiCompatible`(当前提供商)下自动包装。详见 [主 BYOK 文档 → 自定义 JSON 覆盖](/how_to_use/zh/byok#custom-json-override)。
 </Note>
 
 ### 调优并发

@@ -272,30 +272,18 @@ Quando você escolhe Low / Medium / High, o Kodus traduz o nível para o formato
   Kimi e GLM atualmente expõem reasoning como um flag único on/off. Escolher Low, Medium ou High emite o mesmo payload (thinking habilitado). Quando suas APIs adicionarem granularidade de nível, o Kodus começará a encaminhá-la.
 </Note>
 
-### Sobrescrita por JSON customizado
+### Sobrescrita via JSON customizado
 
-Escolher **Custom** no toggle Thinking revela uma textarea de JSON. Cole um objeto bruto que o Kodus mescla no `providerOptions` do Vercel AI SDK ao chamar o modelo. Use isso quando:
+Escolher **Custom** no toggle Thinking revela uma textarea de JSON. Cole as opções do provedor diretamente — **o Kodus faz o auto-wrap sob o namespace do provedor ativo**. Você não precisa conhecer as regras de roteamento do Vercel AI SDK.
 
-- Você precisa de um valor específico de `budget_tokens` para o Claude (em vez do mapeamento por effort predefinido)
+Use isso quando:
+
+- Você precisa de um valor específico de `budgetTokens` para o Claude (em vez do mapeamento por effort predefinido)
 - Você quer habilitar/desabilitar thinking por modelo para provedores OpenAI-compatible
-- O provedor lança um novo campo de reasoning que o Kodus ainda não mapeou
-- Você quer definir campos de reasoning que os presets não cobrem (ex.: `reasoningSummary`)
+- Você quer campos além de reasoning — **caching, service tier, safety settings, tagging via `user`, etc.** A sobrescrita é mesclada em `providerOptions`, então qualquer campo do adapter passa direto
+- O provedor lança um novo campo que o Kodus ainda não envolveu
 
-#### A regra de namespace
-
-O Vercel AI SDK roteia opções específicas do provedor via **chaves de namespace**. Seu JSON deve envolver os campos sob o namespace correspondente ao **provedor ativo** na configuração BYOK:
-
-| Provedor BYOK | Chave de namespace no seu JSON |
-| --- | --- |
-| `anthropic` | `anthropic` |
-| `google_gemini` / `google_vertex` | `google` |
-| `openai` | `openai` |
-| `openrouter` | `openrouter` |
-| `openai_compatible` | `openaiCompatible` |
-
-Se você usar o namespace errado, o SDK silenciosamente descarta as opções — a chamada tem sucesso, mas sua sobrescrita é ignorada.
-
-#### Exemplos
+#### Exemplos (cole direto — sem namespace)
 
 <Tabs>
   <Tab title="Anthropic">
@@ -303,89 +291,77 @@ Se você usar o namespace errado, o SDK silenciosamente descarta as opções —
 
     ```json
     {
-      "anthropic": {
-        "thinking": { "type": "enabled", "budgetTokens": 20000 }
-      }
+      "thinking": { "type": "enabled", "budgetTokens": 20000 }
     }
     ```
 
-    Forçar thinking adaptativo com effort `high` (mesmo que escolher o preset "High" — mostrado como referência):
+    Habilitar prompt caching (exemplo não-reasoning):
 
     ```json
     {
-      "anthropic": {
-        "thinking": { "type": "adaptive" },
-        "outputConfig": { "effort": "high" }
-      }
+      "cacheControl": { "type": "ephemeral" }
     }
     ```
   </Tab>
 
   <Tab title="Google Gemini">
-    Definir um budget de thinking explícito (famílias Gemini 2.5 usam budgets, Gemini 3+ usa níveis):
+    Budget de thinking explícito (Gemini 2.5) ou nível (Gemini 3+):
 
     ```json
     {
-      "google": {
-        "thinkingConfig": { "thinkingBudget": 16000 }
-      }
+      "thinkingConfig": { "thinkingBudget": 16000 }
     }
     ```
 
-    Forçar nível de thinking:
+    Ajustar safety settings:
 
     ```json
     {
-      "google": {
-        "thinkingConfig": { "thinkingLevel": "high" }
-      }
+      "safetySettings": [
+        { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" }
+      ]
     }
     ```
   </Tab>
 
   <Tab title="OpenAI">
-    Definir reasoning effort com um modo de resumo customizado:
+    Reasoning com campos específicos da OpenAI:
 
     ```json
     {
-      "openai": {
-        "reasoningEffort": "high",
-        "reasoningSummary": "concise"
-      }
+      "reasoningEffort": "high",
+      "serviceTier": "flex",
+      "store": false,
+      "user": "kodus-review"
     }
     ```
   </Tab>
 
   <Tab title="OpenRouter">
-    Forçar reasoning effort através da camada de roteamento do OpenRouter:
+    Forçar reasoning + ignorar um upstream específico:
 
     ```json
     {
-      "openrouter": {
-        "reasoning": { "effort": "high", "exclude": false }
-      }
+      "reasoning": { "effort": "high" },
+      "ignore": ["deepinfra"]
     }
     ```
   </Tab>
 
   <Tab title="OpenAI-compatible (Kimi, GLM, etc.)">
-    Habilitar thinking com uma dica de budget Kimi/GLM:
+    Habilitar thinking com uma dica de budget:
 
     ```json
     {
-      "openaiCompatible": {
-        "thinking": { "type": "enabled", "budget_tokens": 25000 }
-      }
+      "thinking": { "type": "enabled", "budget_tokens": 25000 }
     }
     ```
 
-    Desabilitar thinking explicitamente (padrão é habilitado nesses modelos):
+    Desabilitar thinking explicitamente:
 
     ```json
     {
-      "openaiCompatible": {
-        "thinking": { "type": "disabled" }
-      }
+      "thinking": { "type": "disabled" }
     }
     ```
 
@@ -395,12 +371,34 @@ Se você usar o namespace errado, o SDK silenciosamente descarta as opções —
   </Tab>
 </Tabs>
 
-#### Armadilhas
+#### Usando namespaces manualmente (usuários avançados)
 
-- **Apenas JSON válido.** Vírgulas faltando ou vírgulas finais quebram o parse e o Kodus ignora a sobrescrita. O formulário exibe um erro de validação antes de salvar.
-- **Namespace errado = no-op silencioso.** Colar `{ "thinking": {...} }` diretamente (sem envolver sob uma chave de provedor) não faz nada.
-- **Precedência:** a sobrescrita JSON **substitui totalmente** o que o preset emitiria — se você sobrescrever mas deixar um campo de fora, ele simplesmente não é enviado.
-- **Novos campos de provedor:** quando Anthropic / Google / OpenAI lançarem um novo parâmetro de reasoning antes de atualizarmos o mapeador de preset, a sobrescrita JSON é a saída de emergência.
+Se seu JSON já contém uma chave de namespace conhecida no nível superior (`anthropic`, `google`, `openai`, `openrouter`, `openaiCompatible`), o Kodus deixa intocado. Útil quando você quer misturar múltiplos namespaces de provedor ou ser explícito:
+
+```json
+{
+  "openrouter": {
+    "reasoning": { "effort": "high" },
+    "provider": { "order": ["moonshot"], "allow_fallbacks": false }
+  }
+}
+```
+
+Nos bastidores, estes são os mapeamentos de namespace que o Kodus usa:
+
+| Provedor BYOK | Chave de namespace |
+| --- | --- |
+| `anthropic` | `anthropic` |
+| `google_gemini` / `google_vertex` | `google` |
+| `openai` | `openai` |
+| `open_router` | `openrouter` |
+| `openai_compatible` / `novita` | `openaiCompatible` |
+
+#### Pegadinhas
+
+- **Apenas JSON válido.** Vírgulas faltando ou vírgulas finais quebram o parse e o Kodus ignora a sobrescrita.
+- **Precedência:** a sobrescrita JSON **substitui totalmente** o bloco de namespace do effort predefinido — se você sobrescrever `anthropic.thinking` mas esquecer `anthropic.outputConfig`, esse campo não será enviado. O roteamento do OpenRouter (Pin providers / Allow fallbacks) é a única exceção: ele faz deep-merge com sua sobrescrita sob `openrouter`.
+- **Provedor desconhecido = sem wrap.** Se seu provedor BYOK não está na tabela de namespace acima, o Kodus passa o JSON como está. Raro — só se aplica se você configurar um provedor que o Kodus não reconhece.
 
 ## Fixando provedores do OpenRouter
 
