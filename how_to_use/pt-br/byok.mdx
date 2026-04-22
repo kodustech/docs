@@ -221,6 +221,10 @@ Quando o modelo que você quer não está na lista curada (endpoint personalizad
     1. Crie uma conta em [OpenRouter](https://openrouter.ai/)
     2. Adicione créditos
     3. Gere uma chave nas configurações
+
+    <Warning>
+      O OpenRouter roteia cada requisição para um provedor upstream diferente por padrão, o que pode causar variação de qualidade e latência entre chamadas. **Fixe upstreams específicos** em Advanced settings → OpenRouter routing para manter o comportamento estável. Veja [Fixando provedores do OpenRouter](#fixando-provedores-do-openrouter).
+    </Warning>
   </Tab>
 
   <Tab title="OpenAI Compatible">
@@ -397,6 +401,62 @@ Se você usar o namespace errado, o SDK silenciosamente descarta as opções —
 - **Namespace errado = no-op silencioso.** Colar `{ "thinking": {...} }` diretamente (sem envolver sob uma chave de provedor) não faz nada.
 - **Precedência:** a sobrescrita JSON **substitui totalmente** o que o preset emitiria — se você sobrescrever mas deixar um campo de fora, ele simplesmente não é enviado.
 - **Novos campos de provedor:** quando Anthropic / Google / OpenAI lançarem um novo parâmetro de reasoning antes de atualizarmos o mapeador de preset, a sobrescrita JSON é a saída de emergência.
+
+## Fixando provedores do OpenRouter
+
+O OpenRouter é um roteador — quando você solicita um modelo (ex.: `moonshotai/kimi-k2.5`), ele encaminha a chamada para um entre vários provedores upstream (Moonshot direto, Together, Groq, Fireworks, Novita…). Cada chamada pode cair em um backend diferente. Isso é conveniente, mas introduz variação silenciosa:
+
+- **Variação de qualidade** — upstreams rodam em precisões diferentes (FP8, INT4, full) e entregam saídas sutilmente diferentes para prompts idênticos
+- **Inconsistência de tool-calling** — alguns backends não suportam function calling da mesma forma, levando a uso de tool malformado
+- **Variação no formato de reasoning** — um upstream respeita `reasoning_effort`, outro só `thinking.enabled`, outro ignora ambos
+- **Oscilação de latência** — o p50 pode saltar de 800ms para 4s entre chamadas conforme o roteamento muda
+- **Surpresas de rate-limit** — você bate na cota de um backend que não escolheu explicitamente
+
+### Como fixar
+
+Quando seu provedor BYOK é o **OpenRouter**, o painel Advanced settings exibe uma seção **OpenRouter routing** com dois campos:
+
+- **Pin providers (in order)** — lista separada por vírgulas com nomes dos upstreams (ex.: `moonshot, together`). O OpenRouter os tenta em ordem e usa o primeiro disponível.
+- **Allow fallbacks** — quando desativado, as requisições falham diretamente se nenhum dos provedores fixados estiver disponível. Quando ativado (padrão), o OpenRouter pode recorrer a qualquer outro upstream que sirva o modelo.
+
+<Tip>
+  Para uma configuração **estável**, fixe um único provedor e desligue os fallbacks (`Pin: moonshot`, `Allow fallbacks: off`). As requisições sempre chegarão ao mesmo upstream ou falharão de forma explícita — sem mudanças silenciosas de qualidade. O trade-off é zero resiliência se esse upstream cair; combine com um BYOK Fallback diferente (ex.: Anthropic) para absorver indisponibilidades.
+</Tip>
+
+<Warning>
+  Os nomes dos upstreams devem corresponder ao catálogo do OpenRouter. Consulte as tags de provedor em [openrouter.ai/docs/features/provider-routing](https://openrouter.ai/docs/features/provider-routing) — valores comuns incluem `moonshot`, `together`, `groq`, `fireworks`, `novita`.
+</Warning>
+
+Nos bastidores, o Kodus emite isto na chamada ao Vercel AI SDK:
+
+```json
+{
+  "openrouter": {
+    "provider": {
+      "order": ["moonshot", "together"],
+      "allow_fallbacks": false
+    }
+  }
+}
+```
+
+### Avançado: sobrescrita via JSON bruto
+
+Se você precisa de campos além de `order` e `allow_fallbacks` (ex.: `ignore`, `data_collection`, `require_parameters`), mude **Thinking** para **Custom** em Advanced settings e cole o payload de roteamento completo — ele é mesclado em `providerOptions` junto com qualquer configuração de reasoning:
+
+```json
+{
+  "openrouter": {
+    "provider": {
+      "order": ["moonshot"],
+      "allow_fallbacks": false,
+      "ignore": ["deepinfra"],
+      "data_collection": "deny"
+    },
+    "reasoning": { "effort": "medium" }
+  }
+}
+```
 
 ## Simultaneidade e limites de taxa
 

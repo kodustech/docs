@@ -221,6 +221,10 @@ When the model you want isn't in the curated list (custom endpoint, self-hosted 
     1. Create an account at [OpenRouter](https://openrouter.ai/)
     2. Add credits
     3. Generate a key in settings
+
+    <Warning>
+      OpenRouter routes each request to a different upstream provider by default, which can cause quality and latency drift between calls. **Pin specific upstreams** under Advanced settings → OpenRouter routing to keep behavior stable. See [Pinning OpenRouter providers](#pinning-openrouter-providers).
+    </Warning>
   </Tab>
 
   <Tab title="OpenAI Compatible">
@@ -397,6 +401,62 @@ If you use the wrong namespace, the SDK silently drops the options — the call 
 - **Wrong namespace = silent no-op.** Pasting `{ "thinking": {...} }` directly (without wrapping under a provider key) does nothing.
 - **Precedence:** the JSON override **fully replaces** what the preset would emit — if you override but miss a field, it's just not sent.
 - **New provider fields:** when Anthropic / Google / OpenAI ship a new reasoning parameter before we update the preset mapper, the JSON override is the escape hatch.
+
+## Pinning OpenRouter providers
+
+OpenRouter is a router — when you request a model (e.g. `moonshotai/kimi-k2.5`), it forwards the call to one of several upstream providers (Moonshot direct, Together, Groq, Fireworks, Novita…). Each call can land on a different backend. That's convenient, but it introduces silent variance:
+
+- **Quality drift** — upstreams run different precisions (FP8, INT4, full) and give subtly different outputs for identical prompts
+- **Tool-calling inconsistency** — some backends don't support function calling the same way, leading to malformed tool use
+- **Reasoning format variance** — one upstream honors `reasoning_effort`, another only `thinking.enabled`, another ignores both
+- **Latency swings** — p50 can jump from 800ms to 4s between calls as routing changes
+- **Rate-limit surprises** — you hit quota on a backend you didn't explicitly choose
+
+### How to pin
+
+When your BYOK provider is **OpenRouter**, the Advanced settings panel shows an **OpenRouter routing** section with two fields:
+
+- **Pin providers (in order)** — comma-separated list of upstream names (e.g. `moonshot, together`). OpenRouter tries them in order and uses the first available.
+- **Allow fallbacks** — when off, requests hard-fail if none of the pinned providers are available. When on (default), OpenRouter can fall back to any other upstream that serves the model.
+
+<Tip>
+  For a **stable** setup, pin a single provider and turn off fallbacks (`Pin: moonshot`, `Allow fallbacks: off`). Requests will always hit the same upstream or fail loudly — no silent quality changes. The tradeoff is zero resilience if that one upstream goes down; pair it with a different BYOK Fallback (e.g. Anthropic) to absorb outages.
+</Tip>
+
+<Warning>
+  Upstream names must match OpenRouter's catalog. Check the provider tags on [openrouter.ai/docs/features/provider-routing](https://openrouter.ai/docs/features/provider-routing) — common values include `moonshot`, `together`, `groq`, `fireworks`, `novita`.
+</Warning>
+
+Under the hood, Kodus emits this into the Vercel AI SDK call:
+
+```json
+{
+  "openrouter": {
+    "provider": {
+      "order": ["moonshot", "together"],
+      "allow_fallbacks": false
+    }
+  }
+}
+```
+
+### Advanced: raw JSON override
+
+If you need fields beyond `order` and `allow_fallbacks` (e.g. `ignore`, `data_collection`, `require_parameters`), switch **Thinking** to **Custom** in Advanced settings and paste the full routing payload — it's merged into `providerOptions` alongside any reasoning config:
+
+```json
+{
+  "openrouter": {
+    "provider": {
+      "order": ["moonshot"],
+      "allow_fallbacks": false,
+      "ignore": ["deepinfra"],
+      "data_collection": "deny"
+    },
+    "reasoning": { "effort": "medium" }
+  }
+}
+```
 
 ## Concurrency and rate limits
 

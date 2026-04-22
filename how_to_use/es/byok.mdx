@@ -221,6 +221,10 @@ Cuando el modelo que quieres no está en la lista curada (endpoint personalizado
     1. Crea una cuenta en [OpenRouter](https://openrouter.ai/)
     2. Agrega créditos
     3. Genera una clave en la configuración
+
+    <Warning>
+      OpenRouter enruta cada solicitud a un proveedor upstream diferente por defecto, lo que puede provocar variación de calidad y latencia entre llamadas. **Fija upstreams específicos** en Advanced settings → OpenRouter routing para mantener un comportamiento estable. Consulta [Fijar proveedores de OpenRouter](#fijar-proveedores-de-openrouter).
+    </Warning>
   </Tab>
 
   <Tab title="OpenAI Compatible">
@@ -397,6 +401,62 @@ Si usas el namespace incorrecto, el SDK descarta silenciosamente las opciones �
 - **Namespace incorrecto = no-op silencioso.** Pegar `{ "thinking": {...} }` directamente (sin envolverlo bajo una clave de proveedor) no hace nada.
 - **Precedencia:** la sobrescritura JSON **reemplaza por completo** lo que emitiría el preset — si sobrescribes pero omites un campo, simplemente no se envía.
 - **Nuevos campos del proveedor:** cuando Anthropic / Google / OpenAI lanzan un nuevo parámetro de razonamiento antes de que actualicemos el mapeador de presets, la sobrescritura JSON es la salida de escape.
+
+## Fijar proveedores de OpenRouter
+
+OpenRouter es un enrutador — cuando solicitas un modelo (por ejemplo, `moonshotai/kimi-k2.5`), reenvía la llamada a uno de varios proveedores upstream (Moonshot directo, Together, Groq, Fireworks, Novita…). Cada llamada puede caer en un backend diferente. Es conveniente, pero introduce variación silenciosa:
+
+- **Variación de calidad** — los upstreams corren diferentes precisiones (FP8, INT4, completa) y entregan salidas sutilmente distintas para prompts idénticos
+- **Inconsistencia en tool-calling** — algunos backends no soportan function calling de la misma forma, lo que provoca llamadas a herramientas mal formadas
+- **Variación en el formato de razonamiento** — un upstream respeta `reasoning_effort`, otro solo `thinking.enabled`, otro ignora ambos
+- **Oscilaciones de latencia** — el p50 puede saltar de 800ms a 4s entre llamadas a medida que cambia el enrutamiento
+- **Sorpresas de rate-limit** — alcanzas la cuota en un backend que no elegiste explícitamente
+
+### Cómo fijarlos
+
+Cuando tu proveedor de BYOK es **OpenRouter**, el panel de Advanced settings muestra una sección **OpenRouter routing** con dos campos:
+
+- **Pin providers (in order)** — lista separada por comas de nombres de upstream (por ejemplo, `moonshot, together`). OpenRouter los prueba en orden y usa el primero disponible.
+- **Allow fallbacks** — cuando está desactivado, las solicitudes fallan de forma contundente si ninguno de los proveedores fijados está disponible. Cuando está activado (valor por defecto), OpenRouter puede recurrir a cualquier otro upstream que sirva el modelo.
+
+<Tip>
+  Para una configuración **estable**, fija un único proveedor y desactiva los fallbacks (`Pin: moonshot`, `Allow fallbacks: off`). Las solicitudes siempre impactarán en el mismo upstream o fallarán de forma ruidosa — sin cambios silenciosos de calidad. La contrapartida es cero resiliencia si ese upstream se cae; emparéjalo con un Fallback de BYOK distinto (por ejemplo, Anthropic) para absorber las caídas.
+</Tip>
+
+<Warning>
+  Los nombres de upstream deben coincidir con el catálogo de OpenRouter. Revisa las etiquetas de proveedor en [openrouter.ai/docs/features/provider-routing](https://openrouter.ai/docs/features/provider-routing) — los valores comunes incluyen `moonshot`, `together`, `groq`, `fireworks`, `novita`.
+</Warning>
+
+Internamente, Kodus emite esto en la llamada del Vercel AI SDK:
+
+```json
+{
+  "openrouter": {
+    "provider": {
+      "order": ["moonshot", "together"],
+      "allow_fallbacks": false
+    }
+  }
+}
+```
+
+### Avanzado: sobrescritura con JSON en crudo
+
+Si necesitas campos más allá de `order` y `allow_fallbacks` (por ejemplo, `ignore`, `data_collection`, `require_parameters`), cambia **Thinking** a **Custom** en Advanced settings y pega el payload de enrutamiento completo — se fusiona en `providerOptions` junto con cualquier configuración de razonamiento:
+
+```json
+{
+  "openrouter": {
+    "provider": {
+      "order": ["moonshot"],
+      "allow_fallbacks": false,
+      "ignore": ["deepinfra"],
+      "data_collection": "deny"
+    },
+    "reasoning": { "effort": "medium" }
+  }
+}
+```
 
 ## Concurrencia y límites de tasa
 
