@@ -56,21 +56,19 @@ See the live list and current pricing at [llm.chutes.ai/v1/models](https://llm.c
 
 ### Option 1 — BYOK on Kodus Cloud (recommended)
 
-1. In the Kodus web UI, open **Settings → BYOK** and click **Edit** on the **Main** model (or **Fallback**).
-2. Toggle the form into **Custom** mode so you can enter a base URL and a free-text model name.
-3. Fill the fields:
+1. In the Kodus web UI, open **Settings → BYOK** ([app.kodus.io/organization/byok](https://app.kodus.io/organization/byok)).
+2. Chutes isn't in the curated catalog — click **Configure manually** at the bottom of the model list. Use `?slot=fallback` in the URL if configuring a fallback instead of the main model.
+3. Fill the wizard:
 
    | Field | Value |
    | --- | --- |
    | **Provider** | `OpenAI Compatible` |
-   | **API Key** | your Chutes API key |
    | **Base URL** | `https://llm.chutes.ai/v1` |
    | **Model** | e.g. `deepseek-ai/DeepSeek-V3-0324-TEE` |
-   | **Max Concurrent Requests** | `3–5` is a safe start; raise if you don't hit cap |
-   | **Max Output Tokens** | leave default unless you hit truncation |
+   | **API Key** | your Chutes API key |
+   | **Max Concurrent Requests** | `3–5` is a safe start; raise if you don't hit cap (under Advanced settings) |
 
-4. Save. Kodus validates the key against the endpoint and surfaces any 401 / 404 immediately.
-5. Open a PR to trigger a review; the BYOK status badge turns green on the first successful call.
+4. Click **Test & save**. Kodus probes the endpoint and persists the config on success.
 
 <Tip>
   The 5× cap is computed from per-token prices. Expensive frontier models burn through the cap faster than small ones — if you want to maximize reviews per dollar, pair Chutes with a cheaper model (Llama, Qwen smaller variants) for routine PRs and save the frontier models for complex reviews via a Kody rule or separate BYOK profile.

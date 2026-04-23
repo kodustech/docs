@@ -6,9 +6,9 @@ icon: "infinity"
 
 ## Como o Synthetic funciona
 
-O Synthetic é um serviço por assinatura que executa LLMs de codificação open-source em infraestrutura dedicada e os serve por uma API **compatível com OpenAI** (e Anthropic). Em vez de pagar por token, você paga uma **assinatura mensal fixa** e obtém um orçamento generoso de limite de taxa cobrindo todos os modelos da plataforma.
+O Synthetic é um serviço por assinatura que executa LLMs de codificação open-source em infraestrutura dedicada e os serve por uma API **compatível com OpenAI** (e compatível com Anthropic). Em vez de pagar por token, você paga uma **assinatura mensal fixa** e obtém um orçamento generoso de limite de taxa cobrindo todos os modelos da plataforma.
 
-É posicionado como uma alternativa direta aos planos de $20/mês e $200/mês do Claude para desenvolvedores que fazem muito código: o mesmo ponto de preço, limites de taxa várias vezes maiores, e sua escolha de modelos open-source.
+É posicionado como uma alternativa direta aos planos de $20/mês e $200/mês do Claude para desenvolvedores que fazem muito código: o mesmo ponto de preço, limites de taxa várias vezes maiores e sua escolha de modelos open-source.
 
 O Kodus acessa o Synthetic pelo endpoint compatível com OpenAI, então não há alterações de adaptador — apenas credenciais BYOK.
 
@@ -23,11 +23,11 @@ O Kodus acessa o Synthetic pelo endpoint compatível com OpenAI, então não há
 | Plano | Preço | Limite de taxa |
 | ----- | ----- | -------------- |
 | **Mensal** | ~$30/mês ($1/dia) | ~500 mensagens por janela de 5 horas |
-| **Empresarial / baseado em uso** | contate o Synthetic | opção pay-per-token |
+| **Enterprise / baseado em uso** | contate o Synthetic | opção pay-per-token |
 
 - Todos os modelos padrão estão cobertos pela assinatura — escolha qualquer um alterando o campo `model`.
-- Os limites de taxa são aplicados em uma **janela de 5 horas**, não por mês — planeje a simultaneidade para caber dentro dessa janela.
-- O Synthetic não treina nos seus prompts/completions e exclui dados de API em 14 dias.
+- Os limites de taxa são aplicados em uma **janela deslizante de 5 horas**, não por mês — planeje a simultaneidade para caber dentro dessa janela.
+- O Synthetic não treina em seus prompts/completions e exclui dados de API em 14 dias.
 
 ### Modelos recomendados
 
@@ -35,7 +35,7 @@ O Synthetic expõe modelos usando um prefixo no estilo HuggingFace (`hf:org/mode
 
 | ID do modelo | Notas |
 | ------------ | ----- |
-| `hf:zai-org/GLM-4.6` | Família GLM; equilibrado para revisão geral. |
+| `hf:zai-org/GLM-4.6` | Família GLM; equilibrado para revisão de propósito geral. |
 | `hf:moonshotai/Kimi-K2-Instruct` | Kimi K2 de contexto longo — ótimo em PRs grandes. |
 | `hf:Qwen/Qwen3-Coder-480B-A35B-Instruct` | Codificador especializado poderoso. |
 | `hf:deepseek-ai/DeepSeek-V3.1` | DeepSeek V3.1; forte comportamento agêntico/de codificação. |
@@ -46,7 +46,7 @@ Veja o catálogo completo em [dev.synthetic.new/docs/openai/models](https://dev.
 
 <Warning>Uma conta Synthetic com assinatura ativa é necessária para usar a API.</Warning>
 
-1. Vá para [synthetic.new](https://synthetic.new) e crie uma conta ou faça login.
+1. Vá para [synthetic.new](https://synthetic.new) e cadastre-se ou faça login.
 2. Assine um plano em [synthetic.new/pricing](https://synthetic.new/pricing).
 3. Abra o console de desenvolvedor e crie uma chave de API. Copie-a imediatamente — você não verá a chave completa novamente.
 
@@ -56,39 +56,37 @@ O fluxo principal é BYOK no Kodus Cloud. Instalações self-hosted podem usar v
 
 ### Opção 1 — BYOK no Kodus Cloud (recomendado)
 
-1. Na interface do Kodus, abra **Configurações → BYOK** e clique em **Editar** no modelo **Principal** (ou **Fallback**).
-2. Alterne o formulário para o modo **Personalizado** para poder inserir uma URL base e um nome de modelo.
-3. Preencha os campos:
+1. Na interface do Kodus, abra **Configurações → BYOK** ([app.kodus.io/organization/byok](https://app.kodus.io/organization/byok)).
+2. O Synthetic não está no catálogo curado — clique em **Configure manually** no final da lista de modelos. Use `?slot=fallback` na URL se estiver configurando um fallback em vez do modelo principal.
+3. Preencha o assistente:
 
    | Campo | Valor |
    | --- | --- |
-   | **Provedor** | `OpenAI Compatible` |
-   | **Chave de API** | sua chave de API do Synthetic |
-   | **URL Base** | `https://api.synthetic.new/openai/v1` |
-   | **Modelo** | ex.: `hf:zai-org/GLM-4.6` (use o prefixo `hf:` e o caminho completo do HuggingFace) |
-   | **Máx. de Requisições Simultâneas** | comece com `3–5` para caber no orçamento de 5 horas em PRs maiores |
-   | **Máx. de Tokens de Saída** | mantenha o padrão a menos que haja truncamento |
+   | **Provider** | `OpenAI Compatible` |
+   | **Base URL** | `https://api.synthetic.new/openai/v1` |
+   | **Model** | ex.: `hf:zai-org/GLM-4.6` (use o prefixo `hf:` e o caminho completo do HuggingFace) |
+   | **API Key** | sua chave de API do Synthetic |
+   | **Max Concurrent Requests** | comece com `3–5` para caber no orçamento de 5 horas em PRs maiores (em Advanced settings) |
 
-4. Salve. O Kodus valida no endpoint e exibe qualquer erro 401 / 404 imediatamente.
-5. Abra qualquer PR para acionar uma revisão; o badge de status BYOK nas Configurações fica verde na primeira chamada bem-sucedida.
+4. Clique em **Test & save**. O Kodus sonda o endpoint e persiste a configuração em caso de sucesso. 401 significa que a chave está errada; 404 geralmente significa que a URL base ou o caminho do modelo está errado.
 
 <Tip>
-  O orçamento de 500 mensagens por 5 horas é por assinatura, não por PR. Para times que fazem revisões contínuas pesadas, mantenha o `Máx. de Requisições Simultâneas` baixo o suficiente para que um PR grande com vários arquivos não consuma toda a janela, ou distribua o trabalho entre múltiplas assinaturas.
+  O orçamento de 500 mensagens por 5 horas é por assinatura, não por PR. Para times que fazem revisões contínuas pesadas, mantenha o `Max Concurrent Requests` baixo o suficiente para que um PR grande com vários arquivos não consuma toda a janela, ou distribua o trabalho entre múltiplas assinaturas.
 </Tip>
 
 <Note>
-  Configure o Synthetic como **Principal** e mantenha uma chave OpenAI ou Anthropic como **Fallback** — quando a janela de 5 horas se esgotar, o Kodus realiza o failover automaticamente e as revisões continuam fluindo.
+  Configure o Synthetic como **Main** e mantenha uma chave OpenAI ou Anthropic como **Fallback** — quando a janela de 5 horas se esgotar, o Kodus realiza o failover automaticamente e as revisões continuam fluindo.
 </Note>
 
 ### Opção 2 — Self-hosted (variáveis de ambiente)
 
-Se você executa o Kodus em Modo Fixo (provedor global único, sem BYOK por organização), configure o Synthetic no `.env` dos seus containers de API e worker:
+Se você executa o Kodus em Fixed Mode (provedor global único, sem BYOK por organização), configure o Synthetic no `.env` dos seus containers de API e worker:
 
 ```env
-# Configuração Synthetic (Modo Fixo)
-API_LLM_PROVIDER_MODEL="hf:zai-org/GLM-4.6"                    # qualquer ID de modelo do catálogo
+# Synthetic configuration (Fixed Mode)
+API_LLM_PROVIDER_MODEL="hf:zai-org/GLM-4.6"                    # any model id from the catalog
 API_OPENAI_FORCE_BASE_URL="https://api.synthetic.new/openai/v1"
-API_OPEN_AI_API_KEY="sua-chave-de-api-synthetic"
+API_OPEN_AI_API_KEY="your-synthetic-api-key"
 ```
 
 <Note>
@@ -109,14 +107,14 @@ Para a configuração completa self-hosted (domínios, chaves de segurança, ban
 - **Você está comparando com o Claude Max ($200/mês)** em termos de throughput de revisão — o Synthetic a $30/mês oferece várias vezes o orçamento de limite de taxa para modelos de codificação igualmente capazes.
 - **Você quer uma boa postura de dados** — o Synthetic é explícito sobre não-treinamento e retenção de prompts/completions por 14 dias.
 
-Escolha pay-per-token (Moonshot, Fireworks, Together, Groq) se seu tráfego é variável, ou uma assinatura diferente (Z.AI GLM Coding Plan) se você especificamente quer a família GLM com compromissos por faixas.
+Escolha pay-per-token (Moonshot, Fireworks, Together, Groq) se seu tráfego for variável, ou uma assinatura diferente (Z.AI GLM Coding Plan) se você especificamente quer a família GLM com compromissos por faixas.
 
 ## Solução de problemas
 
 <AccordionGroup>
   <Accordion title="429 Too Many Requests dentro da janela de 5 horas">
-    - O orçamento da assinatura é por **janela de 5 horas**, não por hora ou por mês. Verifique quantas requisições você enviou recentemente no painel do Synthetic.
-    - Aguarde a janela avançar, reduza `Máx. de Requisições Simultâneas` no BYOK, ou faça upgrade/empilhe planos.
+    - O orçamento da assinatura é por **janela deslizante de 5 horas**, não por hora ou por mês. Verifique quantas requisições você enviou recentemente no painel do Synthetic.
+    - Aguarde a janela avançar, reduza `Max Concurrent Requests` no BYOK, ou faça upgrade/empilhe planos.
     - Configure um provedor BYOK de `Fallback` para que as revisões continuem funcionando enquanto você está com a taxa limitada.
   </Accordion>
 

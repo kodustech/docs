@@ -42,13 +42,13 @@ Synthetic expone modelos usando un prefijo estilo HuggingFace (`hf:org/model`). 
 
 Consulta el catálogo completo en [dev.synthetic.new/docs/openai/models](https://dev.synthetic.new/docs/openai/models).
 
-## Crear una clave API
+## Crear una clave de API
 
 <Warning>Se requiere una cuenta de Synthetic con una suscripción activa para usar la API.</Warning>
 
 1. Ve a [synthetic.new](https://synthetic.new) y regístrate o inicia sesión.
 2. Suscríbete a un plan en [synthetic.new/pricing](https://synthetic.new/pricing).
-3. Abre la consola de desarrollador y crea una clave API. Cópiala de inmediato — no verás la clave completa nuevamente.
+3. Abre la consola de desarrollador y crea una clave de API. Cópiala de inmediato — no verás la clave completa nuevamente.
 
 ## Configurar Synthetic en Kodus
 
@@ -56,24 +56,22 @@ El flujo principal es BYOK en Kodus Cloud. Las instalaciones con alojamiento aut
 
 ### Opción 1 — BYOK en Kodus Cloud (recomendado)
 
-1. En la interfaz web de Kodus, abre **Configuración → BYOK** y haz clic en **Editar** en el modelo **Principal** (o **Respaldo**).
-2. Cambia el formulario al modo **Personalizado** para poder ingresar una URL base y un nombre de modelo libre.
-3. Completa los campos:
+1. En la interfaz web de Kodus, abre **Configuración → BYOK** ([app.kodus.io/organization/byok](https://app.kodus.io/organization/byok)).
+2. Synthetic no está en el catálogo curado — haz clic en **Configure manually** al final de la lista de modelos. Usa `?slot=fallback` en la URL si estás configurando un respaldo en lugar del modelo principal.
+3. Completa el asistente:
 
    | Campo | Valor |
-   | ----- | ----- |
+   | --- | --- |
    | **Proveedor** | `OpenAI Compatible` |
-   | **Clave API** | tu clave API de Synthetic |
-   | **URL Base** | `https://api.synthetic.new/openai/v1` |
+   | **URL base** | `https://api.synthetic.new/openai/v1` |
    | **Modelo** | por ejemplo, `hf:zai-org/GLM-4.6` (usa el prefijo `hf:` y la ruta completa de HuggingFace) |
-   | **Máx. de Solicitudes Concurrentes** | comienza con `3–5` para ajustarse al presupuesto de 5 horas en PRs más grandes |
-   | **Máx. de Tokens de Salida** | deja el valor predeterminado a menos que tengas truncamiento |
+   | **Clave de API** | tu clave de API de Synthetic |
+   | **Máx. de solicitudes concurrentes** | comienza con `3–5` para ajustarse al presupuesto de 5 horas en PRs más grandes (en configuración avanzada) |
 
-4. Guarda. Kodus valida contra el endpoint y muestra cualquier error 401 / 404 de inmediato.
-5. Abre cualquier PR para activar una revisión; el indicador de estado BYOK en Configuración se pone verde en la primera llamada exitosa.
+4. Haz clic en **Test & save**. Kodus verifica el endpoint y persiste la configuración si tiene éxito. 401 significa que la clave es incorrecta; 404 suele significar que la URL base o la ruta del modelo son incorrectas.
 
 <Tip>
-  El presupuesto de 500 mensajes cada 5 horas es por suscripción, no por PR. Para equipos que hacen revisión continua intensa, mantén las `Solicitudes Concurrentes Máximas` lo suficientemente bajas para que un PR grande con múltiples archivos no consuma toda la ventana, o distribuye el trabajo entre varias suscripciones.
+  El presupuesto de 500 mensajes cada 5 horas es por suscripción, no por PR. Para equipos que hacen revisión continua intensa, mantén `Max Concurrent Requests` lo suficientemente bajo para que un PR grande con múltiples archivos no consuma toda la ventana, o distribuye el trabajo entre varias suscripciones.
 </Tip>
 
 <Note>
@@ -116,7 +114,7 @@ Elige pago por token (Moonshot, Fireworks, Together, Groq) si tu tráfico es irr
 <AccordionGroup>
   <Accordion title="429 Demasiadas solicitudes dentro de la ventana de 5 horas">
     - El presupuesto de la suscripción es por **ventana continua de 5 horas**, no por hora ni por mes. Verifica cuántas solicitudes has enviado recientemente en el panel de Synthetic.
-    - Espera a que avance la ventana, reduce las `Solicitudes Concurrentes Máximas` en BYOK, o actualiza/apila planes.
+    - Espera a que avance la ventana, reduce `Max Concurrent Requests` en BYOK, o actualiza/apila planes.
     - Configura un proveedor BYOK de `Respaldo` para que las revisiones sigan funcionando mientras estás limitado por tasa.
   </Accordion>
 
