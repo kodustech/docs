@@ -3,7 +3,12 @@ title: "Qual é a diferença entre Regras de Revisão e Memórias"
 description: "Entenda quando usar Regras de Revisão vs Memórias no Kody para obter os melhores resultados de revisão de código."
 ---
 
-O Kodus tem dois tipos de Regras do Kody, e saber quando usar cada uma torna suas revisões de código mais eficazes.
+Na interface de Regras do Kody, você configura duas coisas diferentes, e saber quando usar cada uma torna suas revisões de código mais eficazes.
+
+Uma regra prática:
+
+- **Memórias** ensinam ao Kody como seu codebase funciona para que futuras revisões e sugestões sejam mais relevantes.
+- **Regras de Revisão** dizem ao Kody o que ele deve sinalizar quando um PR não estiver batendo com seus padrões.
 
 ## Regras de Revisão
 
@@ -23,16 +28,17 @@ Regras de Revisão são **verificações tradicionais de revisão de código** q
 
 ## Memórias
 
-Memórias são **instruções contextuais persistentes** injetadas em todas as interações — revisões de código, conversas e sugestões de IA. Elas representam as convenções e preferências do seu time.
+Memórias são **instruções contextuais persistentes** injetadas em todas as interações — revisões de código, conversas e sugestões de IA. Elas representam o conhecimento de contexto que o Kody deve carregar sobre seu codebase, suas convenções e preferências.
 
 **Melhores para:**
-- Convenções do time ("usamos camelCase para chaves de API, snake_case para colunas de banco")
-- Preferências tecnológicas ("evite Lodash, prefira métodos nativos de JS")
-- Orientações de migração ("trate qualquer importação do AWS SDK v2 como bloqueador")
-- Princípios arquiteturais ("seguimos estritamente a arquitetura hexagonal")
+- Contexto do codebase ("este repositório espelha uma API de terceiros, então alguns campos externos permanecem intencionalmente em snake_case")
+- Preferências de sugestão ("ao sugerir utilitários JS aqui, prefira métodos nativos em vez de Lodash")
+- Contexto de migração ("o módulo de billing está no meio de uma migração, então prefira mudanças incrementais a refactors amplos")
+- Contexto arquitetural ("este serviço segue arquitetura hexagonal e mantém adapters nas bordas")
 
 **Como funcionam:**
 - Injetadas como contexto de alta prioridade em todos os prompts
+- Melhoram sugestões futuras ao dar ao Kody contexto específico do repositório
 - Criadas via conversa (`@kody remember: ...`) ou manualmente na interface
 - Com escopo de diretório, repositório ou nível de organização
 - O Kody deduplica automaticamente e resolve conflitos entre memórias
@@ -42,11 +48,11 @@ Memórias são **instruções contextuais persistentes** injetadas em todas as i
 | Cenário | Use |
 |---------|-----|
 | Verificar se existe um arquivo de teste para cada serviço | Regra de Revisão |
-| "Nunca usamos Lodash neste repositório" | Memória |
+| "Este repositório espelha uma API externa, então alguns campos de resposta permanecem intencionalmente em snake_case" | Memória |
 | A descrição do PR deve seguir um template | Regra de Revisão |
-| "Payloads de API usam camelCase" | Memória |
+| "Neste serviço, os testes normalmente ficam ao lado da implementação, não em uma pasta central de testes" | Memória |
 | Sinalizar importações que violam camadas de arquitetura | Regra de Revisão |
-| "Estamos migrando do SDK v2 para v3" | Memória |
+| "O módulo de autenticação está no meio de uma migração, então prefira mudanças incrementais a refactors amplos" | Memória |
 
 ## Posso converter entre elas?
 

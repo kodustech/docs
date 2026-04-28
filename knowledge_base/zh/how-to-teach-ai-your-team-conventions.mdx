@@ -3,22 +3,22 @@ title: "如何教 AI 学习团队的编码约定"
 description: "使用记忆功能通过自然对话让 Kody 学习您的编码偏好、架构决策和团队约定。"
 ---
 
-每个团队都有不成文的规则 — 技术偏好、命名约定、架构决策。您不需要提前记录所有内容，可以通过自然对话教 Kody。
+每个团队都有不成文的上下文 — 技术偏好、命名约定、架构决策、迁移中的特殊情况。你不需要一开始就把这些全部文档化，可以通过自然对话教给 Kody，这样未来的审查会更贴合实际，也能减少那些重复出现但没什么价值的建议。
 
 ## 工作原理
 
-当您在 PR 评论中与 Kody 交谈时，它会检测到您陈述约定或偏好，并自动将其保存为**记忆**。记忆随后作为高优先级上下文应用于所有未来的代码审查和对话。
+当你在 PR 评论中与 Kody 交流时，它会识别你是否在描述代码库上下文或团队偏好，并自动将其保存为**记忆**。这些记忆随后会作为高优先级上下文应用在之后的所有代码审查和对话中。
 
 ### 显式教学
 
 直接告诉 Kody 记住某些内容：
 
 ```
-@kody remember: API payload keys are camelCase, database columns are snake_case.
+@kody remember: this repo mirrors a third-party API, so some payload fields intentionally stay snake_case.
 ```
 
 ```
-@kody please remember: in the domain layer, entities must never have nullable properties by default.
+@kody please remember: this service follows hexagonal architecture and keeps adapters at the edge.
 ```
 
 ### 隐式学习
@@ -26,15 +26,15 @@ description: "使用记忆功能通过自然对话让 Kody 学习您的编码偏
 自然地陈述偏好 — Kody 会捕获：
 
 ```
-@kody in this repo we avoid Lodash and prefer native JS array methods.
+@kody this repo mirrors a third-party API, so some payload fields intentionally stay snake_case.
 ```
 
 ```
-@kody we're migrating from AWS SDK v2 to v3; treat any new v2 import as blocker.
+@kody in this service, tests usually live next to the implementation files rather than in a central test folder.
 ```
 
 ```
-@kody for Postgres existence checks we prefer EXISTS over COUNT(*).
+@kody the billing module is mid-migration, so prefer incremental fixes over broad refactors.
 ```
 
 ## Kody 不会保存的内容
@@ -65,4 +65,4 @@ Kody 对成为记忆的内容有选择性：
 
 前往**代码审查设置** → **Kody 规则** → **记忆**选项卡以查看、编辑或删除记忆。您也可以从 UI 手动创建记忆。
 
-更多详情，请参阅 [Kody 规则 — 记忆](/how_to_use/en/code_review/configs/kody_rules#memories)。
+更多详情，请参阅 [Kody 规则 — 记忆](/how_to_use/zh/code_review/configs/kody_rules#memories)。

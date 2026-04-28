@@ -15,7 +15,7 @@ description: "Kody Rules são diretrizes personalizáveis que sua equipe configu
   allowfullscreen
 ></iframe>
 
-## Dois Tipos de Kody Rules
+## Dois tipos na interface de Kody Rules
 
 As Kody Rules são organizadas em duas categorias, gerenciadas por meio de uma interface com abas nas suas configurações:
 
@@ -29,7 +29,7 @@ As Kody Rules são organizadas em duas categorias, gerenciadas por meio de uma i
   </Tab>
 
   <Tab title="Memórias">
-    Instruções contextuais persistentes que são injetadas em todos os prompts e conversas. As Memórias permitem que Kody aprenda e retenha as convenções de codificação, preferências e decisões arquiteturais da sua equipe.
+    Instruções contextuais persistentes que são injetadas em todos os prompts e conversas. As Memórias permitem que Kody aprenda e retenha como seu codebase funciona para que futuras revisões e sugestões sejam mais relevantes.
 
     - Injetadas como **contexto de alta prioridade** em revisões de código, análise entre arquivos e conversas
     - Criadas via **conversa com Kody** ou **manualmente na interface**
@@ -251,12 +251,13 @@ Aproveite as boas práticas comprovadas instantaneamente:
 
 ## Memórias
 
-Memórias são instruções contextuais persistentes que Kody aprende das conversas e práticas de codificação da sua equipe. Ao contrário das Regras de Revisão que são executadas durante o code review, as Memórias são injetadas em todos os prompts e conversas para fornecer contexto contínuo de alta prioridade.
+Memórias são instruções contextuais persistentes que Kody aprende das conversas e práticas de codificação da sua equipe. Ao contrário das Regras de Revisão que são executadas durante o code review, as Memórias são injetadas em todos os prompts e conversas para fornecer contexto contínuo de alta prioridade e melhorar sugestões futuras.
 
 ### Como as Memórias Funcionam
 
 - **Injetadas em todos os lugares**: As Memórias são incluídas na análise de code review (entre arquivos, salvaguardas, regras no nível de PR) e nas interações conversacionais
 - **Contexto de alta prioridade**: As Memórias são tratadas como orientações de alta prioridade pela IA, garantindo que as convenções da sua equipe sejam aplicadas consistentemente
+- **Melhores sugestões futuras**: As Memórias ajudam o Kody a parar de repetir as mesmas suposições erradas sobre seu repositório
 - **Deduplicação inteligente**: Quando uma nova memória é criada, Kody usa um mecanismo de resolução baseado em LLM para determinar se deve criá-la, ignorá-la (se duplicada) ou atualizar uma memória existente
 
 ### Criando Memórias
@@ -270,25 +271,25 @@ A forma mais natural de criar memórias é por meio de conversa com Kody nos com
 **Explícito** — pedindo diretamente para Kody lembrar:
 
 ```
-@kody remember: API payload keys are camelCase, database columns are snake_case.
+@kody remember: este repositório espelha uma API de terceiros, então alguns campos de payload permanecem intencionalmente em snake_case.
 ```
 
 ```
-@kody please remember: in the domain layer, entities must never have nullable properties by default.
+@kody please remember: este serviço segue arquitetura hexagonal e mantém adapters nas bordas.
 ```
 
 **Implícito** — declarando uma preferência ou convenção que Kody captura:
 
 ```
-@kody in this repo we avoid Lodash and prefer native JS array methods for readability and bundle size.
+@kody este repositório espelha uma API de terceiros, então alguns campos de payload permanecem intencionalmente em snake_case.
 ```
 
 ```
-@kody for existence checks in Postgres we prefer EXISTS over COUNT(*) and over broad LEFT JOIN patterns for performance.
+@kody neste serviço, os testes normalmente ficam ao lado dos arquivos de implementação, não em uma pasta central de testes.
 ```
 
 ```
-@kody we're migrating from AWS SDK v2 to v3; treat any new v2 import as blocker.
+@kody o módulo de billing está no meio de uma migração, então prefira mudanças incrementais a refactors amplos.
 ```
 
 <Info>

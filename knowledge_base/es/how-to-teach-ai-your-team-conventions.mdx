@@ -3,22 +3,22 @@ title: "Cómo enseñarle a la IA las convenciones de codificación de tu equipo"
 description: "Usa Memorias para que Kody aprenda tus preferencias de codificación, decisiones de arquitectura y convenciones del equipo a través de una conversación natural."
 ---
 
-Cada equipo tiene reglas no escritas — preferencias tecnológicas, convenciones de nomenclatura, decisiones de arquitectura. En lugar de documentarlas todas desde el principio, puedes enseñarle a Kody mediante una conversación natural.
+Cada equipo tiene contexto no escrito — preferencias tecnológicas, convenciones de nomenclatura, decisiones de arquitectura, detalles de migración. En lugar de documentarlo todo desde el principio, puedes enseñárselo a Kody mediante una conversación natural para que las futuras revisiones sean más relevantes y desaparezcan las sugerencias repetitivas de poco valor.
 
 ## Cómo funciona
 
-Cuando hablas con Kody en los comentarios de un PR, detecta cuándo estás declarando una convención o preferencia y la guarda automáticamente como una **Memoria**. Las Memorias se aplican luego como contexto de alta prioridad en todas las revisiones de código y conversaciones futuras.
+Cuando hablas con Kody en los comentarios de un PR, detecta cuándo estás declarando contexto del código o una preferencia del equipo y lo guarda automáticamente como una **Memoria**. Las Memorias se aplican luego como contexto de alta prioridad en todas las revisiones de código y conversaciones futuras.
 
 ### Enseñanza explícita
 
 Dile directamente a Kody que recuerde algo:
 
 ```
-@kody remember: Las claves del payload de la API son camelCase, las columnas de la base de datos son snake_case.
+@kody remember: este repositorio refleja una API de terceros, así que algunos campos del payload se mantienen intencionalmente en snake_case.
 ```
 
 ```
-@kody please remember: en la capa de dominio, las entidades nunca deben tener propiedades anulables por defecto.
+@kody please remember: este servicio sigue arquitectura hexagonal y deja los adapters en los bordes.
 ```
 
 ### Aprendizaje implícito
@@ -26,15 +26,15 @@ Dile directamente a Kody que recuerde algo:
 Expresa una preferencia de forma natural — Kody la capta:
 
 ```
-@kody en este repositorio evitamos Lodash y preferimos los métodos nativos de arrays de JS.
+@kody este repositorio refleja una API de terceros, así que algunos campos del payload se mantienen intencionalmente en snake_case.
 ```
 
 ```
-@kody estamos migrando de AWS SDK v2 a v3; tratar cualquier nueva importación de v2 como bloqueante.
+@kody en este servicio, las pruebas suelen vivir junto a los archivos de implementación y no en una carpeta central de tests.
 ```
 
 ```
-@kody para verificaciones de existencia en Postgres preferimos EXISTS sobre COUNT(*).
+@kody el módulo de facturación está a mitad de una migración, así que convienen cambios incrementales y no refactors amplios.
 ```
 
 ## Qué no guardará Kody

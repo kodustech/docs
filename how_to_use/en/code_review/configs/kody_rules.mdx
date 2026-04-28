@@ -15,7 +15,7 @@ description: "Kody Rules are customizable guidelines your team sets up to automa
   allowfullscreen
 ></iframe>
 
-## Two Types of Kody Rules
+## Two Types in the Kody Rules UI
 
 Kody Rules are organized into two categories, managed through a tabbed interface in your settings:
 
@@ -29,7 +29,7 @@ Kody Rules are organized into two categories, managed through a tabbed interface
   </Tab>
 
   <Tab title="Memories">
-    Persistent contextual instructions that are injected across all prompts and conversations. Memories allow Kody to learn and retain your team's coding conventions, preferences, and architectural decisions.
+    Persistent contextual instructions that are injected across all prompts and conversations. Memories allow Kody to learn and retain how your codebase works so future reviews and suggestions are more relevant.
 
     - Injected as **high-priority context** in code reviews, cross-file analysis, and conversations
     - Created via **conversation with Kody** or **manually in the UI**
@@ -251,12 +251,13 @@ Leverage proven best practices instantly:
 
 ## Memories
 
-Memories are persistent contextual instructions that Kody learns from your team's conversations and coding practices. Unlike Review Rules that run during code review, Memories are injected across all prompts and conversations to provide continuous, high-priority context.
+Memories are persistent contextual instructions that Kody learns from your team's conversations and coding practices. Unlike Review Rules that run during code review, Memories are injected across all prompts and conversations to provide continuous, high-priority context and improve future suggestions.
 
 ### How Memories Work
 
 - **Injected everywhere**: Memories are included in code review analysis (cross-file, safeguards, PR-level rules) and in conversational interactions
 - **High-priority context**: Memories are treated as high-priority guidance by the AI, ensuring your team's conventions are consistently applied
+- **Better future suggestions**: Memories help Kody avoid repeating the same mistaken assumptions about your repo
 - **Intelligent deduplication**: When a new memory is created, Kody uses an LLM-based resolution mechanism to determine whether to create it, skip it (if duplicate), or update an existing memory
 
 ### Creating Memories
@@ -270,25 +271,25 @@ The most natural way to create memories is through conversation with Kody in you
 **Explicit** — directly asking Kody to remember:
 
 ```
-@kody remember: API payload keys are camelCase, database columns are snake_case.
+@kody remember: this repo mirrors a third-party API, so some payload fields intentionally stay snake_case.
 ```
 
 ```
-@kody please remember: in the domain layer, entities must never have nullable properties by default.
+@kody please remember: this service follows hexagonal architecture and keeps adapters at the edge.
 ```
 
 **Implicit** — stating a preference or convention that Kody captures:
 
 ```
-@kody in this repo we avoid Lodash and prefer native JS array methods for readability and bundle size.
+@kody this repo mirrors a third-party API, so some payload fields intentionally stay snake_case.
 ```
 
 ```
-@kody for existence checks in Postgres we prefer EXISTS over COUNT(*) and over broad LEFT JOIN patterns for performance.
+@kody in this service, tests usually live next to implementation files rather than in a central test folder.
 ```
 
 ```
-@kody we're migrating from AWS SDK v2 to v3; treat any new v2 import as blocker.
+@kody the billing module is mid-migration, so prefer incremental fixes over broad refactors.
 ```
 
 <Info>
