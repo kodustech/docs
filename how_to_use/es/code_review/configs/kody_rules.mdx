@@ -15,7 +15,7 @@ description: "Las Kody Rules son pautas personalizables que tu equipo configura 
   allowfullscreen
 ></iframe>
 
-## Dos Tipos de Kody Rules
+## Dos tipos en la interfaz de Kody Rules
 
 Las Kody Rules están organizadas en dos categorías, gestionadas a través de una interfaz con pestañas en tu configuración:
 
@@ -29,7 +29,7 @@ Las Kody Rules están organizadas en dos categorías, gestionadas a través de u
   </Tab>
 
   <Tab title="Memorias">
-    Instrucciones contextuales persistentes que se inyectan en todos los prompts y conversaciones. Las Memorias permiten a Kody aprender y retener las convenciones de codificación, preferencias y decisiones arquitectónicas de tu equipo.
+    Instrucciones contextuales persistentes que se inyectan en todos los prompts y conversaciones. Las Memorias permiten a Kody aprender y retener cómo funciona tu código para que las futuras revisiones y sugerencias sean más relevantes.
 
     - Se inyectan como **contexto de alta prioridad** en revisiones de código, análisis entre archivos y conversaciones
     - Se crean vía **conversación con Kody** o **manualmente en la UI**
@@ -251,12 +251,13 @@ Aprovecha las mejores prácticas probadas al instante:
 
 ## Memorias
 
-Las Memorias son instrucciones contextuales persistentes que Kody aprende de las conversaciones y prácticas de codificación de tu equipo. A diferencia de las Reglas de Revisión que se ejecutan durante la revisión de código, las Memorias se inyectan en todos los prompts y conversaciones para proporcionar contexto continuo de alta prioridad.
+Las Memorias son instrucciones contextuales persistentes que Kody aprende de las conversaciones y prácticas de codificación de tu equipo. A diferencia de las Reglas de Revisión que se ejecutan durante la revisión de código, las Memorias se inyectan en todos los prompts y conversaciones para proporcionar contexto continuo de alta prioridad y mejorar futuras sugerencias.
 
 ### Cómo Funcionan las Memorias
 
 - **Inyectadas en todas partes**: Las Memorias se incluyen en el análisis de revisión de código (entre archivos, salvaguardas, reglas a nivel de PR) y en las interacciones conversacionales
 - **Contexto de alta prioridad**: Las Memorias son tratadas como orientación de alta prioridad por la IA, asegurando que las convenciones de tu equipo se apliquen de manera consistente
+- **Mejores sugerencias futuras**: Las Memorias ayudan a Kody a no repetir las mismas suposiciones equivocadas sobre tu repositorio
 - **Deduplicación inteligente**: Cuando se crea una nueva memoria, Kody usa un mecanismo de resolución basado en LLM para determinar si crearla, omitirla (si es duplicada) o actualizar una memoria existente
 
 ### Crear Memorias
@@ -270,25 +271,25 @@ La forma más natural de crear memorias es a través de la conversación con Kod
 **Explícita** — pedir directamente a Kody que recuerde:
 
 ```
-@kody remember: Las claves del payload de la API son camelCase, las columnas de la base de datos son snake_case.
+@kody remember: este repositorio refleja una API de terceros, así que algunos campos del payload se mantienen intencionalmente en snake_case.
 ```
 
 ```
-@kody please remember: en la capa de dominio, las entidades nunca deben tener propiedades nullable por defecto.
+@kody please remember: este servicio sigue arquitectura hexagonal y deja los adapters en los bordes.
 ```
 
 **Implícita** — expresar una preferencia o convención que Kody captura:
 
 ```
-@kody en este repo evitamos Lodash y preferimos los métodos nativos de arrays de JS por legibilidad y tamaño del bundle.
+@kody este repositorio refleja una API de terceros, así que algunos campos del payload se mantienen intencionalmente en snake_case.
 ```
 
 ```
-@kody para las verificaciones de existencia en Postgres preferimos EXISTS sobre COUNT(*) y sobre patrones amplios de LEFT JOIN por rendimiento.
+@kody en este servicio, las pruebas suelen vivir junto a los archivos de implementación y no en una carpeta central de tests.
 ```
 
 ```
-@kody estamos migrando del AWS SDK v2 al v3; trata cualquier nueva importación de v2 como bloqueante.
+@kody el módulo de facturación está a mitad de una migración, así que convienen cambios incrementales y no refactors amplios.
 ```
 
 <Info>

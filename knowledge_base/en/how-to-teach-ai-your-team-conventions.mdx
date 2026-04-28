@@ -3,22 +3,22 @@ title: "How to teach AI your team's coding conventions"
 description: "Use Memories to make Kody learn your coding preferences, architectural decisions, and team conventions through natural conversation."
 ---
 
-Every team has unwritten rules — technology preferences, naming conventions, architectural decisions. Instead of documenting them all upfront, you can teach Kody through natural conversation.
+Every team has unwritten context — technology preferences, naming conventions, architectural decisions, migration details. Instead of documenting them all upfront, you can teach Kody through natural conversation so future reviews are more relevant and repetitive bad suggestions go away.
 
 ## How it works
 
-When you talk to Kody in PR comments, it detects when you're stating a convention or preference and automatically saves it as a **Memory**. Memories are then applied as high-priority context in all future code reviews and conversations.
+When you talk to Kody in PR comments, it detects when you're stating codebase context or a team preference and automatically saves it as a **Memory**. Memories are then applied as high-priority context in all future code reviews and conversations.
 
 ### Explicit teaching
 
 Directly tell Kody to remember something:
 
 ```
-@kody remember: API payload keys are camelCase, database columns are snake_case.
+@kody remember: this repo mirrors a third-party API, so some payload fields intentionally stay snake_case.
 ```
 
 ```
-@kody please remember: in the domain layer, entities must never have nullable properties by default.
+@kody please remember: this service follows hexagonal architecture and keeps adapters at the edge.
 ```
 
 ### Implicit learning
@@ -26,15 +26,15 @@ Directly tell Kody to remember something:
 State a preference naturally — Kody picks it up:
 
 ```
-@kody in this repo we avoid Lodash and prefer native JS array methods.
+@kody this repo mirrors a third-party API, so some payload fields intentionally stay snake_case.
 ```
 
 ```
-@kody we're migrating from AWS SDK v2 to v3; treat any new v2 import as blocker.
+@kody in this service, tests usually live next to the implementation files rather than in a central test folder.
 ```
 
 ```
-@kody for Postgres existence checks we prefer EXISTS over COUNT(*).
+@kody the billing module is mid-migration, so prefer incremental fixes over broad refactors.
 ```
 
 ## What Kody won't save

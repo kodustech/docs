@@ -3,7 +3,12 @@ title: "What is the difference between Review Rules and Memories"
 description: "Understand when to use Review Rules vs Memories in Kody for the best code review results."
 ---
 
-Kodus has two types of Kody Rules, and knowing when to use each one makes your code reviews more effective.
+In the Kody Rules UI, you configure two different things, and knowing when to use each one makes your code reviews more effective.
+
+A useful rule of thumb:
+
+- **Memories** teach Kody how your codebase works so future reviews and suggestions are more relevant.
+- **Review Rules** tell Kody what to flag when a PR does not match your standards.
 
 ## Review Rules
 
@@ -23,16 +28,17 @@ Review Rules are **traditional code review checks** that run during the dedicate
 
 ## Memories
 
-Memories are **persistent contextual instructions** injected across all interactions — code reviews, conversations, and AI suggestions. They represent your team's conventions and preferences.
+Memories are **persistent contextual instructions** injected across all interactions — code reviews, conversations, and AI suggestions. They represent the background knowledge Kody should carry about your codebase, conventions, and preferences.
 
 **Best for:**
-- Team conventions ("we use camelCase for API keys, snake_case for DB columns")
-- Technology preferences ("avoid Lodash, prefer native JS methods")
-- Migration guidance ("treat any AWS SDK v2 import as a blocker")
-- Architectural principles ("we follow hexagonal architecture strictly")
+- Codebase context ("this repo mirrors a third-party API, so some external payload fields intentionally stay snake_case")
+- Suggestion preferences ("when suggesting JS utilities here, prefer native methods over Lodash")
+- Migration context ("the billing module is mid-migration, so prefer incremental fixes over broad refactors")
+- Architectural context ("this service follows hexagonal architecture and keeps adapters at the edge")
 
 **How they work:**
 - Injected as high-priority context in all prompts
+- Improve future suggestions by grounding Kody in repo-specific context
 - Created via conversation (`@kody remember: ...`) or manually in the UI
 - Scoped to directory, repository, or organization level
 - Kody auto-deduplicates and resolves conflicts between memories
@@ -42,11 +48,11 @@ Memories are **persistent contextual instructions** injected across all interact
 | Scenario | Use |
 |----------|-----|
 | Check if a test file exists for every service | Review Rule |
-| "We never use Lodash in this repo" | Memory |
+| "This repo mirrors an external API, so some response fields intentionally stay snake_case" | Memory |
 | PR description must follow a template | Review Rule |
-| "API payloads use camelCase" | Memory |
+| "Tests in this service usually live next to implementation files, not in a central test folder" | Memory |
 | Flag imports that violate architecture layers | Review Rule |
-| "We're migrating from SDK v2 to v3" | Memory |
+| "The auth module is mid-migration, so prefer incremental changes over broad refactors" | Memory |
 
 ## Can I convert between them?
 

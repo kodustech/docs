@@ -15,7 +15,7 @@ description: "Kody 规则是您的团队设置的可自定义指南,用于自动
   allowfullscreen
 ></iframe>
 
-## 两种 Kody 规则类型
+## Kody Rules 界面中的两种类型
 
 Kody 规则分为两个类别，通过设置中的选项卡界面管理：
 
@@ -29,7 +29,7 @@ Kody 规则分为两个类别，通过设置中的选项卡界面管理：
   </Tab>
 
   <Tab title="记忆">
-    持久的上下文指令，注入到所有提示和对话中。记忆允许 Kody 学习和保留团队的编码约定、偏好和架构决策。
+    持久的上下文指令，注入到所有提示和对话中。记忆让 Kody 学习并保留你的代码库是如何工作的，从而让未来的审查和建议更贴合上下文。
 
     - 作为**高优先级上下文**注入到代码审查、跨文件分析和对话中
     - 通过**与 Kody 对话**或**在 UI 中手动**创建
@@ -251,12 +251,13 @@ for (let i = 0; i < items.length; i++) {
 
 ## 记忆
 
-记忆是持久的上下文指令，Kody 从团队的对话和编码实践中学习。与在代码审查期间运行的审查规则不同，记忆被注入到所有提示和对话中，以提供持续的高优先级上下文。
+记忆是持久的上下文指令，Kody 从团队的对话和编码实践中学习。与只在代码审查期间运行的审查规则不同，记忆会被注入到所有提示和对话中，以提供持续的高优先级上下文，并改善未来的建议质量。
 
 ### 记忆的工作原理
 
 - **全面注入**：记忆被包含在代码审查分析（跨文件、安全保障、PR 级规则）和对话交互中
 - **高优先级上下文**：AI 将记忆视为高优先级指导，确保团队约定得到一致应用
+- **未来建议更好**：记忆帮助 Kody 停止反复对仓库做出同样的错误假设
 - **智能去重**：创建新记忆时，Kody 使用基于 LLM 的解析机制来决定是创建、跳过（如果重复）还是更新现有记忆
 
 ### 创建记忆
@@ -270,25 +271,25 @@ for (let i = 0; i < items.length; i++) {
 **显式** — 直接要求 Kody 记住：
 
 ```
-@kody remember: API payload keys are camelCase, database columns are snake_case.
+@kody remember: this repo mirrors a third-party API, so some payload fields intentionally stay snake_case.
 ```
 
 ```
-@kody please remember: in the domain layer, entities must never have nullable properties by default.
+@kody please remember: this service follows hexagonal architecture and keeps adapters at the edge.
 ```
 
 **隐式** — 陈述 Kody 捕获的偏好或约定：
 
 ```
-@kody in this repo we avoid Lodash and prefer native JS array methods for readability and bundle size.
+@kody this repo mirrors a third-party API, so some payload fields intentionally stay snake_case.
 ```
 
 ```
-@kody for existence checks in Postgres we prefer EXISTS over COUNT(*) and over broad LEFT JOIN patterns for performance.
+@kody in this service, tests usually live next to the implementation files rather than in a central test folder.
 ```
 
 ```
-@kody we're migrating from AWS SDK v2 to v3; treat any new v2 import as blocker.
+@kody the billing module is mid-migration, so prefer incremental fixes over broad refactors.
 ```
 
 <Info>
