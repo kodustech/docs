@@ -249,6 +249,69 @@ Aproveite as boas práticas comprovadas instantaneamente:
 - Security: "Proibir uso de hash MD5 inseguro."
 - Maintainability: "Limitar componentes React a menos de 150 linhas."
 
+### Gerenciando a Lista de Regras
+
+Depois que sua organização já tem regras configuradas, a aba Review Rules oferece ferramentas para encontrar, organizar e agir em lote sobre elas.
+
+#### Busca & Filtros
+
+Use a barra de busca no topo da lista para casar com **título, path, instruções e exemplos** das regras (pressione `/` em qualquer ponto da página para focar a busca).
+
+O popover **Filters** refina a lista visível:
+
+- **Sort by** — Recently updated, Severity (high → low) ou A → Z.
+- **View** — escolhe quais escopos aparecem: regras do escopo atual, herdadas de outros diretórios, herdadas do repositório, herdadas do global, e regras desabilitadas.
+- **Origin** — limita por origem da regra: Auto-sync (importadas de `.cursor/rules`, `.codex/rules`, etc.), Onboard, Kody-generated, Library ou Manual.
+- **Status** — `Has sync errors` (regras cuja sincronia com o IDE falhou) e `Paused only` (veja [Pausar regras](#pausar-regras-vs-deletar) abaixo).
+
+<Frame caption="Popover de Filters com as seções Sort by, View, Origin e Status">
+  <img src="/images/kody-rules-filters-popover.png" />
+</Frame>
+
+Um heatmap de severidade acima da lista (ex.: `2 Critical`, `5 High`) mostra a distribuição das regras visíveis e funciona também como filtro de um clique — clique em um chip pra estreitar a lista para aquela severidade, clique de novo pra limpar.
+
+<Frame caption="Os chips de severidade acima da lista funcionam como filtros de um clique">
+  <img src="/images/kody-rules-severity-heatmap.png" />
+</Frame>
+
+Os filtros ativos aparecem como chips removíveis acima da lista; clique em `Clear all` para resetar tudo de uma vez.
+
+#### Pausar regras vs deletar
+
+Cada regra tem um status que controla se ela roda durante os code reviews:
+
+| Status | Efeito | Quando usar |
+|--------|--------|-------------|
+| **Active** | A regra roda em todo PR aplicável. | Padrão para qualquer regra que você quer aplicada. |
+| **Paused** | A regra continua na lista, mas é ignorada nos reviews. | Silenciar temporariamente uma regra ruidosa, gatear durante um refactor, testar mudanças sem perder a definição. |
+| **Deleted** | A regra é removida e não aplica mais. | Permanente; some da lista. |
+
+Pausar é reversível — uma regra pausada mantém toda a definição e histórico, e ao retomar ela volta a rodar instantaneamente. Deletar é permanente.
+
+#### Ações em lote
+
+Para repositórios com dezenas ou centenas de regras, ações em lote permitem operar em várias de uma vez.
+
+1. **Marque o checkbox** em qualquer card de regra para iniciar uma seleção. Uma toolbar aparece no topo da lista com a contagem e as ações disponíveis.
+2. A partir dela você pode:
+   - **Select all visible (N)** — estende a seleção para toda regra elegível visível no momento (filtros e busca são respeitados, então pode estreitar antes e depois selecionar tudo).
+   - **Clear** — limpa a seleção.
+   - **Pause N** — pausa toda regra selecionada que está Active. Só aparece quando há pelo menos uma regra pausável na seleção.
+   - **Resume N** — volta toda regra selecionada que está pausada para Active. Só aparece quando há pelo menos uma regra pausada na seleção.
+   - **Delete N** — deleta permanentemente a seleção. Uma modal de confirmação lista os títulos das regras que serão removidas; a ação não pode ser desfeita.
+
+<Frame caption="A toolbar de bulk actions aparece quando uma ou mais regras são selecionadas">
+  <img src="/images/kody-rules-bulk-toolbar.png" />
+</Frame>
+
+<Frame caption="A modal de confirmação de delete lista os títulos selecionados antes da ação destrutiva">
+  <img src="/images/kody-rules-bulk-delete-modal.png" />
+</Frame>
+
+<Info>
+  Regras herdadas (com badge `INHERITED`, vindas de um escopo pai) não podem ser selecionadas em lote a partir de um escopo filho — para deletá-las ou pausá-las, navegue até o escopo onde foram originalmente definidas.
+</Info>
+
 ## Memórias
 
 Memórias são instruções contextuais persistentes que Kody aprende das conversas e práticas de codificação da sua equipe. Ao contrário das Regras de Revisão que são executadas durante o code review, as Memórias são injetadas em todos os prompts e conversas para fornecer contexto contínuo de alta prioridade e melhorar sugestões futuras.
