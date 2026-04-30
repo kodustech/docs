@@ -249,6 +249,69 @@ Leverage proven best practices instantly:
 - Security: "Disallow use of insecure MD5 hashing."
 - Maintainability: "Limit React components to less than 150 lines."
 
+### Managing the Rules List
+
+Once you have rules in place, the Review Rules tab gives you tools to find, organize, and act on them in bulk.
+
+#### Search & Filters
+
+Use the search bar at the top of the list to match against rule **titles, paths, instructions, and example snippets** (press `/` anywhere on the page to focus it).
+
+The **Filters** popover refines the visible list:
+
+- **Sort by** — Recently updated, Severity (high → low), or A → Z.
+- **View** — toggle which scopes show up: rules in the current scope, inherited from other directories, inherited from the repository, inherited from global, and disabled rules.
+- **Origin** — limit to rules from a specific source: Auto-sync (imported from `.cursor/rules`, `.codex/rules`, etc.), Onboard, Kody-generated, Library, or Manual.
+- **Status** — `Has sync errors` (rules whose IDE-sync ran into issues) and `Paused only` (see [Pausing rules](#pausing-rules-vs-deleting) below).
+
+<Frame caption="Filters popover with Sort by, View, Origin and Status sections">
+  <img src="/images/kody-rules-filters-popover.png" />
+</Frame>
+
+A severity heatmap above the list (e.g., `2 Critical`, `5 High`) shows the distribution of the visible rules and doubles as a one-click filter — tap a chip to narrow the list to that severity, tap again to clear.
+
+<Frame caption="Severity heatmap chips above the rules list double as one-click filters">
+  <img src="/images/kody-rules-severity-heatmap.png" />
+</Frame>
+
+Active filters appear as removable chips above the list; click `Clear all` to reset everything at once.
+
+#### Pausing rules vs deleting
+
+Each rule has a status that controls whether it runs in code reviews:
+
+| Status | Effect | When to use |
+|--------|--------|-------------|
+| **Active** | Rule runs on every applicable PR. | Default for any rule you want enforced. |
+| **Paused** | Rule stays in the list but is skipped during reviews. | Temporarily silence a noisy rule, gate a rule during a refactor, A/B-test changes — without losing the rule definition. |
+| **Deleted** | Rule is removed and no longer applies. | Permanent; the rule no longer shows up in the list. |
+
+Pausing is reversible — a paused rule keeps its full definition and history, and resuming brings it back online instantly. Deleting is permanent.
+
+#### Bulk actions
+
+For repositories with dozens or hundreds of rules, bulk actions let you operate on many at once.
+
+1. **Tick the checkbox** on any rule card to start a selection. A toolbar appears at the top of the list with the count and the available actions.
+2. From there you can:
+   - **Select all visible (N)** — extend the selection to every eligible rule currently in view (filters and search are respected, so you can narrow first and then bulk-select).
+   - **Clear** — reset the selection.
+   - **Pause N** — pause every selected rule that is currently Active. This button only appears when at least one selected rule is pauseable.
+   - **Resume N** — bring every selected paused rule back to Active. Only appears when at least one selected rule is paused.
+   - **Delete N** — permanently delete the selection. A confirmation modal lists the rule titles being removed; the action can't be undone.
+
+<Frame caption="Bulk action toolbar appears once one or more rules are selected">
+  <img src="/images/kody-rules-bulk-toolbar.png" />
+</Frame>
+
+<Frame caption="Bulk delete confirmation lists the selected titles before the destructive action">
+  <img src="/images/kody-rules-bulk-delete-modal.png" />
+</Frame>
+
+<Info>
+  Inherited rules (rules from a parent scope, marked with an `INHERITED` badge) can't be bulk-selected from a child scope — to delete or pause them, navigate to the scope where they were originally defined.
+</Info>
+
 ## Memories
 
 Memories are persistent contextual instructions that Kody learns from your team's conversations and coding practices. Unlike Review Rules that run during code review, Memories are injected across all prompts and conversations to provide continuous, high-priority context and improve future suggestions.
